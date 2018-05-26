@@ -92,9 +92,7 @@ public class AppMain implements ActionListener
 		
 		JPanel pnl = new JPanel();
 		JPanel pnlInside = new JPanel();
-		
-		// String[] scenarios = {"None", "Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4", "Scenario 5", "Scenario 6"};
-		// String[] gamemodes = {"Tutorial", "Demo"};
+
 		String[] scenarios = {"Group 1", "Group 2", "Group 3"};
 		String[] gamemodes = {"Experiment"};
 		String[] practices = {"Practice", "Experiment"};
