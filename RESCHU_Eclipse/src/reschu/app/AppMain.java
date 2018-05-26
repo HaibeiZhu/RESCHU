@@ -83,7 +83,7 @@ public class AppMain implements ActionListener
 		reschu.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 	
-	private void setFrmLogin() 
+	private void setFrmLogin()
 	{
 		TitledBorder border; 
 		ImageIcon imgIcon;
@@ -95,7 +95,7 @@ public class AppMain implements ActionListener
 		
 		// String[] scenarios = {"None", "Scenario 1", "Scenario 2", "Scenario 3", "Scenario 4", "Scenario 5", "Scenario 6"};
 		// String[] gamemodes = {"Tutorial", "Demo"};
-		String[] scenarios = {"Scenario 1", "Scenario 2"};
+		String[] scenarios = {"Group 1", "Group 2", "Group 3"};
 		String[] gamemodes = {"Experiment"};
 		String[] practices = {"Practice", "Experiment"};
 				
@@ -104,7 +104,7 @@ public class AppMain implements ActionListener
 		lblHAL = new JLabel();
 		lblUserId = new JLabel("User ID");
 		lblGameMode = new JLabel("Mode");
-		lblScenario = new JLabel("Scenario");
+		lblScenario = new JLabel("Group");
 		lblPractice = new JLabel("Mode");
 		_btnStart = new JButton("START"); 
 		_btnStart.addActionListener(this);
