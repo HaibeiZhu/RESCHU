@@ -1,4 +1,5 @@
 *.pdf
+*.class
 RESCHU_Eclipse/.idea
 RESCHU_Eclipse/bin/reschu
 RESCHU_Eclipse/logs

@@ -142,8 +142,6 @@ public class AppMain implements ActionListener
 					
 		pnlInside.setLayout(new TableLayout(sizeInside));
 		pnlInside.setBorder(border);
-		// pnlInside.add(lblGameMode, "1,3");
-		// pnlInside.add(_cmbBoxGameMode, "3,3");
 		pnlInside.add(lblUserId, "1,3");
 		pnlInside.add(_cmbTextUserID, "3, 3");
 		pnlInside.add(lblScenario, "1,5");
