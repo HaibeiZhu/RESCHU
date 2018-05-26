@@ -1,4 +1,6 @@
 *.pdf
+RESCHU_Eclipse/.idea
+RESCHU_Eclipse/bin
 RESCHU_Eclipse/logs
 RESCHU_Eclipse/PayloadText.txt
 RESCHU_Eclipse/AttackFile_High.txt
@@ -7,3 +9,4 @@ RESCHU_Eclipse/AttackFile_Practice_High.txt
 RESCHU_Eclipse/AttackFile_Practice_Low.txt
 RESCHU_Eclipse/AttackFile_Test_High.txt
 RESCHU_Eclipse/AttackFile_Test_Low.txt
+RESCHU_Eclipse/RESCHU.iml
