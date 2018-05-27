@@ -166,7 +166,6 @@ public class AppMain implements ActionListener
 			_gamemode = _cmbBoxGameMode.getSelectedIndex();
 			switch(_gamemode) {
 				// case 0: _gamemode = MyGameMode.TUTORIAL_MODE; break;
-				// case 1: _gamemode = MyGameMode.ADMINISTRATOR_MODE; break;
 				case 0: _gamemode = MyGameMode.ADMINISTRATOR_MODE; break;
 			}
 		}
