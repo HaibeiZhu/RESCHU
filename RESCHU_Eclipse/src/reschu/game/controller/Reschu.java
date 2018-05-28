@@ -48,7 +48,8 @@ public class Reschu extends JFrame implements GUI_Listener {
 	private static final String DATE_FORMAT_NOW = "HH:mm:ss:S";
 
 	public static String _username;
-	public static int _scenario;		
+	public static int _group;
+	public static int _scenario;
 	public static int _gamemode;		// the game has several modes. see reschu.constant.MyGameMode
 	public static int _practice;		// whether in practice mode or experiment mode
 	public static boolean _database; 	// if set to false, we don't write to database
@@ -99,13 +100,13 @@ public class Reschu extends JFrame implements GUI_Listener {
 	 * @throws IOException 
 	 * @throws NumberFormatException 
 	 */
-	public Reschu(int gamemode, int scenario, int practice, String username, AppMain main, boolean database) throws NumberFormatException, IOException {
+	public Reschu(int group, int scenario, int practice, String username, AppMain main, boolean database) throws NumberFormatException, IOException {
 		super("RESCHU Security-Aware");
-		_gamemode = gamemode;
+		_group = group;
 		_scenario = scenario;
 		_practice = practice;
 		_username = username;
-		_database = database;      
+		_database = database;
 		setDefaultCloseOperation(EXIT_ON_CLOSE); 
 
 		if( tutorial() ) tutorial = new Tutorial(main);
@@ -124,11 +125,13 @@ public class Reschu extends JFrame implements GUI_Listener {
 			});
 		}
 
-		restartPayloadText();
-		writeScenarioCount();
+		// restartPayloadText();
+		// writeScenarioCount();
 		initComponents();
-
-	}    
+	}
+	
+	// this function is not necessary
+	/*
 	public void writeScenarioCount() throws IOException{
 		if (!MyLogging.WRITE_TO_DISK){
 			return;
@@ -198,8 +201,11 @@ public class Reschu extends JFrame implements GUI_Listener {
 			out.close();
 		}
 	}
-	public void restartPayloadText() throws IOException{
-
+	*/
+	
+	// this function is not necessary
+	/*
+	public void restartPayloadText() throws IOException {
 		BufferedReader br1 = new BufferedReader(new FileReader("ScenarioCount.txt"));
 		String line1 = "";
 		Boolean done1 = false;
@@ -238,8 +244,9 @@ public class Reschu extends JFrame implements GUI_Listener {
 		}
 
 	}
+	*/
 	
-	private void initComponents() throws NumberFormatException, IOException {  
+	private void initComponents() throws NumberFormatException, IOException {
 		double sizeMain[][] = {{TableLayout.FILL, 440, 5, 820+170 /* was 820 only*/, TableLayout.FILL}, 
 				{370, 110, TableLayout.FILL, 200}};
 		double sizePayload[][] = {{TableLayout.FILL, 0.1}, {TableLayout.FILL}};
@@ -248,7 +255,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new TableLayout(sizeMain));
 
-		game = new Game(this, _scenario);        
+		game = new Game(this, _scenario);
 		origin_time = System.currentTimeMillis();
 
 		payload_canvas = new MyCanvas();
@@ -850,32 +857,34 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 	@Override
 	public void EVT_System_GameStart(){
-		if(_scenario == 0) {
-			if(_practice == 0)
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation (practice) Start, operator ID = "+_username+", scenario = Low Taskload");
-			else
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation (experiment) Start, operator ID = "+_username+", scenario = Low Taskload");
-		}
+		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation Starts, User ID = "+_username);
+		
+		if(_group == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 1");
 		else {
-			if(_practice == 0)
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation (practice) Start, operator ID = "+_username+", scenario = High Taskload");
-			else
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation (experiment) Start, operator ID = "+_username+", scenario = High Taskload");
+			if(_group == 1) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 2");
+			else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 3");
 		}
+		
+		if(_scenario == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Scenario = First");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Scenario = Second");
+		
+		if(_practice == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Experiment");
 	}
 	public void EVT_System_GameEnd(){
-		if(_scenario == 0) {
-			if(_practice == 0)
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation (practice) End, operator ID = "+_username+", scenario = Low Taskload");
-			else
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation (experiment) End, operator ID = "+_username+", scenario = Low Taskload");
-		}
+		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation Ends, User ID = "+_username);
+		
+		if(_group == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Group = 1");
 		else {
-			if(_practice == 0)
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation (practice) End, operator ID = "+_username+", scenario = High Taskload");
-			else
-				Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation (experiment) End, operator ID = "+_username+", scenario = High Taskload");
+			if(_group == 1) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Group = 2");
+			else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Group = 3");
 		}
+		
+		if(_scenario == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Scenario = First");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Scenario = Second");
+		
+		if(_practice == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Practice");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Experiment");
 	}
 	public void EVT_RECORD_FINAL_SCORE(int damage, int task, int wrong_task, int attack, int wrong_attack, int lost, int total) {
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, 
@@ -895,9 +904,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 				+attack+"(correct detect) - 10*"+wrong_attack+"(incorrect detect) - 20*"+lost+"(lost) = "+total);
 	}
 	
-	/**
-	 * Yves
-	 */
+	// For mouse buttons and tab selections
 	public void EVT_VSelect_Map_LBtn(int vIdx) {
 		Vehicle v = game.getVehicleList().getVehicle(vIdx-1);
 		Write(MyDB.INVOKER_USER, MyDB.YVES_VEHICLE_SELECT_MAP_LBTN, vIdx,

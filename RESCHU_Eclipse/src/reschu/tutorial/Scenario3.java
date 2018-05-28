@@ -292,7 +292,7 @@ public class Scenario3  extends TutorialModel{
 					e1.printStackTrace();
 				}
                                setDuration(30);
-                               main.TutorialFinished();
+                               // main.TutorialFinished();
                                break; 
                        case 21:
 				try {

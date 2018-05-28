@@ -2,7 +2,7 @@
 *.class
 RESCHU_Eclipse/.idea
 RESCHU_Eclipse/.settings
-RESCHU_Eclipse/bin/reschu
+RESCHU_Eclipse/bin
 RESCHU_Eclipse/logs
 RESCHU_Eclipse/PayloadText.txt
 RESCHU_Eclipse/AttackFile_High.txt

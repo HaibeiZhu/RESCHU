@@ -1,4 +1,3 @@
-
 package reschu.tutorial;
 
 import java.awt.HeadlessException;
@@ -264,8 +263,8 @@ public class Scenario1 extends TutorialModel
 					e1.printStackTrace();
 				}
                                setDuration(30);
-                               main.TutorialFinished();
-                               break;        
+                               // main.TutorialFinished();
+                               break;
                        case 19:
 				try {
 					JOptionPane.showMessageDialog(null,
@@ -279,7 +278,7 @@ public class Scenario1 extends TutorialModel
 				}
                                setDuration(3);
                                nextDialog();
-                               break;        
+                               break;
                        case 20:
 				try {
 					JOptionPane.showMessageDialog(null,
