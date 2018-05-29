@@ -3,7 +3,7 @@ package reschu.constants;
 import reschu.game.controller.Reschu;
 
 public class MyGame {
-	final static public String VERSION_INFO = "RESCHU VER 2.0.0";	
+	final static public String VERSION_INFO = "RESCHU VER 3.0.0";	
     
     final static public int LAND = 0;
     final static public int SEASHORE = 1;
@@ -29,14 +29,8 @@ public class MyGame {
     final static public int nTARGET_AREA_TOTAL_HIGH = nTARGET_AREA_LAND + nTARGET_AREA_SHORE + nTARGET_AREA_MORE;
     
     final static public double MIN_HACK_DISTANCE = (Reschu.low_taskload())? 50.0 : 25.0;
-    
-    // final static public String AttackFile = (Reschu.low_taskload())? "AttackFile_Low.txt" : "AttackFile_High.txt";
     final static public String AttackFile = (Reschu.low_taskload())? ((Reschu.practice_mode())? "AttackFile_Practice_Low.txt" : "AttackFile_Test_Low.txt") :
     																 ((Reschu.practice_mode())? "AttackFile_Practice_High.txt" : "AttackFile_Test_High.txt");
-    
     final static public boolean TargetDataBase = true;
-    // final static public boolean TargetDataBase = false;
-    
     final static public int TOTAL_SECOND = 900; // total time (in second) for one experiment
-    // final static public int TOTAL_SECOND = 9000;
 }

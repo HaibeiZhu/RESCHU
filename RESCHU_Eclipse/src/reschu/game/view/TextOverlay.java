@@ -103,7 +103,7 @@ public class TextOverlay implements GLEventListener {
 
 		trB20.beginRendering(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
 		trB20.setColor(0.9f, 0.9f, 0.9f, 0.9f);
-		trB20.draw("__", (drawable.getSurfaceWidth() * 1 / 10) + 20, drawable.getSurfaceHeight() / 4 + 75 + (int) (30 / 3) * zoom_count); //far01 zooming
+		trB20.draw("__", (drawable.getSurfaceWidth() * 1 / 10) + 20, drawable.getSurfaceHeight() / 4 + 75 + (int) (30 / 3) * zoom_count);
 
 		trB20.endRendering();
 	}

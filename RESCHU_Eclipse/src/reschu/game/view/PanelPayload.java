@@ -577,7 +577,7 @@ public class PanelPayload extends MyCanvas implements GLEventListener {
 			trB20.setColor(0.8f, 0.1f, 0.1f, 1f);
 			//trB20.draw("__", (drawable.getSurfaceWidth() * 1 / 10) + 20, drawable.getSurfaceHeight() / 4 + 75 + (int) (60 / 3) * zoom_count);
 			trB20.draw("__", (drawable.getSurfaceWidth() * 1 / 10) + 20,
-						drawable.getSurfaceHeight() / 4 + 75 + (int) (30 / 3) * zoom_count); //far01 Attach zoom bar
+						drawable.getSurfaceHeight() / 4 + 75 + (int) (30 / 3) * zoom_count);
 			trB20.endRendering();
 
 			if (rbtnClicked) { 

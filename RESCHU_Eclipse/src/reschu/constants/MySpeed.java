@@ -1,8 +1,8 @@
 package reschu.constants;
 
 public class MySpeed {
-    final static public int VELOCITY = 1; // far01 speed configuration
-    final static public double VELOCITY64 = 1.0/20.0;
+    final static public int VELOCITY = 1;
+    final static public double VELOCITY64 = 1.0/20.0; // 20.0
 	final static public int SPEED_CONTROL = 10; // a coefficient for controlling time step
     final static public int SPEED_TIMER = 500 / SPEED_CONTROL;
     final static public int SPEED_CLOCK = 10000 / SPEED_CONTROL; // one SPEED_CLOCK = 1 second

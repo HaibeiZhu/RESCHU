@@ -121,7 +121,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	//    }
 
 	@Override
-	public void update( Graphics g ) {
+	public void update(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		paintMap(g2d);
@@ -165,34 +165,20 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	}
 
 	@Override
-	public void paint( Graphics g ) {
+	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		if( mapSettingMode ) { Graphics2D g2d=(Graphics2D)g; g2d.setComposite(makeComposite(.8f)); } 
-		if( eventDisabled ) { Graphics2D g2d=(Graphics2D)g; g2d.setComposite(makeComposite(.5f)); }
+		if(mapSettingMode) { Graphics2D g2d=(Graphics2D)g; g2d.setComposite(makeComposite(.8f)); } 
+		if(eventDisabled) { Graphics2D g2d=(Graphics2D)g; g2d.setComposite(makeComposite(.5f)); }
 		g.clearRect(0,0,getWidth(),getHeight());
-		update( g );
-	}            
-
-	@Override 
-	public void setEnabled(boolean enabled) 
-	{
-		if( enabled ) {eventDisabled = false;}  // setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));}
-		else {eventDisabled = true;} // setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));}
+		update(g);
 	}
 
-	/**
-	 * Creates a back buffer. 
-	 */    
-	//    public void init_buffer() {    	
-	//    	super.addNotify();
-	//    	assert ( !super.isDisplayable() || GraphicsEnvironment.isHeadless()) 
-	//    				: "Map is not displayable. Please contact nehme@mit.edu";
-	//        backbuffer = createImage(mapWidth , mapHeight);
-	//        backg = (Graphics2D)backbuffer.getGraphics();    
-	//        backg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	//        paintMap();
-	//    }    
+	@Override 
+	public void setEnabled(boolean enabled) {
+		if(enabled) {eventDisabled = false;}  // setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));}
+		else {eventDisabled = true;} // setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));}
+	}
 
 	/**
 	 * Displays a message on the top of the map (maybe at the bottom?-subject to change)
@@ -309,13 +295,13 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			if(v.isDisappeared) continue;
 			
 			Color clrVehicle;
-			if( v.getStatus() == MyGame.STATUS_VEHICLE_PENDING ) clrVehicle = MyColor.COLOR_VEHICLE_PENDING;
+			if(v.getStatus() == MyGame.STATUS_VEHICLE_PENDING) clrVehicle = MyColor.COLOR_VEHICLE_PENDING;
 			else clrVehicle = MyColor.COLOR_VEHICLE;
 			
 			if(v.getName().contains("GHOST")) clrVehicle = MyColor.COLOR_GHOST_VEHICLE;
 			if(v.isNotified) clrVehicle = MyColor.COLOR_VEHICLE_NOTIFIED;
 
-			if( selectedVehicle == v ) {
+			if(selectedVehicle == v) {
 				p.paintHighlight(g, (int)v.getX64(), (int)v.getY64(), cellsize, halfcell, MySize.SIZE_HIGHLIGHT_PXL, rulersize/3,
 						MyColor.COLOR_HIGHLIGHT, MyStroke.STROKE_BASIC, MyStroke.STROKE_WIDE);        		
 			}
@@ -328,10 +314,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				}
 			}
 
-			if( v.getType() == Vehicle.TYPE_UAV  ) {
+			if(v.getType() == Vehicle.TYPE_UAV) {
 				// the UAV shape
 				p.paintArc(g, v.getX(), v.getY(), cellsize, halfcell, rulersize, 
-						vWidth, vHeight, 
+						vWidth, vHeight,
 						new Color(0,0,0,250), clrVehicle, Vehicle.TYPE_UAV );
 				// the UAV number
 				if(v.getName().contains("GHOST"))
@@ -341,12 +327,12 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					p.paintString(g, v.getX()-1, v.getY()+4, cellsize, new Color(255,255,255,255),
 							MyFont.fontBold, Integer.toString(v.getIndex()));
 				
-				if( v.getPayload() == Vehicle.PAYLOAD_COM ) {
+				if(v.getPayload() == Vehicle.PAYLOAD_COM) {
 					p.paintOval(g, v.getX()+1, v.getY()+2, cellsize, MySize.SIZE_UAV_COMM_PXL, 
 							MyColor.COLOR_VEHICLE_COMM_BOUNDARY);
 				}
 			}
-			else if( v.getType() == Vehicle.TYPE_UUV ) {
+			else if(v.getType() == Vehicle.TYPE_UUV) {
 				p.paintArc(g, v.getX(), v.getY(), cellsize, halfcell, rulersize,
 						vWidth, vHeight, 
 						new Color(0,0,0,250), clrVehicle, Vehicle.TYPE_UUV);        		
@@ -354,9 +340,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						MyFont.fontBold, Integer.toString(v.getIndex()));
 			}
 
-			if( v.hasGoal() ) {
-				if( v.hasWaypoint()) {
-					if( selectedVehicle == v ) g.setColor(MyColor.COLOR_HIGHLIGHT); 
+			if(v.hasGoal()) {
+				if(v.hasWaypoint()) {
+					if(selectedVehicle == v) g.setColor(MyColor.COLOR_HIGHLIGHT); 
 					else g.setColor(MyColor.COLOR_LINE);
 					g.drawLine(
 							v.getX()*cellsize + halfcell,
@@ -404,12 +390,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				}
 			}
 		}
-
-		// TODO: ONLY FOR DEBUGGING!!
-		//        repaint();
-		//    	g.setColor(Color.red);
-		//    	g.drawRect(region[0], region[1], region[2], region[3]);
-		//    	System.out.println("DRAW: (" + region[0] + "," + region[1] + ") - ( " +region[2] + "," + region[3] + ")");
 	}
 
 	public void paintBorder(Graphics2D g, Color c) { 
@@ -586,20 +566,20 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		mapSettingMode = true; setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		vehicleGoalMode = true;
 		// TODO: pass (v.getX(), v.getY(), goal_x, goal_y)
-		//		repaint();
+		// repaint();
 
 	}    
 	public synchronized void addWP(Vehicle v) {
 		selectedVehicle = v;
 		mapSettingMode = true; setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		vehicleWPAddMode = true;
-		//		repaint();
+		// repaint();
 	}
 	public synchronized void delWP(Vehicle v) {
 		selectedVehicle = v;
 		mapSettingMode = true; setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		vehicleWPDelMode = true;
-		//		repaint();
+		// repaint();
 	}
 
 	// ActionListener interface
@@ -964,10 +944,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					drag_to[0], drag_to[1], 
 					drag_to_prev[0]*w, drag_to_prev[1]*w,
 					drag_next[0]*w, drag_next[1]*w);
-			//			printCoord("WP drag", region[0], region[1], region[2], region[3]);
+			// printCoord("WP drag", region[0], region[1], region[2], region[3]);
 			repaint(region[0], region[1], region[2], region[3]);
 			drag_to_prev = drag_to;
-			//			repaint();			
+			// repaint();			
 		}
 	}
 
@@ -1063,13 +1043,13 @@ class PaintComponent {
 			g.setColor(draw_color);
 			g.drawArc(
 					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL + half_SIZE_CELL, 
-					y * SIZE_CELL - ruler_size - half_SIZE_CELL, 
+					y * SIZE_CELL - ruler_size - half_SIZE_CELL,
 					object_width_size, object_height_size, 0, 180);
 
 			g.setColor(fill_color);
 			g.fillArc(
 					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL + half_SIZE_CELL,  
-					y * SIZE_CELL - ruler_size - half_SIZE_CELL, 
+					y * SIZE_CELL - ruler_size - half_SIZE_CELL,
 					object_width_size, object_height_size, 0, 180);
 		} else if( type == Vehicle.TYPE_UUV) {
 			g.setColor(draw_color);

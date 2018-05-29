@@ -561,9 +561,7 @@ public class Vehicle {
 		moveTo(rnd.nextInt(8));
 	}
 	
-	// far04 changed uncommented
 	public void moveHillClimbing() {
-		
 		// System.out.println("far moveHillClimbing called");
 		if( isStuck ) {
 			moveTo(6);
@@ -780,23 +778,22 @@ public class Vehicle {
 		}
 	}
 	
-	//far06 Move exact TODO implement
 	public void movePrecise() {
-        //Get Cartesian distance to goal
+        // Get Cartesian distance to goal
         double s64DeltaX = getGroundTruthX64() - (double)(getFirstPathGround()[0]);
         double s64DeltaY = getGroundTruthY64() - (double)(getFirstPathGround()[1]);
-        //Direction angle
-        //Angle is measured from North, CCW
-        //Range: [-pi, +pi]
-        double s64OldAngle = 0;
-        double s64NewAngle = 0;
-        double s64AngleDiff = 0;
-        double s64AngleInc = Math.PI/250.0; // original 1000 or 2000
-        //Check proximity
+        // Direction angle
+        // Angle is measured from North, CCW
+        // Range: [-pi, +pi]
+        double s64OldAngle = 0.0;
+        double s64NewAngle = 0.0;
+        double s64AngleDiff = 0.0;
+        double s64AngleInc = Math.PI/250.0; // original 250
+        // Check proximity
         if (Math.abs(s64DeltaX) <= MySpeed.VELOCITY64) { s64DeltaX = 0; }
         if (Math.abs(s64DeltaY) <= MySpeed.VELOCITY64) { s64DeltaY = 0; }
-        //Calculate velocity angle
-        //Angle is measured from east, CCW
+        // Calculate velocity angle
+        // Angle is measured from east, CCW
         if ((s64DeltaX != 0) || (s64DeltaY != 0)) {
             double pi = Math.PI;
             s64NewAngle = Math.atan2(s64DeltaY,s64DeltaX);
@@ -824,19 +821,19 @@ public class Vehicle {
 
         if (isHijacked) {
         	if(getPathSize() != 0) {
-	            //Get Cartesian distance to goal
+	            // Get Cartesian distance to goal
 	            double s64ObsDeltaX = getX64() - (double)(getFirstPathObserved()[0]);
 	            double s64ObsDeltaY = getY64() - (double)(getFirstPathObserved()[1]);
-	            //Direction angle
-	            //Angle is measured from North, CCW
-	            //Range: [-pi, +pi]
+	            // Direction angle
+	            // Angle is measured from North, CCW
+	            // Range: [-pi, +pi]
 	            double s64ObsAngle = 0;
 	            
-	            //Check proximity
+	            // Check proximity
 	            if (Math.abs(s64ObsDeltaX) <= MySpeed.VELOCITY64) { s64ObsDeltaX = 0; }
 	            if (Math.abs(s64ObsDeltaY) <= MySpeed.VELOCITY64) { s64ObsDeltaY = 0; }
-	            //Calculate velocity angle
-	            //Angle is measured from east, CCW
+	            // Calculate velocity angle
+	            // Angle is measured from east, CCW
 	            if ((s64ObsDeltaX != 0) || (s64ObsDeltaY != 0)) {
 	                s64ObsAngle = Math.atan2(s64ObsDeltaY,s64ObsDeltaX);
 	            }

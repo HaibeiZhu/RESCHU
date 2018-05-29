@@ -67,8 +67,8 @@ public class Game implements Runnable, ActionListener {
 
     public synchronized int getElapsedTime() {return elapsedTime;}
 
-    public Game(GUI_Listener l, int scenario) throws NumberFormatException, IOException { 
-        if( Reschu.train() || Reschu.tutorial()) Game.TIME_TOTAL_GAME *= 10; 
+    public Game(GUI_Listener l, int scenario) throws NumberFormatException, IOException {
+        if( Reschu.train() || Reschu.tutorial()) Game.TIME_TOTAL_GAME *= 10;
 
         if( Reschu._database ) {
             new Thread(new Runnable() {
