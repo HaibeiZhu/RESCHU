@@ -26,7 +26,10 @@ public class Game implements Runnable, ActionListener {
 
     private int nTargetAreaTotal = (Reschu.tutorial()) ? MyGame.nTARGET_AREA_TOTAL_TUTORIAL :
     	(Reschu.low_taskload()? MyGame.nTARGET_AREA_TOTAL : MyGame.nTARGET_AREA_TOTAL_HIGH);
-    final private int[] DB_BY_PIXEL 
+    
+    // For original RESCHU
+    /*
+    final private int[] DB_BY_PIXEL
     = new int[]{480,480,470,470,470, 470,460,460,450,450,
             450,440,440,430,430, 430,420,410,410,410,
             410,410,410,410,410, 410,410,420,420,420,
@@ -37,8 +40,8 @@ public class Game implements Runnable, ActionListener {
             510,510,510,520,520, 520,520,520,520,530,
             530,540,550,550,560, 560,570,570,580,580,
             590,590,590,600,600, 610,610,620,620};
-
     private int[] DB = new int[MySize.height];
+    */
 
     static public Calendar cal = Calendar.getInstance();
 
@@ -91,7 +94,7 @@ public class Game implements Runnable, ActionListener {
 
         PanelMsgBoard.Msg("Game Started");
         tmr_clock = new Timer(MySpeed.SPEED_TIMER, this);
-        for(int i=0; i<DB.length; i++) DB[i] = DB_BY_PIXEL[Math.round(i/5)]/MySize.SIZE_CELL;
+        // for(int i=0; i<DB.length; i++) DB[i] = DB_BY_PIXEL[Math.round(i/5)]/MySize.SIZE_CELL;
 
         vehicleList = new VehicleList(this);
         //@change-removed passing random object to PayloatList() 2008-04-01
@@ -299,11 +302,13 @@ public class Game implements Runnable, ActionListener {
     }
 
     private void setMap() {
+    	/*
         for(int i=0; i<MySize.height; i++) {
             for(int j=0; j<DB[i]; j++) map.setCellType(j, i, MyGame.LAND);
             map.setCellType(DB[i], i, MyGame.SEASHORE);
             for(int j=DB[i]+1; j<MySize.width; j++) map.setCellType(j, i, MyGame.SEA);
         }
+        */
     }
     
     // set all cell type to LAND for new Target Data Base

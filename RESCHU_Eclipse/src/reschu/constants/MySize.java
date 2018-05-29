@@ -1,7 +1,7 @@
 package reschu.constants;
 
 public class MySize {
-	final static public int SIZE_CELL = 2; // this is the key point to change UAV speed, need further modifications
+	final static public int SIZE_CELL = 1; // this is the key point to change UAV speed, need further modifications
 	final static public int SIZE_HALF_CELL = SIZE_CELL / 2;
 	final static public int MAP_HEIGHT_PXL = 980; // was 810
 	final static public int MAP_WIDTH_PXL = 980; // was 810

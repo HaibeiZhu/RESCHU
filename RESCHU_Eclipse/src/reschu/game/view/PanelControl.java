@@ -465,7 +465,7 @@ class VehicleIcon2 extends JPanel
             g.drawLine(1, MySize.SIZE_VEHICLE_HEIGHT_PXL/2+3, MySize.SIZE_VEHICLE_WIDTH_PXL+1, MySize.SIZE_VEHICLE_HEIGHT_PXL/2+3);
 	    	g.setColor(vColor);
 	        g.fillArc(1, 3, MySize.SIZE_VEHICLE_WIDTH_PXL, MySize.SIZE_VEHICLE_HEIGHT_PXL, 0, 180);
-	        paintString((Graphics2D)g, MySize.SIZE_VEHICLE_WIDTH_PXL/2-1, MySize.SIZE_VEHICLE_HEIGHT_PXL/2-2, Color.black, MyFont.fontSmallBold, Integer.toString(v.getIndex()));
+	        paintString((Graphics2D)g, MySize.SIZE_VEHICLE_WIDTH_PXL/2-2, MySize.SIZE_VEHICLE_HEIGHT_PXL/2-4, Color.black, MyFont.fontSmallBold, Integer.toString(v.getIndex()));
 	   	} else if( v.getType() == "UUV") {
 	    	g.setColor(Color.BLACK);
 	        g.drawArc(1, -MySize.SIZE_VEHICLE_HEIGHT_PXL/2+3, MySize.SIZE_VEHICLE_WIDTH_PXL, MySize.SIZE_VEHICLE_HEIGHT_PXL, 180, 180);	        

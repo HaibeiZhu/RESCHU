@@ -393,7 +393,7 @@ public class Reschu extends JFrame implements GUI_Listener {
     	}
     	*/
 
-		if( train() ) {
+		if(train()) {
 			// enables the "close" function when Training mode            
 			setDefaultCloseOperation(EXIT_ON_CLOSE); 
 

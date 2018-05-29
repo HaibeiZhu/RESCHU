@@ -335,7 +335,7 @@ public class Vehicle {
 
 	// check if reach a target
 	private boolean boundaryCheck(int x, int y, int[] target_pos) {
-		int w = Math.round(MySize.SIZE_TARGET_PXL / MySize.SIZE_CELL / 2);    	 
+		int w = Math.round(MySize.SIZE_TARGET_PXL / MySize.SIZE_CELL / 2);
 		if( (x<=target_pos[0]+w)&&(x>=target_pos[0]-w)&&(y<=target_pos[1]+w)&&(y>=target_pos[1]-w) ) return true;
 		return false;	
 	}

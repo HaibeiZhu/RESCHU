@@ -261,7 +261,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			int[] pos = map.getListAssignedTarget().get(i).getPos();
 			if( map.getListAssignedTarget().get(i).isDone() ) {
 				p.paintPolygon(g, pos[0], pos[1], cellsize, targetsize, new Color(0, 0, 0, 250), MyColor.COLOR_TARGET_DONE);
-				p.paintString(g,pos[0]-2, pos[1]+2, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
+				p.paintString(g,pos[0]-4, pos[1]+4, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
 			}
 			else {
 				if( !map.getListAssignedTarget().get(i).isVisible() ) 
@@ -269,7 +269,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				else 
 					clrTarget = MyColor.COLOR_TARGET_OCCUPIED;
 				p.paintPolygon(g, pos[0], pos[1], cellsize, targetsize, new Color(0, 0, 0, 250), clrTarget);
-				p.paintString(g,pos[0]-2, pos[1]+2, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
+				p.paintString(g,pos[0]-4, pos[1]+4, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
 			}
 		}
 
@@ -280,7 +280,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			else 
 				clrTarget = MyColor.COLOR_TARGET_VACANT; 
 			p.paintPolygon(g, pos[0], pos[1], cellsize, targetsize, new Color(0, 0, 0, 250), clrTarget);
-			p.paintString(g, pos[0]-2, pos[1]+2, cellsize, Color.white, MyFont.fontBold, map.getListUnassignedTarget().get(i).getName());
+			p.paintString(g, pos[0]-4, pos[1]+4, cellsize, Color.white, MyFont.fontBold, map.getListUnassignedTarget().get(i).getName());
 		}
 	}
 
@@ -1006,7 +1006,7 @@ class PaintComponent {
 		g.drawOval(
 				(x-Math.round(object_size/SIZE_CELL/2)) * SIZE_CELL, 
 				(y-Math.round(object_size/SIZE_CELL/2)) * SIZE_CELL, 
-				object_size,object_size);
+				object_size, object_size);
 		g.setStroke(wide_stroke);
 		g.drawLine(
 				(x-Math.round(object_size/SIZE_CELL/2)-ruler_size) * SIZE_CELL + half_SIZE_CELL, 
