@@ -248,8 +248,7 @@ public class Map {
 	
 	// set target area based on pre-defined database
 	public void setTargetArea_DataBase(Random rnd) throws UserDefinedException {
-		int nTotalTarget = (Reschu.tutorial()) ? MyGame.nTARGET_AREA_TOTAL_TUTORIAL :
-			(Reschu.low_taskload()? MyGame.nTARGET_AREA_TOTAL : MyGame.nTARGET_AREA_TOTAL_HIGH);		
+		int nTotalTarget = g.getTotalTargetNumber();	
 		int nTotalTargetNeed = nTotalTarget - getTargetSize("LAND");
 		int count = 0;
 

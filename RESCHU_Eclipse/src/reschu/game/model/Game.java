@@ -24,7 +24,8 @@ public class Game implements Runnable, ActionListener {
     static public int TIME_TOTAL_GAME = MyGame.TOTAL_SECOND * MySpeed.SPEED_CLOCK ;
     private double PROBABILITY_TARGET_VISIBILITY; // The higher, the more visible target
     private int nTargetAreaTotal = (Reschu.tutorial()) ? MyGame.nTARGET_AREA_TOTAL_TUTORIAL :
-    	(Reschu.low_taskload()? MyGame.nTARGET_AREA_TOTAL : MyGame.nTARGET_AREA_TOTAL_HIGH);
+    	// (Reschu.low_taskload()? MyGame.nTARGET_AREA_TOTAL : MyGame.nTARGET_AREA_TOTAL_HIGH);
+    	MyGame.nTARGET_AREA_TOTAL;
     
     public boolean Guidance;
     public boolean Training;
@@ -95,7 +96,7 @@ public class Game implements Runnable, ActionListener {
         rnd.setSeed( getSeedNum(scenario) ); 
         setProbability_Target_Visibility(scenario);
 
-        PanelMsgBoard.Msg("Game Started");
+        PanelMsgBoard.Msg("Experiment Started");
         tmr_clock = new Timer(MySpeed.SPEED_TIMER, this);
         // for(int i=0; i<DB.length; i++) DB[i] = DB_BY_PIXEL[Math.round(i/5)]/MySize.SIZE_CELL;
 
@@ -141,6 +142,7 @@ public class Game implements Runnable, ActionListener {
     
     public int getGroup() {return _group;}
     public int getScenario() {return _scenario;}
+    public int getTotalTargetNumber() {return nTargetAreaTotal;}
     
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
@@ -168,6 +170,7 @@ public class Game implements Runnable, ActionListener {
             }
         }
     }
+    
     private void setProbability_Target_Visibility(int scenario) {
         switch( scenario ) {
         case 1: PROBABILITY_TARGET_VISIBILITY = 1; break;
@@ -177,35 +180,46 @@ public class Game implements Runnable, ActionListener {
         default: PROBABILITY_TARGET_VISIBILITY = 1; break;
         }
     }
-    public void setGroup(int group) {
-    	switch(group) {
+    
+    public void setGroupScenario(int group, int scenario) {
+    	switch(scenario) {
+    	case 0:
+    		Guidance = false;
+    		Training = false;
+    		break;
     	case 1:
-    		Guidance = true;
-    		Training = false;
-    		break;
-    	case 2:
-    		Guidance = false;
-    		Training = true;
-    		break;
-    	case 3:
-    		Guidance = true;
-    		Training = true;
-    		break;
-    	default:
-    		Guidance = false;
-    		Training = false;
-    		break;
+	    	switch(group) {
+	    	case 1:
+	    		Guidance = true;
+	    		Training = false;
+	    		break;
+	    	case 2:
+	    		Guidance = false;
+	    		Training = true;
+	    		break;
+	    	case 3:
+	    		Guidance = true;
+	    		Training = true;
+	    		break;
+	    	default:
+	    		Guidance = false;
+	    		Training = false;
+	    		break;
+	    	}
+	    	break;
     	}
     }
+    
     public void setVehicle(int scenario) {
         try {
             switch(scenario) {
             case 0:
-                vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
+            	vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(2, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Fire Scout C", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                // if( !Reschu.tutorial() ) vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Fire Scout D", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);            
-                // if( !Reschu.tutorial() ) vehicleList.addVehicle(5, Vehicle.TYPE_UAV, "Fire Scout E", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
+                if( !Reschu.tutorial() ) vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Fire Scout D", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
+                if( !Reschu.tutorial() ) vehicleList.addVehicle(5, Vehicle.TYPE_UAV, "Fire Scout E", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
+                // if( !Reschu.tutorial() ) vehicleList.addVehicle(6, Vehicle.TYPE_UAV, "Fire Scout F", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 break;
             case 1:
             	vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
@@ -213,54 +227,8 @@ public class Game implements Runnable, ActionListener {
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Fire Scout C", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Fire Scout D", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(5, Vehicle.TYPE_UAV, "Fire Scout E", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                if( !Reschu.tutorial() ) vehicleList.addVehicle(6, Vehicle.TYPE_UAV, "Fire Scout F", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                // vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                // vehicleList.addVehicle(2, Vehicle.TYPE_UUV, "Talisman A", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                // if( !Reschu.tutorial() ) vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                // if( !Reschu.tutorial() ) vehicleList.addVehicle(4, Vehicle.TYPE_UUV, "Talisman B", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                // if( !Reschu.tutorial() ) vehicleList.addVehicle(5, Vehicle.TYPE_UAV, "Fire Scout C", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
+                // if( !Reschu.tutorial() ) vehicleList.addVehicle(6, Vehicle.TYPE_UAV, "Fire Scout F", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 break;
-            /*
-            case 3:
-                vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(2, Vehicle.TYPE_UAV, "Global Hawk A", Vehicle.PAYLOAD_COM, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);            
-                if( !Reschu.tutorial() ) vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                if( !Reschu.tutorial() ) vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Global Hawk B", Vehicle.PAYLOAD_COM, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                if( !Reschu.tutorial() ) vehicleList.addVehicle(5, Vehicle.TYPE_UAV, "Fire Scout C", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                break;
-            case 4:
-                vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(2, Vehicle.TYPE_UUV, "Talisman A", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);            
-                vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Global Hawk", Vehicle.PAYLOAD_COM, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                if( !Reschu.tutorial() ) vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                if( !Reschu.tutorial() ) vehicleList.addVehicle(5, Vehicle.TYPE_UUV, "Talisman B", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                break;
-            case 5:
-                vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(2, Vehicle.TYPE_UUV, "Talisman A", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);            
-                vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Fire Scout C", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(5, Vehicle.TYPE_UUV, "Talisman B", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(6, Vehicle.TYPE_UAV, "Fire Scout D", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                break;
-            case 6:
-                vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(2, Vehicle.TYPE_UUV, "Talisman A", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);            
-                vehicleList.addVehicle(3, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(4, Vehicle.TYPE_UAV, "Fire Scout C", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(5, Vehicle.TYPE_UUV, "Talisman B", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(6, Vehicle.TYPE_UAV, "Fire Scout D", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(7, Vehicle.TYPE_UAV, "Fire Scout E", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(8, Vehicle.TYPE_UUV, "Talisman", Vehicle.PAYLOAD_ISR, 1000/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);            
-                vehicleList.addVehicle(9, Vehicle.TYPE_UAV, "Fire Scout F", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(10, Vehicle.TYPE_UAV, "Fire Scout G", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(11, Vehicle.TYPE_UAV, "Fire Scout H", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                vehicleList.addVehicle(12, Vehicle.TYPE_UAV, "Fire Scout", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
-                break;
-            default:
-                vehicleList.addVehicle(1, Vehicle.TYPE_UAV, Vehicle.TYPE_UAV+"_1", "ISR", 500, rnd, map, lsnr, this);
-                break;
-            */
             }
         } catch (UserDefinedException e) {e.printStackTrace();}
     }
@@ -367,8 +335,7 @@ public class Game implements Runnable, ActionListener {
 
     public void vehicle_location_change(){ lsnr.vehicleLocationChanged(); }
 
-    public Vehicle Vechicle_Location_Check(int x, int y)
-    {
+    public Vehicle Vechicle_Location_Check(int x, int y) {
         for( int i=0; i<vehicleList.size(); i++ ) {
             // this is only called when vehicle is clicked in panelMap, so we should be using getX and getY
             // since we want observed coordinates when vehicle is hijacked.
@@ -383,8 +350,7 @@ public class Game implements Runnable, ActionListener {
         return null;            
     }
 
-    public StructSelectedPoint Vehicle_Goal_Check(int x, int y)
-    {
+    public StructSelectedPoint Vehicle_Goal_Check(int x, int y) {
         Vehicle v;
         int w = Math.round(MySize.SIZE_WAYPOINT_PXL/MySize.SIZE_CELL);
         for( int i=0; i<vehicleList.size(); i++ ) {
@@ -400,8 +366,7 @@ public class Game implements Runnable, ActionListener {
         return null;
     }
 
-    public StructSelectedPoint Vehicle_Waypoint_Check(int x, int y)
-    {
+    public StructSelectedPoint Vehicle_Waypoint_Check(int x, int y) {
         Vehicle v;
         int w = Math.round(MySize.SIZE_WAYPOINT_PXL/MySize.SIZE_CELL);
         for( int i=0; i<vehicleList.size(); i++ ) {
@@ -426,8 +391,7 @@ public class Game implements Runnable, ActionListener {
     public void setCurrentPayloadVehicle(Vehicle v) { currentPayloadVehicle = v; }
     public void clearCurrentPayloadVehicle() { currentPayloadVehicle = null; }
 
-    private void AutoTargetAssignAll() 
-    {
+    private void AutoTargetAssignAll() {
         Vehicle v;
         for( int i=0; i<vehicleList.size(); i++ ) {
             v = vehicleList.getVehicle(i);
@@ -435,8 +399,7 @@ public class Game implements Runnable, ActionListener {
         } 
     } 
 
-    public void AutoTargetAssign(Vehicle v) 
-    {
+    public void AutoTargetAssign(Vehicle v) {
         if( v.getPath().size() == 0 && map.getAvailableTarget() > 0 ) {             
             Target target = null;
 

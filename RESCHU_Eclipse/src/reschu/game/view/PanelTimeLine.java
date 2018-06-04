@@ -23,9 +23,8 @@ public class PanelTimeLine extends JPanel {
 	//private int number_of_row, row_height;
 	private int current_time;
 	
-	public PanelTimeLine(Game g, VehicleList vl) {		 
-		// double size[][] = {{30, 5, TableLayout.FILL, 5}, {10, 3, 24, 3, 24, 3, 24, 3, 24, 3, 24, 3, 24, 6}};
-		double size[][] = {{30, 5, TableLayout.FILL, 5}, {10, 3, 20, 3, 20, 3, 20, 3, 20, 3, 20, 3, 20, 3, 24, 3}};
+	public PanelTimeLine(Game g, VehicleList vl) {
+		double size[][] = {{30, 5, TableLayout.FILL, 5}, {10, 3, 21, 3, 21, 3, 21, 3, 21, 3, 21, 6, 24, 3}};
 		bdrTitle = BorderFactory.createTitledBorder("Time Line");
 		setBorder(bdrTitle);  
 		setLayout(new TableLayout(size));
@@ -34,19 +33,15 @@ public class PanelTimeLine extends JPanel {
 		pnlVehicleTime = new VehicleTime[vl.size()];		
 		pnlTimeText = new TimeText();
 		pnlRemainingTime = new RemainingTime(g);
-
-		//number_of_row = vl.size() + 2;
-		//row_height = this.getHeight() / number_of_row;
 		
 		add(pnlTimeText, "2,0");
-		
 		for(int i=0; i<vl.size(); i++) {
 			pnlVehicleIcon[i] = new VehicleIcon(vl.getVehicle(i));
 			pnlVehicleTime[i] = new VehicleTime(vl.getVehicle(i));
 			add(pnlVehicleIcon[i], "0,"+2*(i+1));
 			add(pnlVehicleTime[i], "2,"+2*(i+1));
 		}
-		add(pnlRemainingTime, "2,14");
+		add(pnlRemainingTime, "2,12");
 	}
 	
 	public void refresh(int milliseconds) {
@@ -284,13 +279,7 @@ class RemainingTime extends JPanel {
 		g.setColor(new Color(150,150,150,100));
 		g.fillRect(0,0,current_time*getWidth()/MyGame.TOTAL_SECOND,getHeight());
 		g.setColor(new Color(0,0,0,255));
-		g.drawString("REMAINS     " + setTimeFormat(remaining_time), getWidth()/3, getHeight()/2+5);
-		
-		/*
-		g.setColor(Color.BLACK); 
-		g.setFont(MyFont.fontBold);
-		g.drawString("CURRENT [ " + setTimeFormat(current_time) + "] / REMAINS [ " + setTimeFormat(remaining_time) + " ]", 0, getHeight()/2+5);
-		*/
+		g.drawString("Remaining Time: " + setTimeFormat(remaining_time), getWidth()/3, getHeight()/2+5);
 	}
 	
 	public void refresh(int milliseconds) {
@@ -302,10 +291,8 @@ class RemainingTime extends JPanel {
 	public String setTimeFormat(int time) {
 		String time_min = "" + time/60;
 		String time_sec = "" + time%60;
-				
 		if(time_min.length() == 1) time_min = "0" + time_min;
 		if(time_sec.length() == 1) time_sec = "0" + time_sec;
-		
 		return time_min + ":" + time_sec;
 	}
 }

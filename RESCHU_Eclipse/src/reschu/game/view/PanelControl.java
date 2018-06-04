@@ -173,8 +173,8 @@ class VehicleGeneralPanel extends JPanel {
 	private Game game;
 	
 	public VehicleGeneralPanel(GUI_Listener l, Game g) {
-		double size_1[][] = {{TableLayout.FILL},{51,51,51}};
-		double size_2[][] = {{TableLayout.FILL},{51,51,51,51,51,51}};
+		double size_1[][] = {{TableLayout.FILL},{50,50,50,50,50}};
+		double size_2[][] = {{TableLayout.FILL},{50,50,50,50,50}};
 		if(g.getScenario()==0) setLayout(new TableLayout(size_1));
 		else setLayout(new TableLayout(size_2));
 		game = g; 
@@ -218,8 +218,8 @@ class VehicleCompactInfo extends JPanel implements ActionListener {
 		pnlVehicle.add(iconV); 
 		
 		// SECOND
-		lblHealth = new JLabel("Damage : "+intDamage); 	// COLOR = lblHealth.setForeground
-		lblTask = new JLabel("Current Task : "+v.getPayload());
+		lblHealth = new JLabel("Damage: "+intDamage); 	// COLOR = lblHealth.setForeground
+		lblTask = new JLabel("Current Task: "+v.getPayload());
 		pnlInfo = new JPanel();
 		pnlInfo.setLayout(new GridLayout(0,1));
 		pnlInfo.setBorder(bdrTitle);

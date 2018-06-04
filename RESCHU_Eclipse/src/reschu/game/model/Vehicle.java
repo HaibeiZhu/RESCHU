@@ -370,7 +370,7 @@ public class Vehicle {
 				if( getPayload()==Vehicle.PAYLOAD_COM && boundaryCheck(x, y, target_pos) ) {
 					x = target_pos[0]; y = target_pos[1];            		
 					setTarget(getMap().getListUnassignedTarget().get(i));
-					PanelMsgBoard.Msg("Vehicle ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
+					PanelMsgBoard.Msg("UAV ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
 					getMap().assignTarget(new int[]{x, y});
 					assigned = true;
 					break;
@@ -391,7 +391,7 @@ public class Vehicle {
 						break;
 					}
 					setTarget(getMap().getListUnassignedTarget().get(i));
-					PanelMsgBoard.Msg("Vehicle ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
+					PanelMsgBoard.Msg("UAV ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
 					getMap().assignTarget(new int[]{x, y});
 					assigned = true;
 					break;	
@@ -436,7 +436,7 @@ public class Vehicle {
 				if( getPayload()==Vehicle.PAYLOAD_COM && boundaryCheck(x, y, new_target_pos) ) {
 					x = new_target_pos[0]; y = new_target_pos[1];            		
 					setTarget(getMap().getListUnassignedTarget().get(i)); 
-					PanelMsgBoard.Msg("Vehicle ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
+					PanelMsgBoard.Msg("UAV ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
 					getMap().assignTarget(new int[]{x, y});
 					assigned = true;
 					break;
@@ -457,7 +457,7 @@ public class Vehicle {
 						break; 
 					}
 					setTarget(getMap().getListUnassignedTarget().get(i)); 
-					PanelMsgBoard.Msg("Vehicle ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
+					PanelMsgBoard.Msg("UAV ["+index+"] has been assigned to target "+this.getTarget().getName()+".");
 					getMap().assignTarget(new int[]{x, y});
 					assigned = true;
 					break;	
@@ -769,7 +769,7 @@ public class Vehicle {
 				if(isNotified) return;
 				// VEHICLE ARRIVED TO ITS GOAL WHERE THE PLACE IS THE ONE OF UNASSIGNED_TARGETS
 				setStatus(MyGame.STATUS_VEHICLE_PENDING);				
-				String msg = "Vehicle [" + index + "] has reached its target.";
+				String msg = "UAV [" + index + "] has reached its target.";
 				PanelMsgBoard.Msg(msg);
 				lsnr.EVT_Vehicle_ArrivesToTarget(index, getTarget().getName(), getTarget().getPos()[0], getTarget().getPos()[1]);
 			}

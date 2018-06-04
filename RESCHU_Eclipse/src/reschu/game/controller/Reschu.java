@@ -128,8 +128,8 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 	
 	private void initComponents() throws NumberFormatException, IOException {
-		double sizeMain[][] = {{TableLayout.FILL, 440, 5, 820+170 /* was 820 only*/, TableLayout.FILL}, 
-				{370, 110, TableLayout.FILL, 200}};
+		double sizeMain[][] = {{TableLayout.FILL, 440, 5, 990, TableLayout.FILL}, 
+				{370, TableLayout.FILL, 282, 188}};
 		double sizePayload[][] = {{TableLayout.FILL, 0.1}, {TableLayout.FILL}};
 		double sizeMap[][] = {{TableLayout.FILL}, {TableLayout.FILL}};
 
@@ -299,8 +299,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 
 	@Override
-	public void gameEnd() { 
-		// PanelMsgBoard.Msg("YOUR TOTAL SCORE: " + game.getScore());
+	public void gameEnd() {
 		EVT_System_GameEnd();
 		game.stop();
 		Thread.currentThread().interrupt();
@@ -503,7 +502,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String msg = "Vehicle ["+v.getIndex()+"] has engaged in a counting task.";
+		String msg = "UAV ["+v.getIndex()+"] has engaged in an imagery task.";
 		PanelMsgBoard.Msg(msg);
 	}
 	

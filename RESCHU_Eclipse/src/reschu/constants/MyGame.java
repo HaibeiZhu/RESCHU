@@ -22,7 +22,7 @@ public class MyGame {
     final static public int nTARGET_AREA_LAND = 2; // original 8
     final static public int nTARGET_AREA_LAND_TUTORIAL = 7;
     final static public int nTARGET_AREA_SHORE = 4;
-    final static public int nTARGET_AREA_COMM = 0;
+    final static public int nTARGET_AREA_COMM = 2;
     final static public int nTARGET_AREA_MORE = 3;
     final static public int nTARGET_AREA_TOTAL = nTARGET_AREA_LAND + nTARGET_AREA_SHORE + nTARGET_AREA_COMM;
     final static public int nTARGET_AREA_TOTAL_TUTORIAL = nTARGET_AREA_LAND_TUTORIAL + nTARGET_AREA_SHORE + nTARGET_AREA_COMM;
