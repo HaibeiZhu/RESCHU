@@ -23,9 +23,11 @@ import reschu.game.view.PanelMsgBoard;
 public class Game implements Runnable, ActionListener {
     static public int TIME_TOTAL_GAME = MyGame.TOTAL_SECOND * MySpeed.SPEED_CLOCK ;
     private double PROBABILITY_TARGET_VISIBILITY; // The higher, the more visible target
-
     private int nTargetAreaTotal = (Reschu.tutorial()) ? MyGame.nTARGET_AREA_TOTAL_TUTORIAL :
     	(Reschu.low_taskload()? MyGame.nTARGET_AREA_TOTAL : MyGame.nTARGET_AREA_TOTAL_HIGH);
+    
+    public boolean Guidance;
+    public boolean Training;
     
     // For original RESCHU
     /*
@@ -67,10 +69,11 @@ public class Game implements Runnable, ActionListener {
     private static int wrong_task = 0;
     private Random rnd = new Random();
     private int _scenario;
+    private int _group;
 
     public synchronized int getElapsedTime() {return elapsedTime;}
 
-    public Game(GUI_Listener l, int scenario) throws NumberFormatException, IOException {
+    public Game(GUI_Listener l, int group, int scenario) throws NumberFormatException, IOException {
         if( Reschu.train() || Reschu.tutorial()) Game.TIME_TOTAL_GAME *= 10;
 
         if( Reschu._database ) {
@@ -130,11 +133,13 @@ public class Game implements Runnable, ActionListener {
             map.setHazardArea(rnd);
         }
 
-        setVehicle(scenario); 
+        setVehicle(scenario);
         setPayload();
+        _group = group;
         _scenario = scenario;
     }
     
+    public int getGroup() {return _group;}
     public int getScenario() {return _scenario;}
     
     public void setListener(GUI_Listener l){ lsnr = l; }
@@ -153,14 +158,6 @@ public class Game implements Runnable, ActionListener {
         }
         else {
             switch( scenario ) {
-            /* @changed 2008-06-29 Carl
-             * 
-                case 1: return 10; 
-                case 2: return 20;
-                case 3: return 30;
-                case 4: return 40; 
-                default: return 0;
-             */
             case 1:
             case 2:
             case 3:
@@ -180,9 +177,29 @@ public class Game implements Runnable, ActionListener {
         default: PROBABILITY_TARGET_VISIBILITY = 1; break;
         }
     }
+    public void setGroup(int group) {
+    	switch(group) {
+    	case 1:
+    		Guidance = true;
+    		Training = false;
+    		break;
+    	case 2:
+    		Guidance = false;
+    		Training = true;
+    		break;
+    	case 3:
+    		Guidance = true;
+    		Training = true;
+    		break;
+    	default:
+    		Guidance = false;
+    		Training = false;
+    		break;
+    	}
+    }
     public void setVehicle(int scenario) {
         try {
-            switch( scenario ) {
+            switch(scenario) {
             case 0:
                 vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(2, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
@@ -456,7 +473,7 @@ public class Game implements Runnable, ActionListener {
                 }
                 else {
                     // add goal for ghost mission
-                    v.addGoal(500, 500);
+                    v.addGoal(1000, 1000);
                 }
             }
         }

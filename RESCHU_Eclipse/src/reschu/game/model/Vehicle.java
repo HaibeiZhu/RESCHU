@@ -1133,4 +1133,7 @@ public class Vehicle {
 			return distance;
 		}
 	}
+	
+	public void HMM_Guidance() {
+	}
 }

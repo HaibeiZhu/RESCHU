@@ -124,127 +124,8 @@ public class Reschu extends JFrame implements GUI_Listener {
 				}
 			});
 		}
-
-		// restartPayloadText();
-		// writeScenarioCount();
 		initComponents();
 	}
-	
-	// this function is not necessary
-	/*
-	public void writeScenarioCount() throws IOException{
-		if (!MyLogging.WRITE_TO_DISK){
-			return;
-		}
-		BufferedReader br = new BufferedReader(new FileReader("ScenarioCount.txt"));  
-
-		String line1 = "";
-		String line2 = "";
-		String line = "";
-		for(int i = 0; i <2; i++){
-			line = br.readLine();
-
-			if(i == 0){
-				line1 = line;
-			}
-			if(i == 1){
-				line2 = line;
-			}
-		}
-		br.close();
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("ScenarioCount.txt",false)));
-
-		if(_scenario == 4){
-			String[] aline1 = line1.split("#");
-			String[] aline2 = line2.split("#");
-			int cnt1 = Integer.parseInt(aline1[1].trim());
-			int cnt2 = Integer.parseInt(aline2[1].trim());
-			if((cnt1 > 2 || cnt2 > 2) || (cnt1 == 2 && cnt2 == 0) || (cnt1==2 && cnt2==2)
-					){
-				cnt1 = 0;
-				cnt2 = 0;
-			}
-			else{
-				cnt1++;
-			}
-			aline1[1] = Integer.toString(cnt1);
-			aline2[1] = Integer.toString(cnt2);
-			line1 = aline1[0].trim() + "# " + aline1[1] + "#";
-			line2 = aline2[0].trim() + "# " + aline2[1] + "#";
-			out.println(line1);
-			out.println(line2);
-			out.close();
-		}
-		if(_scenario == 6){
-			String[] aline1 = line1.split("#");
-			String[] aline2 = line2.split("#");
-			int cnt1 = Integer.parseInt(aline1[1].trim());
-			int cnt2 = Integer.parseInt(aline2[1].trim());
-			if((cnt1 > 2 || cnt2 > 2) || (cnt1==2 && cnt2==2)	){
-				cnt1 = 0;
-				cnt2 = 0;
-			}
-			else{
-				cnt2++;
-			}
-			aline1[1] = Integer.toString(cnt1);
-			aline2[1] = Integer.toString(cnt2);
-			line1 = aline1[0].trim() + "# " + aline1[1] + "#";
-			line2 = aline2[0].trim() + "# " + aline2[1] + "#";
-			out.println(line1);
-			out.println(line2);
-			out.close();
-		}
-		else{
-			out.println(line1);
-			out.println(line2);
-			out.close();
-		}
-	}
-	*/
-	
-	// this function is not necessary
-	/*
-	public void restartPayloadText() throws IOException {
-		BufferedReader br1 = new BufferedReader(new FileReader("ScenarioCount.txt"));
-		String line1 = "";
-		Boolean done1 = false;
-
-		while((line1 = br1.readLine()) != null){
-
-			String[] aline1 = line1.split("#");
-
-			if(aline1[0].trim().equals("Scenario4") && aline1[1].trim().equals("2")){
-				String nextline = br1.readLine();
-
-				String[] aline2 = nextline.split("#");
-				if(aline2[0].trim().equals("Scenario6") && aline2[1].trim().equals("0")
-						|| aline2[0].trim().equals("Scenario6") && aline2[1].trim().equals("2")){
-
-					done1 = true;
-				}
-				else{
-					break;
-				}
-			}
-			else{
-				break;
-			}
-		}
-		br1.close();
-		if(done1){
-
-			BufferedReader br = new BufferedReader(new FileReader("PayloadText.txt"));  
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("PayloadText.txt",false)));
-			while ((br.readLine()) != null) {
-				out.println("");
-			}
-			out.close();
-			br.close();
-		}
-
-	}
-	*/
 	
 	private void initComponents() throws NumberFormatException, IOException {
 		double sizeMain[][] = {{TableLayout.FILL, 440, 5, 820+170 /* was 820 only*/, TableLayout.FILL}, 
@@ -255,7 +136,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new TableLayout(sizeMain));
 
-		game = new Game(this, _scenario);
+		game = new Game(this, _group, _scenario);
 		origin_time = System.currentTimeMillis();
 
 		payload_canvas = new MyCanvas();

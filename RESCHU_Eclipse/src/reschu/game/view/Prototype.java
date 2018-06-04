@@ -270,7 +270,7 @@ public class Prototype extends MyCanvas implements GLEventListener {
       subTextures = tiler.makeGridFiles(arg0);
       System.out.println("Constructing new textures");
       t = new Transition(OVERLAP_LENGTH, VIEWPORT_LENGTH, TILE_LENGTH);
-      String startTileKey = tiler.coordinateConverter(new int[]{0,0, TILE_LENGTH, TILE_LENGTH});
+      String startTileKey = tiler.coordinateConverter(new int[]{0, 0, TILE_LENGTH, TILE_LENGTH});
       CurrentTexture = subTextures.get(startTileKey);
       CurrentTexture.enable(gl);
       System.out.println("Initialized and enabled current texture");
@@ -429,7 +429,6 @@ public class Prototype extends MyCanvas implements GLEventListener {
 		  for (int[] coords : allCoords) {
 			  key = coordinateConverter(coords);
 			  subImageFile = new File("lib/imgFiles/" + key + ".jpg");
-//			  System.out.println("File exists? " + subImageFile.exists());
 			  try {
 				  subImage = ImageIO.read(subImageFile);
 				  subTexture = AWTTextureIO.newTexture(gl.getGLProfile(), subImage, true);
@@ -437,7 +436,6 @@ public class Prototype extends MyCanvas implements GLEventListener {
 				  mySubTextures.put(key, subTexture);
 			  }
 			  catch (IOException e) {
-				  // System.out.println("GG I fucked up");
 				  e.printStackTrace();
 				  System.exit(1);
 			  }
