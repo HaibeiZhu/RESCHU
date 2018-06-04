@@ -233,16 +233,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			g.drawLine(i, 0, i, getHeight());
 		}
 		g.setStroke(MyStroke.STROKE_BASIC);
-
-		//FOR GRID MEASUREMENT. SHOULD BE REMOVED
-		/*
-        for( i=0; i<MySize.width; i++ )
-        	for( int j=0; j<MySize.height; j++ )
-        		if( map.getCellType(i,j) == MyGame.SEASHORE ) {
-        			g.setColor(new Color(250,50,50,250));
-        			g.fillRect(i*cellsize, j*cellsize,cellsize,cellsize);
-        		}        		
-		 */
 	}
 
 	private void paintHazardArea(Graphics2D g) {    	
@@ -261,7 +251,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			int[] pos = map.getListAssignedTarget().get(i).getPos();
 			if( map.getListAssignedTarget().get(i).isDone() ) {
 				p.paintPolygon(g, pos[0], pos[1], cellsize, targetsize, new Color(0, 0, 0, 250), MyColor.COLOR_TARGET_DONE);
-				p.paintString(g,pos[0]-4, pos[1]+4, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
+				p.paintString(g,pos[0]-5, pos[1]+5, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
 			}
 			else {
 				if( !map.getListAssignedTarget().get(i).isVisible() ) 
@@ -269,7 +259,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				else 
 					clrTarget = MyColor.COLOR_TARGET_OCCUPIED;
 				p.paintPolygon(g, pos[0], pos[1], cellsize, targetsize, new Color(0, 0, 0, 250), clrTarget);
-				p.paintString(g,pos[0]-4, pos[1]+4, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
+				p.paintString(g,pos[0]-5, pos[1]+5, cellsize, Color.white, MyFont.fontBold, map.getListAssignedTarget().get(i).getName());
 			}
 		}
 
@@ -280,7 +270,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			else 
 				clrTarget = MyColor.COLOR_TARGET_VACANT; 
 			p.paintPolygon(g, pos[0], pos[1], cellsize, targetsize, new Color(0, 0, 0, 250), clrTarget);
-			p.paintString(g, pos[0]-4, pos[1]+4, cellsize, Color.white, MyFont.fontBold, map.getListUnassignedTarget().get(i).getName());
+			p.paintString(g, pos[0]-5, pos[1]+5, cellsize, Color.white, MyFont.fontBold, map.getListUnassignedTarget().get(i).getName());
 		}
 	}
 
@@ -321,10 +311,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						new Color(0,0,0,250), clrVehicle, Vehicle.TYPE_UAV );
 				// the UAV number
 				if(v.getName().contains("GHOST"))
-					p.paintString(g, v.getX()-3, v.getY()+4, cellsize, new Color(255,255,255,255),
-							MyFont.fontBold, "\'"+Integer.toString(v.getIndex())+"\'");
+					p.paintString(g, v.getX()-4, v.getY()+6, cellsize, new Color(255,255,255,255),
+							MyFont.fontBold, Integer.toString(v.getIndex()));
 				else
-					p.paintString(g, v.getX()-1, v.getY()+4, cellsize, new Color(255,255,255,255),
+					p.paintString(g, v.getX()-4, v.getY()+6, cellsize, new Color(255,255,255,255),
 							MyFont.fontBold, Integer.toString(v.getIndex()));
 				
 				if(v.getPayload() == Vehicle.PAYLOAD_COM) {
@@ -336,7 +326,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				p.paintArc(g, v.getX(), v.getY(), cellsize, halfcell, rulersize,
 						vWidth, vHeight, 
 						new Color(0,0,0,250), clrVehicle, Vehicle.TYPE_UUV);        		
-				p.paintString(g, v.getX()-1, v.getY()+3, cellsize, new Color(255,255,255,255), 
+				p.paintString(g, v.getX()-4, v.getY()+6, cellsize, new Color(255,255,255,255), 
 						MyFont.fontBold, Integer.toString(v.getIndex()));
 			}
 
@@ -991,10 +981,10 @@ class PaintComponent {
 		px = new int[] {x*SIZE_CELL-(int)(object_size/1.414), x*SIZE_CELL, x*SIZE_CELL+(int)(object_size/1.414), x*SIZE_CELL};
 		py = new int[] {y*SIZE_CELL, y*SIZE_CELL-(int)(object_size/1.414), y*SIZE_CELL, y*SIZE_CELL+(int)(object_size/1.414)};
 
-		g.setColor(draw_color);    
-		g.drawPolygon(px, py, 4); 
+		g.setColor(draw_color);
+		// g.drawPolygon(px, py, 4);
 		g.setColor(fill_color);
-		g.fillPolygon(px, py, 4); 
+		g.fillPolygon(px, py, 4);
 	}
 
 	// this function draw the highlight circle and strokes surrounding an UAV
@@ -1041,27 +1031,29 @@ class PaintComponent {
 			int object_width_size, int object_height_size, Color draw_color, Color fill_color, String type) {
 		if( type == Vehicle.TYPE_UAV ) {
 			g.setColor(draw_color);
+			/*
 			g.drawArc(
-					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL + half_SIZE_CELL, 
-					y * SIZE_CELL - ruler_size - half_SIZE_CELL,
+					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL + half_SIZE_CELL - 1,
+					y * SIZE_CELL - ruler_size - half_SIZE_CELL - 2,
 					object_width_size, object_height_size, 0, 180);
-
+			*/
 			g.setColor(fill_color);
 			g.fillArc(
-					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL + half_SIZE_CELL,  
-					y * SIZE_CELL - ruler_size - half_SIZE_CELL,
+					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL + half_SIZE_CELL,
+					y * SIZE_CELL - ruler_size - half_SIZE_CELL - 2,
 					object_width_size, object_height_size, 0, 180);
 		} else if( type == Vehicle.TYPE_UUV) {
 			g.setColor(draw_color);
+			/*
 			g.drawArc(
-					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL, 
-					y * SIZE_CELL - Math.round(object_height_size/2) - ruler_size, 
+					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL - 1,
+					y * SIZE_CELL - Math.round(object_height_size/2) - ruler_size - 2,
 					object_width_size, object_height_size, 180, 180);
-
+			*/
 			g.setColor(fill_color);
 			g.fillArc(
-					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL, 
-					y * SIZE_CELL - Math.round(object_height_size/2) - ruler_size, 
+					(x - Math.round(object_width_size/SIZE_CELL/2)) * SIZE_CELL,
+					y * SIZE_CELL - Math.round(object_height_size/2) - ruler_size - 2,
 					object_width_size, object_height_size, 180, 180);
 		}
 	}

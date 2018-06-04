@@ -248,7 +248,7 @@ public class Map {
 	
 	// set target area based on pre-defined database
 	public void setTargetArea_DataBase(Random rnd) throws UserDefinedException {
-		int nTotalTarget = g.getTotalTargetNumber();	
+		int nTotalTarget = g.getTotalTargetNumber();
 		int nTotalTargetNeed = nTotalTarget - getTargetSize("LAND");
 		int count = 0;
 
