@@ -484,9 +484,12 @@ class VehicleIcon2 extends JPanel
 	
 	public void chkEngageEnabled() {		
 		if(v.getStatus() == MyGame.STATUS_VEHICLE_PENDING) {  
+			/*
 			colorFlag = !colorFlag;
 			if( colorFlag ) vColor = MyColor.COLOR_VEHICLE; 
 			else vColor = MyColor.COLOR_VEHICLE_PENDING;
+			*/
+			vColor = MyColor.COLOR_VEHICLE_PENDING;
 		}
 		else { vColor = MyColor.COLOR_VEHICLE; }
 		repaint();

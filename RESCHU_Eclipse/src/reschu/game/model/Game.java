@@ -189,15 +189,15 @@ public class Game implements Runnable, ActionListener {
     		break;
     	case 1:
 	    	switch(group) {
-	    	case 1:
+	    	case 0:
 	    		Guidance = true;
 	    		Training = false;
 	    		break;
-	    	case 2:
+	    	case 1:
 	    		Guidance = false;
 	    		Training = true;
 	    		break;
-	    	case 3:
+	    	case 2:
 	    		Guidance = true;
 	    		Training = true;
 	    		break;
@@ -496,8 +496,8 @@ public class Game implements Runnable, ActionListener {
     public void actionPerformed(ActionEvent e) {
         elapsedTime += MySpeed.SPEED_TIMER;
         if( elapsedTime >= Game.TIME_TOTAL_GAME ) {
-            stop(); // stops a timer
-
+            // stop the whole experiment
+        	stop();
             if( Reschu._database ) {
                 getDBWriter().ScoreTable_SetScore(Reschu._username, getScore());
                 getDBWriter().UserTable_SetGameFinish(Reschu._username);
@@ -549,7 +549,7 @@ public class Game implements Runnable, ActionListener {
 
         // Auto Target Assign
         // Problem - Should avoid when a vehicle's status is set to PENDING
-        //if( elapsedTime % MySpeed.SPEED_CLOCK_AUTO_TARGET_ASSIGN_UPDATE == 0) { AutoTargetAssignAll(); }
+        // if( elapsedTime % MySpeed.SPEED_CLOCK_AUTO_TARGET_ASSIGN_UPDATE == 0) { AutoTargetAssignAll(); }
 
         // Check Vehicle - Hazard Area
         if( elapsedTime % MySpeed.SPEED_CLOCK_DAMAGE_CHECK == 0 ) for(int i=0; i<vehicleList.size(); i++) vehicleList.getVehicle(i).chkHazardArea();
