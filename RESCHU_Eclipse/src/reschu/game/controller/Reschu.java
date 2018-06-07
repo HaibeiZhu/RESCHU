@@ -78,7 +78,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	/** Interactive Tutorial Mode? */
 	public static boolean tutorial() { return _gamemode == MyGameMode.TUTORIAL_MODE; }
 	// return true if scenario is low taskload
-	public static boolean low_taskload() {return _scenario == MyGameMode.LOW_TASKLOAD;}
+	public static boolean if_scenario_1() {return _scenario == MyGameMode.SCENARIO_1;}
 	// return true if is in practice mode
 	public static boolean practice_mode() {return _practice == MyGameMode.PRACTICE_MODE;}
 	/** Training Mode? */
