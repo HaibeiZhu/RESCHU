@@ -1,20 +1,16 @@
 package reschu.game.view;
 
-import java.awt.*;
-import java.awt.event.*; 
-
-import javax.swing.*;
-import javax.swing.event.*;
-
 import reschu.constants.*;
 import reschu.game.controller.GUI_Listener;
 import reschu.game.controller.Reschu;
-import reschu.game.model.Game;
-import reschu.game.model.Map;
-import reschu.game.model.StructSelectedPoint;
-import reschu.game.model.Vehicle;
-import reschu.game.model.VehicleList;
-import reschu.game.utils.Utils; 
+import reschu.game.model.*;
+import reschu.game.utils.Utils;
+
+import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.*;
+import java.awt.event.*;
 
 public class PanelMap extends JPanel implements ActionListener, MouseListener, MouseMotionListener, PopupMenuListener  
 {		 
@@ -126,6 +122,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		paintMap(g2d);
 		paintHazardArea(g2d);
+		paintSuggestionArea(g2d);
 		paintTarget(g2d);
 		If_UAV_Disappeared(); // check if UAV is disappeared from map
 		paintVehicles(g2d);
@@ -235,13 +232,22 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		g.setStroke(MyStroke.STROKE_BASIC);
 	}
 
-	private void paintHazardArea(Graphics2D g) {    	
+	private void paintHazardArea(Graphics2D g) {
 		for( int i = 0; i < map.getListHazard().size(); i++ ) {
 			int[] pos = map.getListHazard().get(i);
 			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(255, 255, 128, 80));
 			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(255, 255, 128, 100));
 			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(255, 255, 128, 150));
 		}
+	}
+	private void paintSuggestionArea(Graphics2D g) {
+			int[] pos = map.getSuggestedArea();
+			if(!(pos[0] == 0 && pos[1] == 0)) {
+			    //still uses Hazard area sizes -- @TODO create new constant in MySize later
+                p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
+                p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
+                p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
+            }
 	}
 
 	private void paintTarget(Graphics2D g) {

@@ -1,24 +1,25 @@
 package reschu.game.view;
 
 import info.clearthought.layout.TableLayout;
-
-import java.awt.*; 
-import java.io.File;
-import java.io.IOException;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-import javax.swing.*; 
-import javax.swing.border.TitledBorder;
-import javax.swing.event.*;
-
 import reschu.constants.*;
 import reschu.game.controller.GUI_Listener;
 import reschu.game.model.Game;
 import reschu.game.model.Payload;
 import reschu.game.model.UserDefinedException;
 import reschu.game.model.Vehicle;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PanelControl extends JPanel implements ChangeListener, ActionListener { 
 	private static final long serialVersionUID = 6768850931538883107L;

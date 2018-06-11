@@ -1,10 +1,14 @@
 package reschu.game.model;
 
-import java.util.*;
-
-import reschu.constants.*;
+import reschu.constants.MyGame;
+import reschu.constants.MySize;
+import reschu.constants.MyTargetBase;
 import reschu.game.controller.GUI_Listener;
 import reschu.game.controller.Reschu;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class Map {
 	private Game g;
@@ -13,6 +17,7 @@ public class Map {
 	private LinkedList<Target> listAssignedTarget = new LinkedList<Target>();
 	private LinkedList<Target> listUnassignedTarget = new LinkedList<Target>();
 	private LinkedList<int[]> listHazard = new LinkedList<int[]>();
+	private int[] suggestedArea = new int[2];
 
 	Map() {}
 
@@ -33,6 +38,9 @@ public class Map {
 	public List<int[]> getListHazard() {
 		return listHazard;
 	}
+	public int[] getSuggestedArea(){
+		return suggestedArea;
+	}
 
 	public int getTargetSize(String target_type) {
 		int cnt = 0;
@@ -45,6 +53,10 @@ public class Map {
 		return cnt;
 	}
 
+	public void setSuggestedArea(int a, int b){
+        suggestedArea[0] = a;
+        suggestedArea[1] = b;
+	}
 	public synchronized void setCellType(int x, int y, int type) {
 		mapArray[x][y] = type;
 	}

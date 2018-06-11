@@ -1,24 +1,18 @@
 package reschu.game.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import reschu.constants.MyGame;
+import reschu.game.controller.GUI_Listener;
+import reschu.game.view.PanelMap;
+import reschu.game.view.PanelMsgBoard;
+
+import javax.swing.*;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.io.FileNotFoundException;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
-import reschu.constants.MyGame;
-import reschu.game.controller.GUI_Listener;
-import reschu.game.view.PanelMsgBoard;
 // import reschu.game.controller.Reschu;
-import reschu.game.view.PanelMap;
-import reschu.game.model.VehicleList;
 
 public class AttackNotificationEngine {
 	public static final String ATTACK_NOTIFICATIONS_FILENAME = MyGame.AttackFile;
@@ -31,9 +25,13 @@ public class AttackNotificationEngine {
 	private JDialog optionDialog;
 	private int prevIdx = -1;
 
+	public Game game;
+
+
 	public AttackNotificationEngine(GUI_Listener l, Game g) throws FileNotFoundException {
 		lsnr = l;
-		String line;  
+		game = g;
+		String line;
 		Timer nextTimer;
 		int delay;
 		int vIdx;
@@ -159,6 +157,8 @@ public class AttackNotificationEngine {
 			*/
 			PanelMap.investigatedVehicle = VehicleList.getVehicle(VehicleID);
 			VehicleList.getVehicle(VehicleID).setInvestigateStatus(true);
+			//change param later
+			game.map.setSuggestedArea(100, 40);
 		}
 		
 		if(selectedValue == null) {

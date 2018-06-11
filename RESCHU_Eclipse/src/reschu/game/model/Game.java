@@ -1,17 +1,9 @@
 package reschu.game.model;
 
-import java.awt.Color;  
-import java.util.*; 
-import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import javax.swing.JLabel;
-import javax.swing.Timer; 
-
-import reschu.constants.*;
+import reschu.constants.MyColor;
+import reschu.constants.MyGame;
+import reschu.constants.MySize;
+import reschu.constants.MySpeed;
 import reschu.database.DBWriter;
 import reschu.game.controller.GUI_Listener;
 import reschu.game.controller.Reschu;
@@ -19,6 +11,16 @@ import reschu.game.utils.FileReaderURL;
 import reschu.game.view.FrameEnd;
 import reschu.game.view.FrameStart;
 import reschu.game.view.PanelMsgBoard;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Random;
 
 public class Game implements Runnable, ActionListener {
     static public int TIME_TOTAL_GAME = MyGame.TOTAL_SECOND * MySpeed.SPEED_CLOCK ;
@@ -492,6 +494,7 @@ public class Game implements Runnable, ActionListener {
             }
         }
     }
+    int prevTime = 0;
 
     public void actionPerformed(ActionEvent e) {
         elapsedTime += MySpeed.SPEED_TIMER;
@@ -526,7 +529,10 @@ public class Game implements Runnable, ActionListener {
         // Update pnlControl's "ENGAGE" button
         if( elapsedTime % MySpeed.SPEED_CLOCK == 0 ) lsnr.clockTick(elapsedTime);
 
-        vehicleColorFlashFlag = !vehicleColorFlashFlag;
+        if(elapsedTime > prevTime + 500) {
+            vehicleColorFlashFlag = !vehicleColorFlashFlag;
+            prevTime = elapsedTime;
+        }
         // Pending Vehicle's Flashing Color
         if( vehicleColorFlashFlag ) MyColor.COLOR_VEHICLE_PENDING = new Color(128,224,255,255);
         else MyColor.COLOR_VEHICLE_PENDING = new Color(228,124,155,255);
