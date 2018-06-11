@@ -28,9 +28,9 @@ public class MyGame {
     final static public int nTARGET_AREA_TOTAL_TUTORIAL = nTARGET_AREA_LAND_TUTORIAL + nTARGET_AREA_SHORE + nTARGET_AREA_COMM;
     final static public int nTARGET_AREA_TOTAL_HIGH = nTARGET_AREA_LAND + nTARGET_AREA_SHORE + nTARGET_AREA_MORE;
     
-    final static public double MIN_HACK_DISTANCE = (Reschu.low_taskload())? 50.0 : 25.0;
-    final static public String AttackFile = (Reschu.low_taskload())? ((Reschu.practice_mode())? "AttackFile_Practice_Low.txt" : "AttackFile_Test_Low.txt") :
-    																 ((Reschu.practice_mode())? "AttackFile_Practice_High.txt" : "AttackFile_Test_High.txt");
+    final static public double MIN_HACK_DISTANCE = (Reschu.if_scenario_1())? 50.0 : 25.0;
+    final static public String AttackFile = (Reschu.if_scenario_1())? ((Reschu.practice_mode())? "AttackFile_Practice_1.txt" : "AttackFile_Test_1.txt") :
+    																 ((Reschu.practice_mode())? "AttackFile_Practice_2.txt" : "AttackFile_Test_2.txt");
     final static public boolean TargetDataBase = true;
     final static public int TOTAL_SECOND = 900; // total time (in second) for one experiment
 }

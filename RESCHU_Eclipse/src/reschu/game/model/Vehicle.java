@@ -999,7 +999,7 @@ public class Vehicle {
 		setObservedY64(getY64());
 		String[] coordStrings = hackData.split(" ");
 		if (hackData == null) throw new IllegalArgumentException("Null hackData");
-		if (coordStrings.length != 2) throw new IllegalArgumentException("Wrong number of coordinates in hackdata, must be 2");
+		if (coordStrings.length != 2) throw new IllegalArgumentException("Wrong number of coordinates in hackdata, must be 2 values");
 		int xCoord, yCoord;
 		try {
 			xCoord = Integer.parseInt(coordStrings[0]);
@@ -1034,18 +1034,7 @@ public class Vehicle {
 		
 		CreateSmarterGoundPath();
 		
-		// groundTruthPath.clear();
-		// groundTruthPath.add(hackCoords);
-		
-		// System.out.println("Hack complete, getX currently returns " + getX());		
-		// groundTruthPath.addFirst(hackCoords);
-		// groundTruthPath.set(1, hackCoords);
-		//    	else observedPath.set(0, hackCoords); // Just overwrite next item on path;
-		//    	groundTruthPath = observedPath; // swap path and hackpath
-		//    	observedPath = temp;
-		//    	System.out.println("Finished replacing original path with hacked path");
-		//    	System.out.println("Next element on hacked path : ");
-		//    	System.out.println(groundTruthPath.getFirst()[0] + ", " + groundTruthPath.getFirst()[1]);
+		// decision support system should be implemented here
 	}
 
 	public void endHijack() {
