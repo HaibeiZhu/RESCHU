@@ -241,13 +241,13 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		}
 	}
 	private void paintSuggestionArea(Graphics2D g) {
-			int[] pos = map.getSuggestedArea();
-			if(!(pos[0] == 0 && pos[1] == 0)) {
-			    //still uses Hazard area sizes -- @TODO create new constant in MySize later
-                p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
-                p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
-                p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
-            }
+		int[] pos = map.getSuggestedArea();
+		if(!(pos[0] == 0 && pos[1] == 0)) {
+		    //still uses Hazard area sizes -- @TODO create new constant in MySize later
+            p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
+            p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
+            p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
+        }
 	}
 
 	private void paintTarget(Graphics2D g) {
