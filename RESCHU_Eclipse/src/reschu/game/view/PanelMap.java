@@ -122,8 +122,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		paintMap(g2d);
 		paintHazardArea(g2d);
+
 		paintSuggestionArea(g2d);
 		paintArrow(g2d);
+		paintLine(g2d);
+
 		paintTarget(g2d);
 		If_UAV_Disappeared(); // check if UAV is disappeared from map
 		paintVehicles(g2d);
@@ -263,6 +266,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250)); //points left
         */
 
+    }
+
+    private void paintLine(Graphics2D g){
+        int[] pos = map.getSuggestedArea();
+        if(!(pos[0] == 0 && pos[1] == 0)) {
+            Vehicle a = game.getVehicleList().getVehicle(1);
+            p.paintLine(g, a.getX(), a.getY(), pos[0], pos[1], new Color(255, 0, 0));
+        }
     }
 
 	private void paintTarget(Graphics2D g) {
@@ -1027,6 +1038,11 @@ class PaintComponent {
                 break;
         }
 
+    }
+
+    public void paintLine(Graphics2D g, int x1, int y1, int x2, int y2, Color line_color){
+	    g.setColor(line_color);
+	    g.drawLine(x1, y1, x2, y2);
     }
 
 	public void paintPolygon(Graphics2D g, int x, int y, int SIZE_CELL, int object_size, Color draw_color, Color fill_color) {
