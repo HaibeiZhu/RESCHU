@@ -122,22 +122,17 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		paintMap(g2d);
 		paintHazardArea(g2d);
-
-		paintSuggestionArea(g2d);
-		paintArrow(g2d);
-		paintLine(g2d);
-
 		paintTarget(g2d);
 		If_UAV_Disappeared(); // check if UAV is disappeared from map
 		paintVehicles(g2d);
 		paintDrag(g2d);
 		paintText(g2d);
 		
-		// paintZoomBar(g2d);
 		if( mapSettingMode ) paintBorder(g2d, Color.blue);
 		if( eventDisabled ) paintBorder(g2d, Color.red);
-		// g.drawImage(backbuffer, 0, 0, this);
 		
+		// paintZoomBar(g2d);
+		// g.drawImage(backbuffer, 0, 0, this);
 		// after make mutual reference between Reschu and PanelMap
 		// can call textOverlay.update() every cycle in Reschu
 		// reschu.textOverlay.update();
@@ -254,7 +249,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         }
 	}
 
-	private void paintArrow(Graphics2D g){
+	private void paintSuggestionArrow(Graphics2D g){
 	    int[] pos = map.getSuggestedDest();
 	    if(!(pos[0] == 0 && pos[1] == 0)){
             p.paintArrow(g, pos[0],pos[1], 2, 2, new Color(100, 255, 255, 150));
@@ -268,7 +263,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 
     }
 
-    private void paintLine(Graphics2D g){
+    private void paintSuggestionLine(Graphics2D g){
         int[] pos = map.getSuggestedArea();
         if(!(pos[0] == 0 && pos[1] == 0)) {
             Vehicle a = game.getVehicleList().getVehicle(1);
@@ -334,6 +329,13 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				if(selectedVehicle != investigatedVehicle) {
 					investigatedVehicle = null;
 				}
+			}
+			
+			// for decision support system
+			if(v.isNotified && v == selectedVehicle && game.getGuidance()) {
+				paintSuggestionArea(g);
+				paintSuggestionArrow(g);
+				paintSuggestionLine(g);
 			}
 
 			if(v.getType() == Vehicle.TYPE_UAV) {

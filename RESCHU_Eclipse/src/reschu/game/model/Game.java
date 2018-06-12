@@ -29,8 +29,8 @@ public class Game implements Runnable, ActionListener {
     	// (Reschu.low_taskload()? MyGame.nTARGET_AREA_TOTAL : MyGame.nTARGET_AREA_TOTAL_HIGH);
     	MyGame.nTARGET_AREA_TOTAL;
     
-    public boolean Guidance;
-    public boolean Training;
+    private boolean Guidance;
+    private boolean Training;
     
     // For original RESCHU
     /*
@@ -138,6 +138,7 @@ public class Game implements Runnable, ActionListener {
 
         setVehicle(scenario);
         setPayload();
+        setGroupScenario(group, scenario);
         _group = group;
         _scenario = scenario;
     }
@@ -145,6 +146,8 @@ public class Game implements Runnable, ActionListener {
     public int getGroup() {return _group;}
     public int getScenario() {return _scenario;}
     public int getTotalTargetNumber() {return nTargetAreaTotal;}
+    public boolean getGuidance() {return Guidance;}
+    public boolean getTraining() {return Training;}
     
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
@@ -183,7 +186,7 @@ public class Game implements Runnable, ActionListener {
         }
     }
     
-    public void setGroupScenario(int group, int scenario) {
+    private void setGroupScenario(int group, int scenario) {
     	switch(scenario) {
     	case 0:
     		Guidance = false;
