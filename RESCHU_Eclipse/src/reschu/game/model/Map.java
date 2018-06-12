@@ -18,6 +18,7 @@ public class Map {
 	private LinkedList<Target> listUnassignedTarget = new LinkedList<Target>();
 	private LinkedList<int[]> listHazard = new LinkedList<int[]>();
 	private int[] suggestedArea = new int[2];
+	private int[] suggestedDest = new int[2];
 
 	Map() {}
 
@@ -41,6 +42,9 @@ public class Map {
 	public int[] getSuggestedArea(){
 		return suggestedArea;
 	}
+	public int[] getSuggestedDest() {
+		return suggestedDest;
+	}
 
 	public int getTargetSize(String target_type) {
 		int cnt = 0;
@@ -51,6 +55,11 @@ public class Map {
 			if (listUnassignedTarget.get(i).getMission() == target_type)
 				cnt++;
 		return cnt;
+	}
+
+	public void setSuggestedDest(int a, int b) {
+	    suggestedDest[0] = a;
+		suggestedDest[1] = b;
 	}
 
 	public void setSuggestedArea(int a, int b){

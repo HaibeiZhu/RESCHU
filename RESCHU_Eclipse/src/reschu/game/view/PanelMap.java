@@ -122,7 +122,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		paintMap(g2d);
 		paintHazardArea(g2d);
+
 		paintSuggestionArea(g2d);
+		paintArrow(g2d);
+		paintLine(g2d);
+
 		paintTarget(g2d);
 		If_UAV_Disappeared(); // check if UAV is disappeared from map
 		paintVehicles(g2d);
@@ -249,6 +253,28 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
         }
 	}
+
+	private void paintArrow(Graphics2D g){
+	    int[] pos = map.getSuggestedDest();
+	    if(!(pos[0] == 0 && pos[1] == 0)){
+            p.paintArrow(g, pos[0],pos[1], 2, 2, new Color(100, 255, 255, 150));
+        }
+        /*
+	    p.paintArrow(g, 500, 500, 0, 1,new Color(100, 255, 255, 100));// points up
+        p.paintArrow(g, 500, 500, 1, 1,new Color(100, 255, 255, 150));// points right
+        p.paintArrow(g, 500, 500, 2, 1,new Color(100, 255, 255, 200));// points dwon
+        p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250)); //points left
+        */
+
+    }
+
+    private void paintLine(Graphics2D g){
+        int[] pos = map.getSuggestedArea();
+        if(!(pos[0] == 0 && pos[1] == 0)) {
+            Vehicle a = game.getVehicleList().getVehicle(1);
+            p.paintLine(g, a.getX(), a.getY(), pos[0], pos[1], new Color(255, 0, 0));
+        }
+    }
 
 	private void paintTarget(Graphics2D g) {
 		Color clrTarget;
@@ -981,6 +1007,43 @@ class PaintComponent {
 				(y-Math.round(object_size/SIZE_CELL/2))*SIZE_CELL
 				, object_size, object_size);    	
 	}
+
+	public void paintArrow(Graphics2D g, int x, int y, int direction, int object_size, Color fill_color){
+	    g.setColor(fill_color);
+	    int[] p1, p2, p3, p4;
+	    int dist = 20;
+	    p1 = new int[] {x, x + dist, x + (dist/2), x + (dist/2), x - (dist/2), x - (dist/2), x - dist};
+        p2 = new int[] {y, y - dist, y - dist, y - 2*dist,  y - 2*dist, y - dist, y - dist};
+        p3 = new int[] {y, y + dist, y + dist, y + 2*dist,  y + 2*dist, y + dist, y + dist};
+
+        /*Direction is as follows:
+           |  2
+           V
+    1   ->   <-   3
+           ^
+           |  0
+        */
+        switch(direction){
+            case 0:
+                g.fillPolygon(p1, p3, 7);
+                break;
+            case 1:
+                g.fillPolygon(p2, p1, 7);
+                break;
+            case 2:
+                g.fillPolygon(p1, p2, 7);
+                break;
+            case 3:
+                g.fillPolygon(p3, p1, 7);
+                break;
+        }
+
+    }
+
+    public void paintLine(Graphics2D g, int x1, int y1, int x2, int y2, Color line_color){
+	    g.setColor(line_color);
+	    g.drawLine(x1, y1, x2, y2);
+    }
 
 	public void paintPolygon(Graphics2D g, int x, int y, int SIZE_CELL, int object_size, Color draw_color, Color fill_color) {
 		int[] px, py;
