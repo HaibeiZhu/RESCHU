@@ -1,18 +1,16 @@
 package reschu.game.view;
 
-import java.awt.*; 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.*; 
-import javax.swing.border.TitledBorder;
-
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
-
 import reschu.game.controller.Reschu;
 import reschu.game.model.Vehicle;
 import reschu.game.model.VehicleList;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class PanelMsgBoard extends JPanel implements ActionListener
 {	
@@ -111,7 +109,7 @@ public class PanelMsgBoard extends JPanel implements ActionListener
     		}
     		txtChat.setText("");
     	}
-    	if (e.getSource() == btnSend) {
+    	if (e.getSource() == btnSend || e.getSource() == txtChat) {
     		reschu.Payload_Finished_From_Msg();
     	}
     }
