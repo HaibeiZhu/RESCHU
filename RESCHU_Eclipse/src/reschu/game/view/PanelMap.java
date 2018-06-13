@@ -239,7 +239,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(255, 255, 128, 150));
 		}
 	}
-	private void paintSuggestionArea(Graphics2D g) {
+	private void paintSuggestionArea(Graphics2D g, Vehicle v) {
 		int[] pos = map.getSuggestedArea();
 		if(!(pos[0] == 0 && pos[1] == 0)) {
 		    //still uses Hazard area sizes -- @TODO create new constant in MySize later
@@ -249,7 +249,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         }
 	}
 
-	private void paintSuggestionArrow(Graphics2D g){
+	private void paintSuggestionArrow(Graphics2D g, Vehicle v){
 	    int[] pos = map.getSuggestedDest();
 	    if(!(pos[0] == 0 && pos[1] == 0)){
             p.paintArrow(g, pos[0],pos[1], 2, 2, new Color(100, 255, 255, 150));
@@ -257,17 +257,15 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         /*
 	    p.paintArrow(g, 500, 500, 0, 1,new Color(100, 255, 255, 100));// points up
         p.paintArrow(g, 500, 500, 1, 1,new Color(100, 255, 255, 150));// points right
-        p.paintArrow(g, 500, 500, 2, 1,new Color(100, 255, 255, 200));// points dwon
+        p.paintArrow(g, 500, 500, 2, 1,new Color(100, 255, 255, 200));// points down
         p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250)); //points left
         */
-
     }
 
-    private void paintSuggestionLine(Graphics2D g){
+    private void paintSuggestionLine(Graphics2D g, Vehicle v){
         int[] pos = map.getSuggestedArea();
         if(!(pos[0] == 0 && pos[1] == 0)) {
-            Vehicle a = game.getVehicleList().getVehicle(1);
-            p.paintLine(g, a.getX(), a.getY(), pos[0], pos[1], new Color(255, 0, 0));
+            p.paintLine(g, v.getX(), v.getY(), pos[0], pos[1], new Color(100, 255, 255, 150));
         }
     }
 
@@ -333,9 +331,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			
 			// for decision support system
 			if(v.isNotified && v == selectedVehicle && game.getGuidance()) {
-				paintSuggestionArea(g);
-				paintSuggestionArrow(g);
-				paintSuggestionLine(g);
+				paintSuggestionArea(g, v);
+				paintSuggestionArrow(g, v);
+				paintSuggestionLine(g, v);
 			}
 
 			if(v.getType() == Vehicle.TYPE_UAV) {
