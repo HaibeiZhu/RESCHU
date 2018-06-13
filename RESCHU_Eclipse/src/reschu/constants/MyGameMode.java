@@ -7,8 +7,8 @@ public class MyGameMode {
 	final static public int TRAIN_MODE = 3;
 	final static public int REPLAY_MODE = 4;
 	
-	final static public int SCENARIO_1 = 0;
-	final static public int SCENARIO_2 = 1;
+	final static public int SECTION_1 = 0;
+	final static public int SECTION_2 = 1;
 	final static public int PRACTICE_MODE = 0;
 	final static public int EXPERIMENT_MODE = 1;
 }

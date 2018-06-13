@@ -7,7 +7,7 @@ public class Tutorial {
 	private TutorialModel scenario;
 	
 	public Tutorial(AppMain main){		
-		switch( Reschu._scenario ) {
+		switch( Reschu._section ) {
 			case 1: scenario = new Scenario1(main); break;
 			case 2: scenario = new Scenario2(main); break;
 			case 3: scenario = new Scenario3(main); break;
@@ -22,6 +22,4 @@ public class Tutorial {
 	public void event(int type, int vIdx, String target) {
 		scenario.checkEvent(type, vIdx, target);
 	}
-} 
-
-
+}

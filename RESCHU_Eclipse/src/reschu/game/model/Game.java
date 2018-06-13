@@ -71,12 +71,12 @@ public class Game implements Runnable, ActionListener {
     private static int wrong_detect = 0;
     private static int wrong_task = 0;
     private Random rnd = new Random();
-    private int _scenario;
+    private int _section;
     private int _group;
 
     public synchronized int getElapsedTime() {return elapsedTime;}
 
-    public Game(GUI_Listener l, int group, int scenario) throws NumberFormatException, IOException {
+    public Game(GUI_Listener l, int group, int section) throws NumberFormatException, IOException {
         if( Reschu.train() || Reschu.tutorial()) Game.TIME_TOTAL_GAME *= 10;
 
         if( Reschu._database ) {
@@ -95,8 +95,8 @@ public class Game implements Runnable, ActionListener {
         frmStart.setAlwaysOnTop(true);
         frmStart.setVisible(true);
 
-        rnd.setSeed( getSeedNum(scenario) ); 
-        setProbability_Target_Visibility(scenario);
+        rnd.setSeed( getSeedNum(section) ); 
+        setProbability_Target_Visibility(section);
 
         PanelMsgBoard.Msg("Experiment Started");
         tmr_clock = new Timer(MySpeed.SPEED_TIMER, this);
@@ -136,15 +136,15 @@ public class Game implements Runnable, ActionListener {
             map.setHazardArea(rnd);
         }
 
-        setVehicle(scenario);
+        setVehicle(section);
         setPayload();
-        setGroupScenario(group, scenario);
+        setGroupSection(group, section);
         _group = group;
-        _scenario = scenario;
+        _section = section;
     }
     
     public int getGroup() {return _group;}
-    public int getScenario() {return _scenario;}
+    public int getSection() {return _section;}
     public int getTotalTargetNumber() {return nTargetAreaTotal;}
     public boolean getGuidance() {return Guidance;}
     public boolean getTraining() {return Training;}
@@ -152,9 +152,9 @@ public class Game implements Runnable, ActionListener {
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
 
-    private int getSeedNum(int scenario) {
+    private int getSeedNum(int section) {
         if( Reschu.tutorial() || Reschu.train() ) {
-            switch( scenario ) {
+            switch( section ) {
             case 1:  
             case 2: 
             case 3: 
@@ -164,7 +164,7 @@ public class Game implements Runnable, ActionListener {
             }
         }
         else {
-            switch( scenario ) {
+            switch( section ) {
             case 1:
             case 2:
             case 3:
@@ -176,8 +176,8 @@ public class Game implements Runnable, ActionListener {
         }
     }
     
-    private void setProbability_Target_Visibility(int scenario) {
-        switch( scenario ) {
+    private void setProbability_Target_Visibility(int section) {
+        switch( section ) {
         case 1: PROBABILITY_TARGET_VISIBILITY = 1; break;
         case 2: PROBABILITY_TARGET_VISIBILITY = 1; break;
         case 3: PROBABILITY_TARGET_VISIBILITY = 0.5; break;
@@ -186,8 +186,8 @@ public class Game implements Runnable, ActionListener {
         }
     }
     
-    private void setGroupScenario(int group, int scenario) {
-    	switch(scenario) {
+    private void setGroupSection(int group, int section) {
+    	switch(section) {
     	case 0:
     		Guidance = false;
     		Training = false;
@@ -215,9 +215,9 @@ public class Game implements Runnable, ActionListener {
     	}
     }
     
-    public void setVehicle(int scenario) {
+    public void setVehicle(int section) {
         try {
-            switch(scenario) {
+            switch(section) {
             case 0:
             	vehicleList.addVehicle(1, Vehicle.TYPE_UAV, "Fire Scout A", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);
                 if( !Reschu.tutorial() ) vehicleList.addVehicle(2, Vehicle.TYPE_UAV, "Fire Scout B", Vehicle.PAYLOAD_ISR, 500/MySpeed.SPEED_CONTROL, rnd, map, lsnr, this);

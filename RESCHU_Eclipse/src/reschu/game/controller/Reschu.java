@@ -49,9 +49,9 @@ public class Reschu extends JFrame implements GUI_Listener {
 
 	public static String _username;
 	public static int _group;
-	public static int _scenario;
+	public static int _section;
 	public static int _gamemode;		// the game has several modes. see reschu.constant.MyGameMode
-	public static int _practice;		// whether in practice mode or experiment mode
+	public static int _mode;		// whether in practice mode or experiment mode
 	public static boolean _database; 	// if set to false, we don't write to database
 
 	public JPanel pnlMapContainer, pnlPayloadContainer;
@@ -77,10 +77,10 @@ public class Reschu extends JFrame implements GUI_Listener {
 
 	/** Interactive Tutorial Mode? */
 	public static boolean tutorial() { return _gamemode == MyGameMode.TUTORIAL_MODE; }
-	// return true if scenario is low taskload
-	public static boolean if_scenario_1() {return _scenario == MyGameMode.SCENARIO_1;}
+	// return true if section is low taskload
+	public static boolean if_section_1() {return _section == MyGameMode.SECTION_1;}
 	// return true if is in practice mode
-	public static boolean practice_mode() {return _practice == MyGameMode.PRACTICE_MODE;}
+	public static boolean practice_mode() {return _mode == MyGameMode.PRACTICE_MODE;}
 	/** Training Mode? */
 	public static boolean train() { return _gamemode == MyGameMode.TRAIN_MODE; }
 	/** Replay Mode? */
@@ -93,18 +93,18 @@ public class Reschu extends JFrame implements GUI_Listener {
 	/**
 	 * Normal constructor for RESCHU.
 	 * @param gamemode
-	 * @param scenario
+	 * @param section
 	 * @param username
 	 * @param main
 	 * @param database
 	 * @throws IOException 
 	 * @throws NumberFormatException 
 	 */
-	public Reschu(int group, int scenario, int practice, String username, AppMain main, boolean database) throws NumberFormatException, IOException {
+	public Reschu(int group, int section, int mode, String username, AppMain main, boolean database) throws NumberFormatException, IOException {
 		super("RESCHU Security-Aware");
 		_group = group;
-		_scenario = scenario;
-		_practice = practice;
+		_section = section;
+		_mode = mode;
 		_username = username;
 		_database = database;
 		setDefaultCloseOperation(EXIT_ON_CLOSE); 
@@ -136,7 +136,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new TableLayout(sizeMain));
 
-		game = new Game(this, _group, _scenario);
+		game = new Game(this, _group, _section);
 		origin_time = System.currentTimeMillis();
 
 		payload_canvas = new MyCanvas();
@@ -739,20 +739,23 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public void EVT_System_GameStart(){
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation Starts, User ID = "+_username);
 		
+		if(_mode == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Experiment");
+		
 		if(_group == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 1");
 		else {
 			if(_group == 1) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 2");
 			else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 3");
 		}
 		
-		if(_scenario == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Scenario = First");
-		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Scenario = Second");
-		
-		if(_practice == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice");
-		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Experiment");
+		if(_section == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Section = First");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Section = Second");
 	}
 	public void EVT_System_GameEnd(){
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation Ends, User ID = "+_username);
+		
+		if(_mode == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Practice");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Experiment");
 		
 		if(_group == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Group = 1");
 		else {
@@ -760,11 +763,8 @@ public class Reschu extends JFrame implements GUI_Listener {
 			else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Group = 3");
 		}
 		
-		if(_scenario == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Scenario = First");
-		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Scenario = Second");
-		
-		if(_practice == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Practice");
-		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Experiment");
+		if(_section == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Section = First");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Section = Second");
 	}
 	public void EVT_RECORD_FINAL_SCORE(int damage, int task, int wrong_task, int attack, int wrong_attack, int lost, int total) {
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, 

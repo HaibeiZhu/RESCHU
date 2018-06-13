@@ -176,7 +176,7 @@ class VehicleGeneralPanel extends JPanel {
 	public VehicleGeneralPanel(GUI_Listener l, Game g) {
 		double size_1[][] = {{TableLayout.FILL},{50,50,50,50,50}};
 		double size_2[][] = {{TableLayout.FILL},{50,50,50,50,50}};
-		if(g.getScenario()==0) setLayout(new TableLayout(size_1));
+		if(g.getSection()==0) setLayout(new TableLayout(size_1));
 		else setLayout(new TableLayout(size_2));
 		game = g; 
 		infoList = new VehicleCompactInfo[game.getVehicleList().size()];

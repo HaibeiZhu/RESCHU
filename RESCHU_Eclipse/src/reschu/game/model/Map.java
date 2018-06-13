@@ -220,7 +220,7 @@ public class Map {
 		int nTargetAreaLand = (Reschu.tutorial()) ? MyGame.nTARGET_AREA_LAND_TUTORIAL : MyGame.nTARGET_AREA_LAND;
 		int nLandTargetNeed = nTargetAreaLand - getTargetSize("LAND");
 		int nShoreTargetNeed = MyGame.nTARGET_AREA_SHORE - getTargetSize("SHORE");
-		int LowHighTaskTarget = (Reschu.if_scenario_1()) ? MyGame.nTARGET_AREA_COMM : MyGame.nTARGET_AREA_MORE;
+		int LowHighTaskTarget = (Reschu.if_section_1()) ? MyGame.nTARGET_AREA_COMM : MyGame.nTARGET_AREA_MORE;
 		int nCommTargetNeed = LowHighTaskTarget - getTargetSize("COMM");
 
 		int cnt = 0;

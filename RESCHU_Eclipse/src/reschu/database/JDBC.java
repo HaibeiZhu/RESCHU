@@ -52,18 +52,18 @@ public class JDBC {
 	
 	public int user_login(String username, char[] password) {
 		ResultSet rs; 
-		int scenario = -1;
+		int section = -1;
 		
 		rs = getResultSet("SELECT * FROM USER WHERE username='"+username+"'");
 		
 		try {
 			if( rs.next() && isPasswordCorrect(rs.getString(3), password)) {
-				scenario = rs.getInt("scenario");
+				section = rs.getInt("section");
 			}
 			rs.close();
 		} catch(SQLException e) {} 
 		
-		return scenario;
+		return section;
 	}
 	
 	public void disconnectConnection() {
