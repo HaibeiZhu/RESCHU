@@ -51,7 +51,8 @@ public class MyDB {
 	final public static int YVES_VEHICLE_DESELECT_TAB	= 102;
 	final public static int YVES_VEHICLE_SELECT_MAP_LBTN = 103;
 	final public static int YVES_VEHICLE_SELECT_MAP_RBTN = 104;
-	
+	final public static int YVES_VEHICLE_DESELECT_MAP_LBTN= 105;
+
 	final public static int STATE_NOT_LOGGED_IN_YET		= 0;
 	final public static int STATE_WEB_LOG_IN			= 1;
 	final public static int STATE_GAME_START			= 2;

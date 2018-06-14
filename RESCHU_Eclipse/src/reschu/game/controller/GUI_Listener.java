@@ -109,6 +109,7 @@ public interface GUI_Listener {
      * For Yves
      */
     public void EVT_VSelect_Map_LBtn(int vIdx);
+    public void EVT_VDeselect_Map_LBtn(int vIdx);
     public void EVT_VSelect_Map_RBtn(int vIdx);
     public void EVT_VSelect_Tab(int vIdx);
     public void EVT_VSelect_Tab_All();
