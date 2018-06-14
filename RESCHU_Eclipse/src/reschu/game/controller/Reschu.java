@@ -1,43 +1,22 @@
 package reschu.game.controller;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import javax.swing.*;
-import javax.swing.border.TitledBorder; 
-
+import info.clearthought.layout.TableLayout;
 import reschu.app.AppMain;
 import reschu.constants.*;
-import reschu.game.model.AttackEngine;
-import reschu.game.model.AttackNotificationEngine;
-import reschu.game.model.Game;
-import reschu.game.model.Payload;
-import reschu.game.model.Target;
-import reschu.game.model.UserDefinedException;
-import reschu.game.model.Vehicle;
+import reschu.game.model.*;
 import reschu.game.utils.SituationAwareness;
 import reschu.game.utils.WAVPlayer;
-import reschu.game.view.MyCanvas;
-import reschu.game.view.PanelControl;
-import reschu.game.view.PanelMap;
-import reschu.game.view.PanelMsgBoard;
-import reschu.game.view.PanelPayload;
-import reschu.game.view.PanelPayloadControls;
-import reschu.game.view.PanelTimeLine;
-import reschu.game.view.TextOverlay;
-import reschu.game.view.UAVMonitor;
+import reschu.game.view.*;
 import reschu.tutorial.Tutorial;
-import info.clearthought.layout.TableLayout;
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 public class Reschu extends JFrame implements GUI_Listener {
@@ -92,7 +71,6 @@ public class Reschu extends JFrame implements GUI_Listener {
 
 	/**
 	 * Normal constructor for RESCHU.
-	 * @param gamemode
 	 * @param section
 	 * @param username
 	 * @param main
@@ -225,12 +203,12 @@ public class Reschu extends JFrame implements GUI_Listener {
 		if( haIdx > 0 ) { 
 			if( !game.getVehicleList().getVehicle(vIdx-1).getIntersect() ) { 
 				game.getVehicleList().getVehicle(vIdx-1).setIntersect(true);
-				EVT_Vehicle_IntersectHazardArea(vIdx, game.map.getListHazard().get(haIdx));
+				EVT_Vehicle_IntersectHazardArea(vIdx, game.map.getListHazard().get(haIdx), game.getVehicleList().getVehicle(vIdx-1).getDamage());
 			}
 		} else {
 			if( game.getVehicleList().getVehicle(vIdx-1).getIntersect() ) { 
 				game.getVehicleList().getVehicle(vIdx-1).setIntersect(false);
-				EVT_Vehicle_EscapeHazardArea(vIdx);
+				EVT_Vehicle_EscapeHazardArea(vIdx, game.getVehicleList().getVehicle(vIdx-1).getDamage());
 			}
 		}    		
 	}
@@ -698,8 +676,8 @@ public class Reschu extends JFrame implements GUI_Listener {
 		play(WAVPlayer.INCORRECT);
 		Write(MyDB.INVOKER_USER, MyDB.PAYLOAD_FINISHED_INCORRECT, vIdx, "Payload Finished incorrectly");
 	}
-	public void EVT_Vehicle_Damaged(int vIdx,int haX, int haY){
-		Write(MyDB.INVOKER_SYSTEM, MyDB.VEHICLE_DAMAGED, vIdx, "UAV["+vIdx+"] damaged with a HazardArea", haX, haY);
+	public void EVT_Vehicle_Damaged(int vIdx,int haX, int haY, double damage){
+		Write(MyDB.INVOKER_SYSTEM, MyDB.VEHICLE_DAMAGED, vIdx, "UAV["+vIdx+"] damaged with a HazardArea, Current damage level: " + Math.round(damage), haX, haY);
 	}
 	public void EVT_Vehicle_SpeedDecreased(int vIdx, int curSpeed){
 		play(WAVPlayer.PENALIZED);
@@ -713,11 +691,14 @@ public class Reschu extends JFrame implements GUI_Listener {
 		play(WAVPlayer.VEHICLE_ARRIVE);
 		Write(MyDB.INVOKER_SYSTEM, MyDB.HACKED_UAV_ARRIVES_TARGET, vIdx, "Hacked UAV ["+vIdx+"] arrives to target ["+targetName+"]", x, y);
 	}
-	public void EVT_Vehicle_IntersectHazardArea(int vIdx, int[] threat) {
-		Write(MyDB.INVOKER_SYSTEM, MyDB.VEHICLE_INTERSECT_HAZARDAREA, vIdx, "UAV["+vIdx+"] intersects with a HazardArea", threat[0], threat[1]);
+	public void EVT_Vehicle_IntersectHazardArea(int vIdx, int[] threat, double damage) {
+		Write(MyDB.INVOKER_SYSTEM, MyDB.VEHICLE_INTERSECT_HAZARDAREA, vIdx,
+				"UAV["+vIdx+"] intersects with a HazardArea, Current damage level: " + Math.round(damage),
+				threat[0], threat[1]);
 	}
-	public void EVT_Vehicle_EscapeHazardArea(int vIdx) {
-		Write(MyDB.INVOKER_SYSTEM, MyDB.VEHICLE_ESCAPE_HAZARDAREA, vIdx, "UAV["+vIdx+"] Escape from a HazardArea");
+	public void EVT_Vehicle_EscapeHazardArea(int vIdx, double damage) {
+		Write(MyDB.INVOKER_SYSTEM, MyDB.VEHICLE_ESCAPE_HAZARDAREA, vIdx,
+				"UAV["+vIdx+"] Escape from a HazardArea, Current Damage Value: " + Math.round(damage));
 	}
 	public void EVT_HazardArea_Generated(int[] pos) {
 		for( int vIdx=0; vIdx<game.getVehicleList().size(); vIdx++ ) 
@@ -802,6 +783,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 	public void EVT_VDeselect_Map_LBtn(int vIdx){
 	    Write(MyDB.INVOKER_USER, MyDB.YVES_VEHICLE_DESELECT_MAP_LBTN, vIdx, "Vehicle deselcted from map by Lbtn");
+
 	}
 	
 	// For UAV hacking event
