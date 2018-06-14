@@ -258,7 +258,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	    p.paintArrow(g, 500, 500, 0, 1,new Color(100, 255, 255, 100));// points up
         p.paintArrow(g, 500, 500, 1, 1,new Color(100, 255, 255, 150));// points right
         p.paintArrow(g, 500, 500, 2, 1,new Color(100, 255, 255, 200));// points down
-        p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250)); //points left
+        p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250));// points left
         */
     }
 
