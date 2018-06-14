@@ -740,7 +740,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				&& selectedVehicle != null 
 				&&  !mapSettingMode 
 				&&  !vehicleWPAddMode 
-				&&  !vehicleWPDelMode ) { 
+				&&  !vehicleWPDelMode ) {
+		    lsnr.EVT_VDeselect_Map_LBtn(selectedVehicle.getIndex());
 			lsnr.Vehicle_Unselected_From_pnlMap();
 		}
 
