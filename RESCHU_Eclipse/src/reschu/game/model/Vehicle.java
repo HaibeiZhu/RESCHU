@@ -1,12 +1,14 @@
 package reschu.game.model;
 
+import reschu.constants.MyGame;
+import reschu.constants.MySize;
+import reschu.constants.MySpeed;
+import reschu.game.controller.GUI_Listener;
+import reschu.game.view.PanelMsgBoard;
+
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import reschu.constants.*;
-import reschu.game.controller.GUI_Listener;
-import reschu.game.view.PanelMsgBoard;
 
 public class Vehicle { 
 	public static final String TYPE_UAV = "UAV";
@@ -954,7 +956,7 @@ public class Vehicle {
 			else damage += 0;
 
 			if( d < 50d && d > 45d )  
-				lsnr.EVT_Vehicle_Damaged(getIndex(), hazard_pos[0], hazard_pos[1]); 
+				lsnr.EVT_Vehicle_Damaged(getIndex(), hazard_pos[0], hazard_pos[1], getDamage());
 
 		}
 		// We don't decrease the speed of a vehicle anymore
