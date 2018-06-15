@@ -281,8 +281,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         suggestionBox.setSize(200,100);
         Container pane = suggestionBox.getContentPane();
         pane.setLayout(null);
-        acceptSuggestion = new JButton("accept");
-        rejectSuggestion = new JButton("reject");
+        acceptSuggestion = new JButton("Accept");
+        rejectSuggestion = new JButton("Reject");
         sug = new JLabel("set waypoint");
         pane.add(acceptSuggestion);
         pane.add(rejectSuggestion);
@@ -299,6 +299,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggested(false);
                 hideSuggestionBox(v);
                 suggestionBox = null;
+
+                v.addWaypoint(map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
             }
         });
 
@@ -313,11 +315,15 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             }
         });
 
+        suggestionBox.setAlwaysOnTop(true);
+
     }
 
     private void updateSuggestionMesssageBox(Vehicle v){
-        suggestionBox.setLocation(v.getX() + 300, v. getY());
-        suggestionBox.setVisible(true);
+        suggestionBox.setLocation(v.getX() + 600, v. getY()+50);
+        if(!suggestionBox.isVisible()) {
+            suggestionBox.setVisible(true);
+        }
     }
 
     private void hideSuggestionBox(Vehicle v){
@@ -385,8 +391,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			}
 
 			// for decision support system
+
+            //deletes sBox
             if(suggestionBox != null && !v.isSuggested){
-			    suggestionBox = null;
+			    hideSuggestionBox(v);
             }
             if(v.getInvestigateStatus() && v.isSuggested && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
                 hideSuggestionBox(v);
@@ -673,9 +681,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 
 	// ActionListener interface
 	public void actionPerformed(ActionEvent evt) {
-	    if(evt.getSource() == acceptSuggestion){
-            System.out.println("ACCEPT SUGG pressed");
-        }
 		// set the goal
 		if( evt.getSource() == mnuItemSetGoal) { 
 			Vehicle v = getSelectedVehicle();
@@ -770,12 +775,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		// YES hacked
 		if( evt.getSource() == mnuItemHackYes ) {
 			lsnr.EVT_UAV_DECIDED_HACKED(selectedVehicle);
+			selectedVehicle.setInvestigateStatus(false);
 		}
 		// NOT hacked
 		if( evt.getSource() == mnuItemHackNo ) {
 			selectedVehicle.isNotified = false;
 			selectedVehicle.isInvestigated = false;
 			lsnr.EVT_UAV_DECIDED_NOT_HACKED(selectedVehicle);
+            selectedVehicle.setInvestigateStatus(false);
 		}
 		repaint();
 	}
