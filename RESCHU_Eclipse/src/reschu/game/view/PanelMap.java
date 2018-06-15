@@ -821,8 +821,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 
 		if(v==null 
 				&& Utils.isLeftClick(m_ev) 
-				&& selectedVehicle != null 
-				&& !mapSettingMode 
+				&& selectedVehicle != null
+				&& !mapSettingMode
 				&& !vehicleWPAddMode 
 				&& !vehicleWPDelMode
 				&& vehicleGoalMode) {
@@ -879,7 +879,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				setSelectedVehicle(gp.getV());
 				lsnr.activateUAVFeed(gp.getV().getIndex()-1);
 				repaint();
-				//System.out.println("[mousePressed]Vehicle(" + getV().getName() + ") selected.(gp)"); 
+				// System.out.println("[mousePressed]Vehicle(" + getV().getName() + ") selected.(gp)"); 
 				vehicleGoalChangeMode = true;
 				lsnr.Vehicle_Selected_From_pnlMap(getSelectedVehicle().getIndex());
 				ex_GP_x = gp.getX();
