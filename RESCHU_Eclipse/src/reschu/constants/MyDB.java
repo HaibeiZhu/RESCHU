@@ -3,7 +3,8 @@ package reschu.constants;
 public class MyDB {
 	final public static int INVOKER_SYSTEM				= 0;
 	final public static int INVOKER_USER				= 1;
-	
+
+
 	final public static int WP_ADD_START				= 11;
 	final public static int WP_ADD_END					= 12;
 	final public static int WP_MOVE_START				= 13;
@@ -95,4 +96,7 @@ public class MyDB {
 	
 	final public static int CORRECT_TASK_ANSWER			= 130;
 	final public static int INCORRECT_TASK_ANSWER		= 131;
+
+    final public static int ACCEPT_SUGGESTION           = 140;
+    final public static int REJECT_SUGGESTION           = 141;
 }

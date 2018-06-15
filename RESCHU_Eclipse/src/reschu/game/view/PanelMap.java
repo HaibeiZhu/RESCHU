@@ -15,41 +15,7 @@ import java.awt.event.*;
 public class PanelMap extends JPanel implements ActionListener, MouseListener, MouseMotionListener, PopupMenuListener  
 {		 
 	private static final long serialVersionUID = -4987595764448267113L;
-
-	private boolean TABLETOP = true;
-
-	private Map map;    
-	private GUI_Listener lsnr; 
-	private JPopupMenu popMenu; 
-	private JMenuItem mnuItemSetGoal, mnuItemAddWP, mnuItemDelWP, mnuItemSubmit, mnuItemCancel,
-						mnuItemPrev, mnuItemNext, mnuItemInstantDelWP, mnuItemEngage, mnuItemHackYes, mnuItemHackNo;
-	private boolean mapSettingMode, vehicleGoalMode, vehicleWPAddMode, vehicleWPDelMode, vehicleWPChangeMode, vehicleGoalChangeMode, WPRightClickedMode;
 	public static Vehicle selectedVehicle, investigatedVehicle;
-	public boolean vehicleWPAddPrevMode, vehicleWPAddNextMode;    
-	private boolean dragGPMode, dragWPMode;
-	private int ex_WP_x, ex_WP_y, new_WP_x, new_WP_y, ex_GP_x, ex_GP_y, new_GP_x, new_GP_y;  
-	private int clicked_pos_x, clicked_pos_y; 
-	private int[] just_added_WP;
-	private int[] drag_from, drag_to, drag_to_prev, drag_next, region;
-
-	private JButton acceptSuggestion, rejectSuggestion;
-	private JDialog suggestionBox;
-	private JLabel sug;
-
-	//  private Image backbuffer;
-	//  private Graphics2D backg;
-	private Image img;
-	private Game game;
-	private JButton btnEmpty;
-	private PaintComponent p;
-	private StructSelectedPoint gp, wp; // goal_point, way_point
-	private boolean eventDisabled;
-
-	// variables for textOnTop
-	private int _durationTextOnTop = 0;
-	private String _msgTextOnTop = "";
-	private boolean _isTextOnTop = false;
-
 	private final int cellsize = MySize.SIZE_CELL;
 	private final int halfcell = MySize.SIZE_HALF_CELL;
 	private final int rulersize = MySize.SIZE_RULER;
@@ -59,32 +25,52 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	private final int vWidth = MySize.SIZE_VEHICLE_WIDTH_PXL;
 	private final int vHeight = MySize.SIZE_VEHICLE_HEIGHT_PXL;
 	private final int targetsize = MySize.SIZE_TARGET_PXL;
-	
 	private final int pos_min_X = MySize.UAV_POS_MIN_X;
 	private final int pos_min_Y = MySize.UAV_POS_MIN_Y;
 	private final int pos_max_X = MySize.UAV_POS_MAX_X;
 	private final int pos_max_Y = MySize.UAV_POS_MAX_Y;
-
+	public boolean vehicleWPAddPrevMode, vehicleWPAddNextMode;
+	private boolean TABLETOP = true;
+	private Map map;
+	private GUI_Listener lsnr;
+	private JPopupMenu popMenu;
+	private JMenuItem mnuItemSetGoal, mnuItemAddWP, mnuItemDelWP, mnuItemSubmit, mnuItemCancel,
+						mnuItemPrev, mnuItemNext, mnuItemInstantDelWP, mnuItemEngage, mnuItemHackYes, mnuItemHackNo;
+	private boolean mapSettingMode, vehicleGoalMode, vehicleWPAddMode, vehicleWPDelMode, vehicleWPChangeMode, vehicleGoalChangeMode, WPRightClickedMode;
+	private boolean dragGPMode, dragWPMode;
+	private int ex_WP_x, ex_WP_y, new_WP_x, new_WP_y, ex_GP_x, ex_GP_y, new_GP_x, new_GP_y;
+	private int clicked_pos_x, clicked_pos_y;
+	private int[] just_added_WP;
+	private int[] drag_from, drag_to, drag_to_prev, drag_next, region;
+	private JButton acceptSuggestion, rejectSuggestion;
+	private JDialog suggestionBox;
+	private JLabel sug;
+	//  private Image backbuffer;
+	//  private Graphics2D backg;
+	private Image img;
+	private Game game;
+	private JButton btnEmpty;
+	private PaintComponent p;
+	private StructSelectedPoint gp, wp; // goal_point, way_point
+	private boolean eventDisabled;
+	// variables for textOnTop
+	private int _durationTextOnTop = 0;
+	private String _msgTextOnTop = "";
+	private boolean _isTextOnTop = false;
 	private Reschu reschu;
-
-	public synchronized Vehicle getSelectedVehicle() {return selectedVehicle;}
-	public synchronized void setSelectedVehicle(Vehicle v) {selectedVehicle = v;}
-	
-	public synchronized Vehicle getInvestigatedVehicle() {return investigatedVehicle;}
-	public synchronized void setInvestigatedVehicle(Vehicle v) {v.isInvestigated = true;}
 
 	public PanelMap(GUI_Listener l, Game g, String strTitle) {
 		lsnr = l;
-		game = g;    	
+		game = g;
 		map = game.map;
 		popMenu = new JPopupMenu();
 		p = new PaintComponent();
 		mapSettingMode = false;
 		selectedVehicle = null;
 		investigatedVehicle = null;
-		vehicleGoalMode = false; 
+		vehicleGoalMode = false;
 		vehicleGoalChangeMode = false;
-		vehicleWPAddMode = false; 
+		vehicleWPAddMode = false;
 		vehicleWPDelMode = false;
 		vehicleWPChangeMode = false;
 		vehicleWPAddPrevMode = false;
@@ -105,6 +91,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 	}
+
+	public synchronized Vehicle getSelectedVehicle() {return selectedVehicle;}
+	
+	public synchronized void setSelectedVehicle(Vehicle v) {selectedVehicle = v;}
+
+	public synchronized Vehicle getInvestigatedVehicle() {return investigatedVehicle;}
+
+	public synchronized void setInvestigatedVehicle(Vehicle v) {v.isInvestigated = true;}
 	
 	/*
 	// make mutual reference between Reschu and PanelMap
@@ -301,6 +295,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 suggestionBox = null;
 
                 v.addWaypoint(map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
+
+                lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
             }
         });
 
@@ -312,6 +308,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggested(false);
                 hideSuggestionBox(v);
                 suggestionBox = null;
+
+                lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
             }
         });
 
@@ -393,9 +391,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			// for decision support system
 
             //deletes sBox
-            if(suggestionBox != null && !v.isSuggested){
-			    hideSuggestionBox(v);
-            }
             if(v.getInvestigateStatus() && v.isSuggested && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
                 hideSuggestionBox(v);
             }

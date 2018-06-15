@@ -68,7 +68,10 @@ public interface GUI_Listener {
 	public void Vechicle_Selected_From_Investigate(int idx);
 
     // Database
-    public void EVT_WP_AddWP_Start(int vIdx);	 
+
+    public void EVT_Accept_Suggestion(int vIdx, double x, double y);
+    public void EVT_Reject_Suggestion(int vIdx, double x, double y);
+    public void EVT_WP_AddWP_Start(int vIdx);
     public void EVT_WP_AddWP_End(int vIdx, int mouseCoordX, int mouseCoordY);  
     public void EVT_WP_MoveWP_Start(int vIdx, int mouseCoordX, int mouseCoordY);  
     public void EVT_WP_MoveWP_End(int vIdx, int mouseCoordX, int mouseCoordY); 
