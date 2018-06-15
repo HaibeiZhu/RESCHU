@@ -31,6 +31,7 @@ public class Game implements Runnable, ActionListener {
     
     private boolean Guidance;
     private boolean Training;
+    private boolean Collection;
     
     // For original RESCHU
     /*
@@ -148,6 +149,7 @@ public class Game implements Runnable, ActionListener {
     public int getTotalTargetNumber() {return nTargetAreaTotal;}
     public boolean getGuidance() {return Guidance;}
     public boolean getTraining() {return Training;}
+    public boolean getCollection() {return Collection;}
     
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
@@ -191,6 +193,20 @@ public class Game implements Runnable, ActionListener {
     	case 0:
     		Guidance = false;
     		Training = false;
+    		switch(group) {
+    		case 0:
+    			Collection = true;
+    			break;
+    		case 1:
+    			Collection = false;
+    			break;
+    		case 2:
+    			Collection = true;
+    			break;
+    		default:
+    			Collection = false;
+    			break;
+    		}
     		break;
     	case 1:
 	    	switch(group) {
@@ -211,11 +227,13 @@ public class Game implements Runnable, ActionListener {
 	    		Training = false;
 	    		break;
 	    	}
+	    	Collection = false;
 	    	break;
 	    default:
 	    	Guidance = false;
 	    	Training = false;
-    	}    		
+	    	Collection = false;
+    	}
     }
     
     public void setVehicle(int section) {

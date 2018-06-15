@@ -326,7 +326,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		}
 		else {
 			// collecting data for decision support system
-			if(pnlMap.getSelectedVehicle().isNotified && game.getGuidance()) {
+			if(pnlMap.getSelectedVehicle().isNotified && game.getCollection()) {
 				pnlMap.getSelectedVehicle().addWaypointCount();
 			}
 		}
@@ -342,7 +342,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		}
 		else {
 			// collecting data for decision support system
-			if(pnlMap.getSelectedVehicle().isNotified && game.getGuidance()) {
+			if(pnlMap.getSelectedVehicle().isNotified && game.getCollection()) {
 				pnlMap.getSelectedVehicle().addWaypointCount();
 			}
 		}

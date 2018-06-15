@@ -150,7 +150,8 @@ public class FrameEnd extends JFrame {
 		btnEnd.setAlignmentX(CENTER_ALIGNMENT);
 		
 		// collecting data for decision support system
-		if(game.getGuidance() && game.getSection()==MyGameMode.SECTION_1) {
+		if(game.getCollection()) {
+			String strategy_s;
 			VehicleList vlist = game.getVehicleList();
 			for(int i=0; i<vlist.size(); i++) {
 				total_waypoint += vlist.getVehicle(i).getWaypointCount();
@@ -158,16 +159,25 @@ public class FrameEnd extends JFrame {
 			}
 			if(total_target != 0) {
 				total_strategy = (double)total_waypoint/(double)total_target;
+				if(total_strategy >= 2.0) strategy_s = "waypoint strong";
+				else {
+					if(total_strategy >= 1.0) strategy_s = "waypoint weak";
+					else {
+						if(total_strategy >= 0.5) strategy_s = "target weak";
+						else strategy_s = "target strong";
+					}
+				}
 			}
-			else total_strategy = 9999.9;
+			else {
+				if(total_waypoint != 0) strategy_s = "waypoint strong";
+				else strategy_s = "none";
+			}
 			
 			// display strategy on the end frame
-			lblStrategy = new JLabel("Strategy "+total_waypoint+" "+total_target+" "+total_strategy);
-			pnl.add(Box.createGlue());
+			lblStrategy = new JLabel("Strategy: "+strategy_s);
+			// pnl.add(Box.createGlue());
 			pnl.add(lblStrategy);
 			lblStrategy.setAlignmentX(CENTER_ALIGNMENT);
-			
-			// check with system output
 		}
 		
 		add(pnl);
