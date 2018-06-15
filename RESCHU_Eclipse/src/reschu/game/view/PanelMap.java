@@ -814,12 +814,13 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			repaint();
 		}
 
-		if( v == null 
+		if(v==null 
 				&& Utils.isLeftClick(m_ev) 
 				&& selectedVehicle != null 
-				&&  !mapSettingMode 
-				&&  !vehicleWPAddMode 
-				&&  !vehicleWPDelMode ) {
+				&& !mapSettingMode 
+				&& !vehicleWPAddMode 
+				&& !vehicleWPDelMode
+				&& vehicleGoalMode) {
 		    lsnr.EVT_VDeselect_Map_LBtn(selectedVehicle.getIndex());
 			lsnr.Vehicle_Unselected_From_pnlMap();
 		}
@@ -831,9 +832,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			else
 				getSelectedVehicle().changeGoal(getSelectedVehicle().getPath().getLast(), clicked_pos_x, clicked_pos_y);
 			setClear();
-
-			mapSettingMode = false; 
-			vehicleGoalMode = false;
 		}
 
 		if(!TABLETOP) {

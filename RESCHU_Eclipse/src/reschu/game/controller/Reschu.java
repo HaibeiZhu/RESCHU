@@ -806,7 +806,6 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 	public void EVT_VDeselect_Map_LBtn(int vIdx){
 	    Write(MyDB.INVOKER_USER, MyDB.YVES_VEHICLE_DESELECT_MAP_LBTN, vIdx, "Vehicle deselcted from map by Lbtn");
-
 	}
 	
 	// For UAV hacking event

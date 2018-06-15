@@ -430,6 +430,7 @@ public class Vehicle {
 		if( g.getElapsedTime() != 0 ) {
 			if(assigned) lsnr.EVT_GP_SetGP_End_Assigned(index, x, y, getTarget().getName());
 			else lsnr.EVT_GP_SetGP_End_Unassigned(index, x, y);
+			// PanelMap.setSelectedVehicle(this);
 		}
 	}
 
