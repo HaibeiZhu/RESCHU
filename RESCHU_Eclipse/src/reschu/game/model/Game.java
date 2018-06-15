@@ -212,7 +212,10 @@ public class Game implements Runnable, ActionListener {
 	    		break;
 	    	}
 	    	break;
-    	}
+	    default:
+	    	Guidance = false;
+	    	Training = false;
+    	}    		
     }
     
     public void setVehicle(int section) {
@@ -344,7 +347,7 @@ public class Game implements Runnable, ActionListener {
         for( int i=0; i<vehicleList.size(); i++ ) {
             // this is only called when vehicle is clicked in panelMap, so we should be using getX and getY
             // since we want observed coordinates when vehicle is hijacked.
-            int v_x = vehicleList.getVehicle(i).getX(); 
+            int v_x = vehicleList.getVehicle(i).getX();
             int v_y = vehicleList.getVehicle(i).getY();
             int w = Math.round(MySize.SIZE_VEHICLE_WIDTH_PXL/MySize.SIZE_CELL);
             int h = Math.round(MySize.SIZE_VEHICLE_HEIGHT_PXL/MySize.SIZE_CELL);

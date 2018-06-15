@@ -26,6 +26,8 @@ import javax.swing.border.TitledBorder;
 import reschu.constants.*;
 import reschu.game.controller.GUI_Listener;
 import reschu.game.model.Game;
+import reschu.game.model.VehicleList;
+import reschu.constants.MyGameMode;
 
 public class FrameEnd extends JFrame {
 	private static final long serialVersionUID = 1490485040395748916L;
@@ -35,7 +37,7 @@ public class FrameEnd extends JFrame {
 	private JButton btnEnd;
 	private ImageIcon imgIcon;
 	private JLabel lblHAL;
-	private JLabel lblThank, lblDamage, lblTask, lblWTask, lblAttack, lblWAttack, lblLost, lblTotal;
+	private JLabel lblThank, lblDamage, lblTask, lblWTask, lblAttack, lblWAttack, lblLost, lblTotal, lblStrategy;
 	
 	private int total_damage;
 	private int total_task;
@@ -44,33 +46,36 @@ public class FrameEnd extends JFrame {
 	private int wrong_attack;
 	private int total_lost;
 	private int final_score;
+	private int total_waypoint = 0;
+	private int total_target = 0;
+	private double total_strategy = 0.0;
 	
 	public int GetTotalDamage() {
 		return total_damage;
 	}
-	
 	public int GetTotalTask() {
 		return total_task;
 	}
-	
 	public int GetWrongTask() {
 		return wrong_task;
 	}
-	
 	public int GetTotalAttack() {
 		return total_attack;
 	}
-	
 	public int GetWrongAttack() {
 		return wrong_attack;
 	}
-	
 	public int GetTotalLost() {
 		return total_lost;
 	}
-	
 	public int GetFinalScore() {
 		return final_score;
+	}
+	public int GetTotalWaypoint() {
+		return total_waypoint;
+	}
+	public int GetTotalTarget() {
+		return total_target;
 	}
 	
 	public FrameEnd(GUI_Listener l, Game g) {
@@ -143,6 +148,28 @@ public class FrameEnd extends JFrame {
 		lblLost.setAlignmentX(CENTER_ALIGNMENT);
 		lblTotal.setAlignmentX(CENTER_ALIGNMENT);
 		btnEnd.setAlignmentX(CENTER_ALIGNMENT);
+		
+		// collecting data for decision support system
+		if(game.getGuidance() && game.getSection()==MyGameMode.SECTION_1) {
+			VehicleList vlist = game.getVehicleList();
+			for(int i=0; i<vlist.size(); i++) {
+				total_waypoint += vlist.getVehicle(i).getWaypointCount();
+				total_target += vlist.getVehicle(i).getTargetCount();
+			}
+			if(total_target != 0) {
+				total_strategy = (double)total_waypoint/(double)total_target;
+			}
+			else total_strategy = 9999.9;
+			
+			// display strategy on the end frame
+			lblStrategy = new JLabel("Strategy "+total_waypoint+" "+total_target+" "+total_strategy);
+			pnl.add(Box.createGlue());
+			pnl.add(lblStrategy);
+			lblStrategy.setAlignmentX(CENTER_ALIGNMENT);
+			
+			// check with system output
+		}
+		
 		add(pnl);
 	}
 }

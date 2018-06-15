@@ -4,6 +4,7 @@ import reschu.constants.MyGame;
 import reschu.constants.MySize;
 import reschu.constants.MySpeed;
 import reschu.game.controller.GUI_Listener;
+import reschu.game.view.PanelMap;
 import reschu.game.view.PanelMsgBoard;
 
 import java.util.LinkedList;
@@ -45,6 +46,10 @@ public class Vehicle {
 	private int[] HackLocation;
 	private double HackAngle;
 	
+	// collecting data for decision support system
+	private int waypoint_count = 0;
+	private int target_count = 0;
+	
 	public boolean getHijackStatus () {
 		return isHijacked;
 	}
@@ -74,6 +79,18 @@ public class Vehicle {
 	}
 	public void setNotifiedStatus (boolean b) {
 		isNotified = b;
+	}
+	public void addWaypointCount() {
+		waypoint_count ++;
+	}
+	public void addTargetCount() {
+		target_count ++;
+	}
+	public int getWaypointCount() {
+		return waypoint_count;
+	}
+	public int getTargetCount() {
+		return target_count;
 	}
 	
 	/**
@@ -347,10 +364,8 @@ public class Vehicle {
 	 */
 	public boolean isAssignededTarget(int x, int y) {
 		int[] target_pos;
-
 		for( int i=0; i < getMap().getListAssignedTarget().size(); i++ ) {
-			target_pos = getMap().getListAssignedTarget().get(i).getPos();	
-
+			target_pos = getMap().getListAssignedTarget().get(i).getPos();
 			if( boundaryCheck(x, y, target_pos) ) {
 				return true;    			
 			}
@@ -378,8 +393,6 @@ public class Vehicle {
 					break;
 				}
 				else if(getPayload()!=Vehicle.PAYLOAD_COM && boundaryCheck(x, y, target_pos) ) {
-					//2008-04-05
-					//UAV to grey target
 					lsnr.showMessageOnTopOfMap("You cannot assign a UAV to a grey target, please reassign " + type + " " + index, 5);
 				}
 			}
@@ -387,8 +400,6 @@ public class Vehicle {
 				if( getPayload()!=Vehicle.PAYLOAD_COM && boundaryCheck(x, y, target_pos) ) {
 					x = target_pos[0]; y = target_pos[1];
 					if(type==Vehicle.TYPE_UUV && getMap().getListUnassignedTarget().get(i).getMission() != "SHORE") {
-						//2008-04-05
-						//UUV to land target (grey or red)
 						lsnr.showMessageOnTopOfMap("You cannot assign a UUV to a land target, please reassign " + type + " " + index, 5);
 						break;
 					}
@@ -408,7 +419,7 @@ public class Vehicle {
 		addPathLast(new int[]{x, y});
 		setStatus(MyGame.STATUS_VEHICLE_MOVING);
 		if( g.getElapsedTime() != 0 ) {
-			if( assigned ) lsnr.EVT_GP_SetGP_End_Assigned(index, x, y, getTarget().getName());
+			if(assigned) lsnr.EVT_GP_SetGP_End_Assigned(index, x, y, getTarget().getName());
 			else lsnr.EVT_GP_SetGP_End_Unassigned(index, x, y);
 		}
 	}
@@ -475,6 +486,7 @@ public class Vehicle {
 		if( g.getElapsedTime() != 0 ) {
 			if( assigned ) lsnr.EVT_GP_ChangeGP_End_Assigned(index, x, y, getTarget().getName());
 			else lsnr.EVT_GP_ChangeGP_End_Unassigned(index, x, y);
+			// PanelMap.setSelectedVehicle(this);
 		}
 	}
 
@@ -1019,7 +1031,7 @@ public class Vehicle {
 		}
 		// if attack position is "0 0"
 		// it will be considered as fake attack
-		if (xCoord == 0 && yCoord == 0){
+		if (xCoord == 0 && yCoord == 0) {
 			System.out.println("Fake attack launched");
 			lsnr.EVT_Hack_Launch_Fake(index);
 			return;

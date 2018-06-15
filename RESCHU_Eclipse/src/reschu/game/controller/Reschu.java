@@ -30,7 +30,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public static int _group;
 	public static int _section;
 	public static int _gamemode;		// the game has several modes. see reschu.constant.MyGameMode
-	public static int _mode;		// whether in practice mode or experiment mode
+	public static int _mode;			// whether in practice mode or experiment mode
 	public static boolean _database; 	// if set to false, we don't write to database
 
 	public JPanel pnlMapContainer, pnlPayloadContainer;
@@ -324,6 +324,12 @@ public class Reschu extends JFrame implements GUI_Listener {
 		if(pnlPayload.getZoomCount() == pnlPayload.ZOOMMAX) {
 			EVT_Click_ZoomMax();
 		}
+		else {
+			// collecting data for decision support system
+			if(pnlMap.getSelectedVehicle().isNotified && game.getGuidance()) {
+				pnlMap.getSelectedVehicle().addWaypointCount();
+			}
+		}
 	}
 	@Override
 	public void zoomOut() {
@@ -333,6 +339,12 @@ public class Reschu extends JFrame implements GUI_Listener {
 		
 		if(pnlPayload.getZoomCount() == pnlPayload.ZOOMMIN) {
 			EVT_Click_ZoomMin();
+		}
+		else {
+			// collecting data for decision support system
+			if(pnlMap.getSelectedVehicle().isNotified && game.getGuidance()) {
+				pnlMap.getSelectedVehicle().addWaypointCount();
+			}
 		}
 	}
 	
