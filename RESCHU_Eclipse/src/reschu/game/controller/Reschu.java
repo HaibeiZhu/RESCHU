@@ -367,6 +367,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public void Vehicle_Selected_From_pnlMap(int idx) {
 		System.out.println("Vehicle Selected From pnlMap " + idx);
 		pnlControl.Show_Vehicle_Status(idx);
+		pnlMap.setSelectedVehicle(game.getVehicleList().getVehicle(idx-1));
 	}
 	
 	@Override

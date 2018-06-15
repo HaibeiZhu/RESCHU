@@ -32,6 +32,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	private int[] just_added_WP;
 	private int[] drag_from, drag_to, drag_to_prev, drag_next, region;
 
+	private JButton acceptSuggestion, rejectSuggestion;
+	private JDialog suggestionBox;
+	private JLabel sug;
+
 	//  private Image backbuffer;
 	//  private Graphics2D backg;
 	private Image img;
@@ -127,7 +131,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		paintVehicles(g2d);
 		paintDrag(g2d);
 		paintText(g2d);
-		
+
+
+
 		if( mapSettingMode ) paintBorder(g2d, Color.blue);
 		if( eventDisabled ) paintBorder(g2d, Color.red);
 		
@@ -269,6 +275,55 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         }
     }
 
+    private void paintSuggestionMessageBox(Vehicle v){
+        suggestionBox = new JDialog();
+        suggestionBox.setUndecorated(true);
+        suggestionBox.setSize(200,100);
+        Container pane = suggestionBox.getContentPane();
+        pane.setLayout(null);
+        acceptSuggestion = new JButton("accept");
+        rejectSuggestion = new JButton("reject");
+        sug = new JLabel("set waypoint");
+        pane.add(acceptSuggestion);
+        pane.add(rejectSuggestion);
+        pane.add(sug);
+
+        sug.setSize(100,20);
+        sug.setLocation(0,0);
+
+        acceptSuggestion.setSize(75,25);
+        acceptSuggestion.setLocation((suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3, 60);
+        acceptSuggestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                v.setSuggested(false);
+                hideSuggestionBox(v);
+                suggestionBox = null;
+            }
+        });
+
+        rejectSuggestion.setSize(75,25);
+        rejectSuggestion.setLocation(acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3, 60);
+        rejectSuggestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                v.setSuggested(false);
+                hideSuggestionBox(v);
+                suggestionBox = null;
+            }
+        });
+
+    }
+
+    private void updateSuggestionMesssageBox(Vehicle v){
+        suggestionBox.setLocation(v.getX() + 300, v. getY());
+        suggestionBox.setVisible(true);
+    }
+
+    private void hideSuggestionBox(Vehicle v){
+	    suggestionBox.setVisible(false);
+    }
+
 	private void paintTarget(Graphics2D g) {
 		Color clrTarget;
 
@@ -328,12 +383,25 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					investigatedVehicle = null;
 				}
 			}
-			
+
 			// for decision support system
-			if(v.isNotified && v == selectedVehicle && game.getGuidance()) {
+            if(suggestionBox != null && !v.isSuggested){
+			    suggestionBox = null;
+            }
+            if(v.getInvestigateStatus() && v.isSuggested && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
+                hideSuggestionBox(v);
+            }
+			else if(v.getInvestigateStatus() && v.isSuggested && v == selectedVehicle && game.getGuidance()) {
+
 				paintSuggestionArea(g, v);
 				paintSuggestionArrow(g, v);
 				paintSuggestionLine(g, v);
+				if(suggestionBox == null) {
+				    paintSuggestionMessageBox(v);
+                }
+                else {
+                    updateSuggestionMesssageBox(v);
+                }
 			}
 
 			if(v.getType() == Vehicle.TYPE_UAV) {
@@ -606,6 +674,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 
 	// ActionListener interface
 	public void actionPerformed(ActionEvent evt) {
+	    if(evt.getSource() == acceptSuggestion){
+            System.out.println("ACCEPT SUGG pressed");
+        }
 		// set the goal
 		if( evt.getSource() == mnuItemSetGoal) { 
 			Vehicle v = getSelectedVehicle();
@@ -704,7 +775,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	}
 
 	// MouseListener interface
-	public void mouseClicked(MouseEvent m_ev) {   
+	public void mouseClicked(MouseEvent m_ev) {
 		if( eventDisabled ) return;
 
 		clicked_pos_x = m_ev.getX() / cellsize;

@@ -41,6 +41,7 @@ public class Vehicle {
 	public boolean isInvestigated;
 	public boolean isEngaged;
 	public boolean isNotified;
+	public boolean isSuggested;
 	private LinkedList<int[]> observedPath;
 	private int[] HackLocation;
 	private double HackAngle;
@@ -54,7 +55,11 @@ public class Vehicle {
 	public boolean getInvestigateStatus() {
 		return isInvestigated;
 	}
+	public boolean getisSuggested(){ return isSuggested; }
 	public void setInvestigateStatus(boolean b) {
+		if(b){
+			setSuggested(true);
+		}
 		isInvestigated = b;
 	}
 	public boolean getEngageStatus () {
@@ -75,7 +80,10 @@ public class Vehicle {
 	public void setNotifiedStatus (boolean b) {
 		isNotified = b;
 	}
-	
+	public void setSuggested(boolean suggested) {
+		isSuggested = suggested;
+	}
+
 	/**
 	 * Set the position of this vehicle (synchronized)
 	 */
@@ -333,6 +341,7 @@ public class Vehicle {
 		isInvestigated = false;
 		isEngaged = false;
 		isNotified = false;
+		isSuggested = true;
 	}
 
 	// check if reach a target
