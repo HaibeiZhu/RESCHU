@@ -31,6 +31,7 @@ public class Game implements Runnable, ActionListener {
     
     private boolean Guidance;
     private boolean Training;
+    private boolean Collection;
     
     // For original RESCHU
     /*
@@ -148,6 +149,7 @@ public class Game implements Runnable, ActionListener {
     public int getTotalTargetNumber() {return nTargetAreaTotal;}
     public boolean getGuidance() {return Guidance;}
     public boolean getTraining() {return Training;}
+    public boolean getCollection() {return Collection;}
     
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
@@ -191,6 +193,20 @@ public class Game implements Runnable, ActionListener {
     	case 0:
     		Guidance = false;
     		Training = false;
+    		switch(group) {
+    		case 0:
+    			Collection = true;
+    			break;
+    		case 1:
+    			Collection = false;
+    			break;
+    		case 2:
+    			Collection = true;
+    			break;
+    		default:
+    			Collection = false;
+    			break;
+    		}
     		break;
     	case 1:
 	    	switch(group) {
@@ -211,7 +227,12 @@ public class Game implements Runnable, ActionListener {
 	    		Training = false;
 	    		break;
 	    	}
+	    	Collection = false;
 	    	break;
+	    default:
+	    	Guidance = false;
+	    	Training = false;
+	    	Collection = false;
     	}
     }
     
@@ -344,7 +365,7 @@ public class Game implements Runnable, ActionListener {
         for( int i=0; i<vehicleList.size(); i++ ) {
             // this is only called when vehicle is clicked in panelMap, so we should be using getX and getY
             // since we want observed coordinates when vehicle is hijacked.
-            int v_x = vehicleList.getVehicle(i).getX(); 
+            int v_x = vehicleList.getVehicle(i).getX();
             int v_y = vehicleList.getVehicle(i).getY();
             int w = Math.round(MySize.SIZE_VEHICLE_WIDTH_PXL/MySize.SIZE_CELL);
             int h = Math.round(MySize.SIZE_VEHICLE_HEIGHT_PXL/MySize.SIZE_CELL);

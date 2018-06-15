@@ -264,7 +264,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	    p.paintArrow(g, 500, 500, 0, 1,new Color(100, 255, 255, 100));// points up
         p.paintArrow(g, 500, 500, 1, 1,new Color(100, 255, 255, 150));// points right
         p.paintArrow(g, 500, 500, 2, 1,new Color(100, 255, 255, 200));// points down
-        p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250)); //points left
+        p.paintArrow(g, 500, 500, 3, 1,new Color(100, 255, 255, 250));// points left
         */
     }
 
@@ -657,7 +657,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		vehicleGoalMode = true;
 		// TODO: pass (v.getX(), v.getY(), goal_x, goal_y)
 		// repaint();
-
 	}    
 	public synchronized void addWP(Vehicle v) {
 		selectedVehicle = v;
@@ -683,6 +682,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			setClear();
 			setGoal(v);
 			lsnr.EVT_GP_SetGP_Start(v.getIndex());
+			if(v.isNotified && v==selectedVehicle && game.getCollection()) {
+				v.addTargetCount();
+			}
 		}
 		// add wayppint
 		if( evt.getSource() == mnuItemAddWP) { 
@@ -691,6 +693,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				setClear();
 				addWP(v);
 				lsnr.EVT_WP_AddWP_Start(v.getIndex());
+				// collecting data for decision support system
+				if(v.isNotified && v==selectedVehicle && game.getCollection()) {
+					v.addWaypointCount();
+				}
 			}
 		}
 		// delete waypoint
@@ -878,6 +884,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				if(selectedVehicle.getTarget() == null) targetName = "NULL"; 
 				else targetName = selectedVehicle.getTarget().getName();
 				lsnr.EVT_GP_ChangeGP_Start(selectedVehicle.getIndex(), clicked_pos_x, clicked_pos_y, targetName);
+				if(getSelectedVehicle().isNotified && getSelectedVehicle()==selectedVehicle && game.getCollection()) {
+					getSelectedVehicle().addTargetCount();
+				}
 			}
 
 			// MOVE - WP
@@ -892,6 +901,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				ex_WP_x = wp.getX();
 				ex_WP_y = wp.getY();
 				lsnr.EVT_WP_MoveWP_Start(selectedVehicle.getIndex(), clicked_pos_x, clicked_pos_y);
+				if(getSelectedVehicle().isNotified && getSelectedVehicle()==selectedVehicle && game.getCollection()) {
+					getSelectedVehicle().addWaypointCount();
+				}
 			}
 		}
 	}
@@ -1109,7 +1121,6 @@ class PaintComponent {
                 g.fillPolygon(p3, p1, 7);
                 break;
         }
-
     }
 
     public void paintLine(Graphics2D g, int x1, int y1, int x2, int y2, Color line_color){
