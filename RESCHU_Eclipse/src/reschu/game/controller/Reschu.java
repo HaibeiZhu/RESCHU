@@ -29,6 +29,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public static String _username;
 	public static int _group;
 	public static int _section;
+	public static int _strategy;
 	public static int _gamemode;		// the game has several modes. see reschu.constant.MyGameMode
 	public static int _mode;			// whether in practice mode or experiment mode
 	public static boolean _database; 	// if set to false, we don't write to database
@@ -78,11 +79,12 @@ public class Reschu extends JFrame implements GUI_Listener {
 	 * @throws IOException 
 	 * @throws NumberFormatException 
 	 */
-	public Reschu(int group, int section, int mode, String username, AppMain main, boolean database) throws NumberFormatException, IOException {
+	public Reschu(int group, int section, int mode, int strategy, String username, AppMain main, boolean database) throws NumberFormatException, IOException {
 		super("RESCHU Security-Aware");
 		_group = group;
 		_section = section;
 		_mode = mode;
+		_strategy = strategy;
 		_username = username;
 		_database = database;
 		setDefaultCloseOperation(EXIT_ON_CLOSE); 
@@ -912,7 +914,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run () {
 				try {
-					new Reschu(1, 1, 0, "administartor_0", new AppMain(), false).setVisible(true);
+					new Reschu(1, 1, 0, 0, "administartor_0", new AppMain(), false).setVisible(true);
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

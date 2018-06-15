@@ -27,9 +27,10 @@ public class AppMain implements ActionListener
 	private int _group;
 	private int _section;
 	private int _mode;
+	private int _strategy;
 	private JFrame _frmLogin;
 	private JButton _btnStart;
-	private JComboBox _cmbBoxGroup, _cmbBoxSection, _cmbBoxMode;
+	private JComboBox _cmbBoxGroup, _cmbBoxSection, _cmbBoxMode, _cmbBoxStrategy;
 	private JTextField _cmbTextUserID;
 	private Reschu reschu;
 	
@@ -46,19 +47,20 @@ public class AppMain implements ActionListener
         reschu.dispose();
         reschu = null;
         
-        initRESCHU(_username, _group, _section, _mode);
+        initRESCHU(_username, _group, _section, _mode, _strategy);
     }
     
-	private void initRESCHU(String username, int group, int section, int mode) throws NumberFormatException, IOException {
+	private void initRESCHU(String username, int group, int section, int mode, int strategy) throws NumberFormatException, IOException {
 		// Setting _section again seems counter-intuitive here. 
 		// Since we are differentiating between administrators and subjects,
 		// we need to update the section number here again.
 		_group = group;
 		_section = section;
 		_mode = mode;
+		_strategy = strategy;
 	    
 		// Create an instance of RESCHU (JFrame)
-		reschu = new Reschu(_group, _section, _mode, _username, this, WRITE_TO_DATABASE);		      
+		reschu = new Reschu(_group, _section, _mode, _strategy, _username, this, WRITE_TO_DATABASE);		      
 		reschu.pack();
 		reschu.setVisible(true);
 		reschu.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -68,7 +70,7 @@ public class AppMain implements ActionListener
 		TitledBorder border; 
 		ImageIcon imgIcon;
 		
-		JLabel lblHAL, lblGroup, lblSection, lblMode, lblUserId;  
+		JLabel lblHAL, lblGroup, lblSection, lblMode, lblStrategy, lblUserId;  
 		
 		JPanel pnl = new JPanel();
 		JPanel pnlInside = new JPanel();
@@ -76,7 +78,8 @@ public class AppMain implements ActionListener
 		String[] group = {"Group 1", "Group 2", "Group 3"};
 		String[] section = {"Section 1", "Section 2"};
 		String[] mode = {"Practice", "Experiment"};
-				
+		String[] strategy = {"waypoint 1", "waypoint 2", "target 1", "target 2"};
+		
 		border = BorderFactory.createTitledBorder("");
 		
 		lblHAL = new JLabel();
@@ -84,6 +87,7 @@ public class AppMain implements ActionListener
 		lblGroup = new JLabel("Group");
 		lblSection = new JLabel("Section");
 		lblMode = new JLabel("Mode");
+		lblStrategy = new JLabel("Strategy");
 		_btnStart = new JButton("START"); 
 		_btnStart.addActionListener(this);
 		_cmbTextUserID = new JTextField();
@@ -94,6 +98,8 @@ public class AppMain implements ActionListener
 		_cmbBoxSection.addActionListener(this);
 		_cmbBoxMode = new JComboBox(mode);
 		_cmbBoxMode.addActionListener(this);
+		_cmbBoxStrategy = new JComboBox(strategy);
+		_cmbBoxStrategy.addActionListener(this);
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(new File("Pictures/HAL/HAL.png"));
@@ -116,9 +122,9 @@ public class AppMain implements ActionListener
 		_frmLogin.setVisible(true);        
         
 		double sizeMain[][] = {{TableLayout.FILL, 50, 238, 50, TableLayout.FILL}, 
-				{10, 160, 185, TableLayout.FILL}};				
+				{10, 150, 200, TableLayout.FILL}};				
 		double sizeInside[][] = {{TableLayout.FILL, 60, 10, 140, TableLayout.FILL}, 
-				{TableLayout.FILL, 10, 0, 25, 5, 25, 5, 25, 5, 25, 15, 25, TableLayout.FILL}};
+				{TableLayout.FILL, 5, 0, 25, 5, 25, 5, 25, 5, 25, 5, 25, 10, 25, TableLayout.FILL}};
 		
 		pnlInside.setLayout(new TableLayout(sizeInside));
 		pnlInside.setBorder(border);
@@ -130,7 +136,9 @@ public class AppMain implements ActionListener
 		pnlInside.add(_cmbBoxGroup, "3,7");
 		pnlInside.add(lblSection, "1,9");
 		pnlInside.add(_cmbBoxSection, "3,9");
-		pnlInside.add(_btnStart, "1,11, 3,11");
+		pnlInside.add(lblStrategy, "1,11");
+		pnlInside.add(_cmbBoxStrategy, "3,11");
+		pnlInside.add(_btnStart, "1,13, 3,13");
 
 		_btnStart.setEnabled(true);					
 		
@@ -153,20 +161,25 @@ public class AppMain implements ActionListener
 		if( ev.getSource() == _cmbBoxSection ) {  
 			_section = _cmbBoxSection.getSelectedIndex();
 		}
+		if( ev.getSource() == _cmbBoxStrategy ) {  
+			_strategy = _cmbBoxStrategy.getSelectedIndex();
+		}
 		if( ev.getSource() == _cmbBoxMode ) {  
 			_mode = _cmbBoxMode.getSelectedIndex();
 			if(_mode == 0) {
 				_cmbBoxGroup.setEnabled(false);
 				_cmbBoxSection.setEnabled(false);
+				_cmbBoxStrategy.setEnabled(false);
 			}
 			else {
 				_cmbBoxGroup.setEnabled(true);
 				_cmbBoxSection.setEnabled(true);
+				_cmbBoxStrategy.setEnabled(true);
 			}
 		}
 		if( ev.getSource() == _btnStart ) {
 			try {
-				initRESCHU(_username, _group, _section, _mode);
+				initRESCHU(_username, _group, _section, _mode, _strategy);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
