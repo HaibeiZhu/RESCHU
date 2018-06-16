@@ -45,6 +45,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public UAVMonitor uavMonitor;
 	public AttackNotificationEngine attackNotificationEngine;
 	public AttackEngine attackEngine;
+	public SuggestionSystem suggestionSystem;
 	public TextOverlay payloadTextOverlay;
 
 	public Game game;
@@ -240,6 +241,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 			try {
 				attackNotificationEngine = new AttackNotificationEngine(this, game);
 				attackEngine = new AttackEngine(game.getVehicleList());
+				if(game.getGuidance()) suggestionSystem = new SuggestionSystem(this, game);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}

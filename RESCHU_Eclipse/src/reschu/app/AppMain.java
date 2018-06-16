@@ -119,10 +119,10 @@ public class AppMain implements ActionListener
 		_frmLogin.add(pnl);
 		_frmLogin.setLocation(300,300);
 		_frmLogin.setAlwaysOnTop(true);
-		_frmLogin.setVisible(true);        
+		_frmLogin.setVisible(true);
         
 		double sizeMain[][] = {{TableLayout.FILL, 50, 238, 50, TableLayout.FILL}, 
-				{10, 150, 200, TableLayout.FILL}};				
+				{10, 145, 200, TableLayout.FILL}};				
 		double sizeInside[][] = {{TableLayout.FILL, 60, 10, 140, TableLayout.FILL}, 
 				{TableLayout.FILL, 5, 0, 25, 5, 25, 5, 25, 5, 25, 5, 25, 10, 25, TableLayout.FILL}};
 		

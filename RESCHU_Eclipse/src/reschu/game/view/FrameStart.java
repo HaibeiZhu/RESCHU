@@ -103,6 +103,5 @@ public class FrameStart extends JFrame implements ActionListener {
 			this.setVisible(false);
 			lsnr.gameStart();
 		}
-		
-	} 
+	}
 }
