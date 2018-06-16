@@ -44,7 +44,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	private int[] drag_from, drag_to, drag_to_prev, drag_next, region;
 	private JButton acceptSuggestion, rejectSuggestion;
 	private JDialog suggestionBox;
-	private JLabel sug;
+	private JLabel suggestionTitle;
 	//  private Image backbuffer;
 	//  private Graphics2D backg;
 	private Image img;
@@ -270,23 +270,25 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
     }
 
     private void paintSuggestionMessageBox(Vehicle v){
+    	int boxHeight = 40;
+    	int boxWidth = 150;
         suggestionBox = new JDialog();
         suggestionBox.setUndecorated(true);
-        suggestionBox.setSize(200,100);
+        suggestionBox.setSize(boxWidth, boxHeight);
         Container pane = suggestionBox.getContentPane();
         pane.setLayout(null);
         acceptSuggestion = new JButton("Accept");
         rejectSuggestion = new JButton("Reject");
-        sug = new JLabel("set waypoint");
+        suggestionTitle = new JLabel("Set Waypoint");
         pane.add(acceptSuggestion);
         pane.add(rejectSuggestion);
-        pane.add(sug);
+        pane.add(suggestionTitle);
 
-        sug.setSize(100,20);
-        sug.setLocation(0,0);
+        suggestionTitle.setSize(boxWidth, boxHeight/2);
+        suggestionTitle.setLocation(0,0);
 
-        acceptSuggestion.setSize(75,25);
-        acceptSuggestion.setLocation((suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3, 60);
+        acceptSuggestion.setSize(boxWidth/2, boxHeight/2);
+        acceptSuggestion.setLocation(0 /*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/2);
         acceptSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -295,13 +297,12 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 suggestionBox = null;
 
                 v.addWaypoint(map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
-
                 lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
             }
         });
 
-        rejectSuggestion.setSize(75,25);
-        rejectSuggestion.setLocation(acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3, 60);
+        rejectSuggestion.setSize(boxWidth/2,boxHeight/2);
+        rejectSuggestion.setLocation(boxWidth/2 /*acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/2);
         rejectSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -312,9 +313,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
             }
         });
-
         suggestionBox.setAlwaysOnTop(true);
-
     }
 
     private void updateSuggestionMesssageBox(Vehicle v){

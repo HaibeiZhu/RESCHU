@@ -12,4 +12,26 @@ public class SuggestionSystem {
 		_reschu = reschu;
 		_game = game;
 	}
+	
+	public class Point {
+		// _x, _y are the coordinates, _z is the data amount
+		private int _x, _y, _z;
+		// _rate is the success rate on a specific point
+		private double _rate;
+		
+		public Point(int X, int Y, int Z, double RATE) {
+			_x = X;
+			_y = Y;
+			_z = Z;
+			_rate = RATE;
+		}
+		public int getX() {return _x;}
+		public int getY() {return _y;}
+		public int getZ() {return _z;}
+		public double getRate() {return _rate;}
+		
+		public double getDistance(int x, int y) {
+			return Math.sqrt(Math.pow((_x-x),2)+Math.pow((_y-y),2));
+		}
+	}
 }
