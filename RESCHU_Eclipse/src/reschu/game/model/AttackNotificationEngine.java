@@ -38,7 +38,7 @@ public class AttackNotificationEngine {
 		String action;
 		
 		File attackFile = new File(ATTACK_NOTIFICATIONS_FILENAME);
-		BufferedReader br = new BufferedReader(new FileReader(attackFile)); 
+		BufferedReader br = new BufferedReader(new FileReader(attackFile));
 		timerToVehicle = new HashMap<String, Integer>();
 		delayToVehicle = new HashMap<String, Integer>();
 		hackData = new HashMap<Integer, Integer>();
