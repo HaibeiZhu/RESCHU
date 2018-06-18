@@ -9,8 +9,8 @@ public class MySize {
 	final static public int OFFSET_WIDTH = 0;	// was 10
 	final static public int UAV_POS_MIN_X = 0;
 	final static public int UAV_POS_MIN_Y = 0;
-	final static public int UAV_POS_MAX_X = 490;
-	final static public int UAV_POS_MAX_Y = 490;
+	final static public int UAV_POS_MAX_X = 980; // was 490
+	final static public int UAV_POS_MAX_Y = 980; // was 490
 
 	final static public int height = MAP_HEIGHT_PXL / SIZE_CELL - OFFSET_HEIGHT;
     final static public int width =  MAP_WIDTH_PXL / SIZE_CELL - OFFSET_WIDTH;

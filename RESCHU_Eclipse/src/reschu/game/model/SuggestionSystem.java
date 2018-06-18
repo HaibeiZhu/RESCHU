@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.Vector;
 
@@ -14,18 +16,14 @@ import reschu.game.controller.Reschu;
 public class SuggestionSystem {
 	private Reschu _reschu;
 	private Game _game;
-	private Vector<Point> _pointList;
+	private List<Point> _pointlist = new ArrayList<Point>();
 	
 	// the suggestion / decision support system will be enabled
 	// only in those scenarios with Guidance
 	public SuggestionSystem(Reschu reschu, Game game) throws FileNotFoundException {
 		_reschu = reschu;
 		_game = game;
-		_pointList.clear();
 		LoadHeatMapData();
-		
-		// test
-		// System.out.println(PointList.get(3).getRate());
 	}
 	
 	public class Point {
@@ -60,12 +58,10 @@ public class SuggestionSystem {
 		try {
 			while((line = br.readLine()) != null) {
 				lineParams = line.split(" ");
-				// /*
-				PointList.add(new Point(Integer.parseInt(lineParams[0]),
+				_pointlist.add(new Point(Integer.parseInt(lineParams[0]),
 						Integer.parseInt(lineParams[1]),
 						Integer.parseInt(lineParams[2]),
 						Double.parseDouble(lineParams[3])));
-				// */
 			}
 		} catch (NumberFormatException e) {
 			System.out.println("Illegal non-numeric values in heat map data file");

@@ -49,6 +49,7 @@ public class Vehicle {
 	// collecting data for decision support system
 	private int waypoint_count = 0;
 	private int target_count = 0;
+	// private SuggestionSystem _suggestion;
 	
 	public boolean getHijackStatus () {
 		return isHijacked;
@@ -59,11 +60,11 @@ public class Vehicle {
 	public boolean getInvestigateStatus() {
 		return isInvestigated;
 	}
-	public boolean getisSuggested(){ return isSuggested; }
+	public boolean getSuggestedStatus() {
+		return isSuggested;
+	}
 	public void setInvestigateStatus(boolean b) {
-		if(b){
-			setSuggested(true);
-		}
+		if(b) setSuggestedStatus(true);
 		isInvestigated = b;
 	}
 	public boolean getEngageStatus () {
@@ -84,10 +85,9 @@ public class Vehicle {
 	public void setNotifiedStatus (boolean b) {
 		isNotified = b;
 	}
-	public void setSuggested(boolean suggested) {
-		isSuggested = suggested;
+	public void setSuggestedStatus(boolean b) {
+		isSuggested = b;
 	}
-
 	public void addWaypointCount() {
 		waypoint_count ++;
 	}

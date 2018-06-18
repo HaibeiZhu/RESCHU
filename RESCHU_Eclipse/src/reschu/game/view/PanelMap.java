@@ -12,8 +12,8 @@ import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.*;
 
-public class PanelMap extends JPanel implements ActionListener, MouseListener, MouseMotionListener, PopupMenuListener  
-{		 
+public class PanelMap extends JPanel implements ActionListener, MouseListener, MouseMotionListener, PopupMenuListener
+{
 	private static final long serialVersionUID = -4987595764448267113L;
 	public static Vehicle selectedVehicle, investigatedVehicle;
 	private final int cellsize = MySize.SIZE_CELL;
@@ -57,7 +57,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	private int _durationTextOnTop = 0;
 	private String _msgTextOnTop = "";
 	private boolean _isTextOnTop = false;
-	private Reschu reschu;
 
 	public PanelMap(GUI_Listener l, Game g, String strTitle) {
 		lsnr = l;
@@ -79,9 +78,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		dragGPMode = false;
 		dragWPMode = false;
 		eventDisabled = false;
-		drag_to_prev = new int[]{0, 0}; // to optimize repainting when drag. saves the previous mouse point.
-		region = new int[]{0,0,0,0}; // bogus value
-
+		drag_to_prev = new int[]{0,0};	// to optimize repainting when drag. saves the previous mouse point.
+		region = new int[]{0,0,0,0};	// bogus value
 		btnEmpty = new JButton(); btnEmpty.setEnabled(false);
 
 		this.setSize(mapWidth , mapHeight);
@@ -99,20 +97,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	public synchronized Vehicle getInvestigatedVehicle() {return investigatedVehicle;}
 
 	public synchronized void setInvestigatedVehicle(Vehicle v) {v.isInvestigated = true;}
-	
-	/*
-	// make mutual reference between Reschu and PanelMap
-	public void setRESCHU(Reschu r) {
-		reschu = r;
-	}
-	*/
-
-	/**
-	 * For DEBUG
-	 */
-	//    private void printCoord(String msg, int x1, int y1, int x2, int y2) {
-	//    	System.err.println("COORD: (" + x1 + "," + y1 +") - (" + x2 +"," + y2 + ") when " + msg);
-	//    }
 
 	@Override
 	public void update(Graphics g) {
@@ -121,12 +105,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		paintMap(g2d);
 		paintHazardArea(g2d);
 		paintTarget(g2d);
-		If_UAV_Disappeared(); // check if UAV is disappeared from map
+		checkUAVStatus(g2d); // check the UAV status
 		paintVehicles(g2d);
 		paintDrag(g2d);
 		paintText(g2d);
-
-
 
 		if( mapSettingMode ) paintBorder(g2d, Color.blue);
 		if( eventDisabled ) paintBorder(g2d, Color.red);
@@ -138,13 +120,16 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		// reschu.textOverlay.update();
 	}
 	
-	// check if the ground truth position of an attacked UAV is out of border
-	// if YES, then don't paint that UAV (make it disappear)
-	public void If_UAV_Disappeared() {
+	// check UAV status, including whether the UAV disappeared
+	// and whether decision suggestion should be provided
+	public void checkUAVStatus(Graphics2D g) {
 		VehicleList vList = game.getVehicleList();
 		Vehicle v;		
-		for (int i=0; i<vList.size(); i++){
+		for(int i=0; i<vList.size(); i++) {
 			v = vList.getVehicle(i);
+			
+			// check if the ground truth position of an attacked UAV is out of border
+			// if YES, then don't paint that UAV (make it disappear)
 			if(v.getHijackStatus()) {
 				if((v.getGroundTruthX() <= pos_min_X) || (v.getGroundTruthX() >= pos_max_X)
 						|| (v.getGroundTruthY() <= pos_min_Y) || (v.getGroundTruthY() >= pos_max_Y)) {
@@ -155,6 +140,23 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						PanelMsgBoard.Msg("UAV ["+v.getIndex()+"] is lost due to cyber attack.");
 						v.getTarget().setDone();
 					}
+				}
+			}
+			
+			// check whether the decision suggestion should be provided for a specific UAV
+			if(game.getGuidance() && v==selectedVehicle && v.getNotifiedStatus()) {
+				if(v.getSuggestedStatus()) {
+					paintSuggestion(g, v);
+					if(suggestionBox == null) paintSuggestionBox(v);
+		            else updateSuggestionBox(v);
+				}
+				else {
+					if(suggestionBox != null) hideSuggestionBox(v);
+				}
+			}
+			else {
+				if(selectedVehicle != null) {
+					if(!selectedVehicle.getNotifiedStatus() && suggestionBox!=null) hideSuggestionBox(v);
 				}
 			}
 		}
@@ -268,8 +270,15 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             p.paintLine(g, v.getX(), v.getY(), pos[0], pos[1], new Color(100, 255, 255, 150));
         }
     }
+    
+    // TODO: need further implementation of different strategies
+    private void paintSuggestion(Graphics2D g, Vehicle v) {
+		paintSuggestionArea(g, v);
+		paintSuggestionArrow(g, v);
+		paintSuggestionLine(g, v);
+    }
 
-    private void paintSuggestionMessageBox(Vehicle v){
+    private void paintSuggestionBox(Vehicle v) {
     	int boxHeight = 40;
     	int boxWidth = 150;
         suggestionBox = new JDialog();
@@ -292,7 +301,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         acceptSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                v.setSuggested(false);
+                v.setSuggestedStatus(false);
                 hideSuggestionBox(v);
                 suggestionBox = null;
 
@@ -306,7 +315,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         rejectSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                v.setSuggested(false);
+                v.setSuggestedStatus(false);
                 hideSuggestionBox(v);
                 suggestionBox = null;
 
@@ -316,8 +325,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         suggestionBox.setAlwaysOnTop(true);
     }
 
-    private void updateSuggestionMesssageBox(Vehicle v){
-        suggestionBox.setLocation(v.getX() + 600, v. getY()+50);
+    private void updateSuggestionBox(Vehicle v){
+        suggestionBox.setLocation(v.getX()+600, v.getY()+50);
         if(!suggestionBox.isVisible()) {
             suggestionBox.setVisible(true);
         }
@@ -386,25 +395,26 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					investigatedVehicle = null;
 				}
 			}
-
-			// for decision support system
-
-            //deletes sBox
-            if(v.getInvestigateStatus() && v.isSuggested && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
-                hideSuggestionBox(v);
-            }
+			
+			/*
+			// the decision support system functions could be implemented here, however,
+			// those functions are summarized to another function
+			// in the future, all UAV status checking related functions should be summarized together
+	        if(v.getInvestigateStatus() && v.isSuggested && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
+	            hideSuggestionBox(v);
+	        }
 			else if(v.getInvestigateStatus() && v.isSuggested && v == selectedVehicle && game.getGuidance()) {
-
 				paintSuggestionArea(g, v);
 				paintSuggestionArrow(g, v);
 				paintSuggestionLine(g, v);
 				if(suggestionBox == null) {
 				    paintSuggestionMessageBox(v);
-                }
-                else {
-                    updateSuggestionMesssageBox(v);
-                }
+	            }
+	            else {
+	                updateSuggestionMesssageBox(v);
+	            }
 			}
+			*/
 
 			if(v.getType() == Vehicle.TYPE_UAV) {
 				// the UAV shape
@@ -519,15 +529,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		if( Reschu.train() ) 
 			paintTextOnTop(g, "Training Mode (Close window when done)", 40, 
 					new Color(1.0f, 1.0f, 1.0f, 0.5f), 70, 50);
-		// Required resolution check for Java WebStart
-		//        if( getHeight() < mapHeight || getWidth() < mapWidth ) {         	
-		//        	g.setColor(new Color(0.8f, 0.8f, 0.8f, 0.4f)); 
-		//        	g.fillRect(10,getHeight()-55, getWidth()-20, 35);
-		//        	Composite backup = g.getComposite();
-		//        	g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
-		//        	paintTextOnTop(g, "You need a minimum screen resolution of 1280 x 1024. Please try again.", 20, new Color(1.0f, 1.0f, 0.0f, 0.8f), 20, getHeight()-30);
-		//        	g.setComposite(backup);
-		//        }
 		if( _isTextOnTop ) {        	
 			g.setColor(new Color(0.8f, 0.8f, 0.8f, 0.4f)); 
 			g.fillRect(10,getHeight()-55, getWidth()-20, 35);
