@@ -14,14 +14,13 @@ import reschu.constants.MyGame;
 import reschu.game.controller.Reschu;
 
 public class SuggestionSystem {
-	private Reschu _reschu;
 	private Game _game;
-	private List<Point> _pointlist = new ArrayList<Point>();
+	private static List<Point> _pointlist = new ArrayList<Point>();
+	private static int[] suggestedPoint = new int[2];
 	
 	// the suggestion / decision support system will be enabled
 	// only in those scenarios with Guidance
-	public SuggestionSystem(Reschu reschu, Game game) throws FileNotFoundException {
-		_reschu = reschu;
+	public SuggestionSystem(Game game) throws FileNotFoundException {
 		_game = game;
 		LoadHeatMapData();
 	}
@@ -70,5 +69,19 @@ public class SuggestionSystem {
 			System.out.println("Illegal non-numeric values in heat map data file");
 			e.printStackTrace();
 		}
+	}
+	
+	public static int[] getWaypointSuggestion(Game game, Vehicle v) {
+		double score = 0.0;
+		double temp_score = 0.0;
+		for(int i=0; i<_pointlist.size(); i++) {
+			temp_score += _pointlist.get(i).getDistance(v.getX(), v.getY());
+			if(temp_score > score) {
+				score = temp_score;
+				suggestedPoint[0] = v.getX()+100;
+				suggestedPoint[1] = v.getY()+100;
+			}
+		}
+		return suggestedPoint;
 	}
 }

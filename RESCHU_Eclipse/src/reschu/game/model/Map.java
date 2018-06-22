@@ -17,35 +17,31 @@ public class Map {
 	private LinkedList<Target> listAssignedTarget = new LinkedList<Target>();
 	private LinkedList<Target> listUnassignedTarget = new LinkedList<Target>();
 	private LinkedList<int[]> listHazard = new LinkedList<int[]>();
-	private int[] suggestedArea = new int[2];
-	private int[] suggestedDest = new int[2];
+	private int[] suggestedPoint = new int[2];
+	private int[] suggestedTarget = new int[2];
 
 	Map() {}
-
 	Map(int width, int height, Game g, GUI_Listener l) {
 		mapArray = new int[width][height];
 		this.g = g;
 		lsnr = l;
 	}
-
+	
 	public List<Target> getListAssignedTarget() {
 		return listAssignedTarget;
 	}
-
 	public List<Target> getListUnassignedTarget() {
 		return listUnassignedTarget;
 	}
-
 	public List<int[]> getListHazard() {
 		return listHazard;
 	}
-	public int[] getSuggestedArea(){
-		return suggestedArea;
+	public int[] getSuggestedPoint(){
+		return suggestedPoint;
 	}
-	public int[] getSuggestedDest() {
-		return suggestedDest;
+	public int[] getSuggestedTarget() {
+		return suggestedTarget;
 	}
-
 	public int getTargetSize(String target_type) {
 		int cnt = 0;
 		for (int i = 0; i < listAssignedTarget.size(); i++)
@@ -56,36 +52,33 @@ public class Map {
 				cnt++;
 		return cnt;
 	}
-
-	public void setSuggestedDest(int a, int b) {
-	    suggestedDest[0] = a;
-		suggestedDest[1] = b;
+	public void setSuggestedTarget(int[] pos) {
+	    suggestedTarget[0] = pos[0];
+		suggestedTarget[1] = pos[1];
 	}
-
-	public void setSuggestedArea(int a, int b){
-        suggestedArea[0] = a;
-        suggestedArea[1] = b;
+	public void setSuggestedPoint(int[] pos){
+        suggestedPoint[0] = pos[0];
+        suggestedPoint[1] = pos[1];
 	}
 	public synchronized void setCellType(int x, int y, int type) {
 		mapArray[x][y] = type;
 	}
-
 	public synchronized int getCellType(int x, int y) {
 		return mapArray[x][y];
 	}
-
+	
 	public synchronized void addTarget(Target t) {
 		if (g.isRunning())
 			lsnr.EVT_Target_Generated(t.getName(), t.getPos(), t.isVisible());
 		listUnassignedTarget.addLast(t);
 	}
-
+	
 	public synchronized void addHazard(int x, int y, int size) {
 		if (g.isRunning())
 			lsnr.EVT_HazardArea_Generated(new int[] { x, y });
 		listHazard.addLast(new int[] { x, y, size });
 	}
-
+	
 	public synchronized void assignTarget(int[] coordinate) {
 		for (int i = 0; i < listUnassignedTarget.size(); i++) {
 			if (boundaryCheck(coordinate[0], coordinate[1], listUnassignedTarget.get(i).getPos())) {
@@ -94,7 +87,7 @@ public class Map {
 			}
 		}
 	}
-
+	
 	public synchronized void unassignTarget(int[] coordinate) {
 		for (int i = 0; i < listAssignedTarget.size(); i++) {
 			if (boundaryCheck(coordinate[0], coordinate[1], listAssignedTarget.get(i).getPos())) {
@@ -103,18 +96,18 @@ public class Map {
 			}
 		}
 	}
-
+	
 	public synchronized void delHazard(int idx) {
 		lsnr.EVT_HazardArea_Disappeared(new int[] { listHazard.get(idx)[0], listHazard.get(idx)[1] });
 		listHazard.remove(idx);
 	}
-
+	
 	public synchronized boolean isTarget(int x, int y) {
 		if (isAssignedTarget(x, y) || isUnassignedTarget(x, y))
 			return true;
 		return false;
 	}
-
+	
 	public synchronized boolean isAssignedTarget(int x, int y) {
 		for (int i = 0; i < listAssignedTarget.size(); i++) {
 			if (listAssignedTarget.get(i).getPos()[0] == x && listAssignedTarget.get(i).getPos()[1] == y)
@@ -122,7 +115,7 @@ public class Map {
 		}
 		return false;
 	}
-
+	
 	public synchronized boolean isUnassignedTarget(int x, int y) {
 		for (int i = 0; i < listUnassignedTarget.size(); i++) {
 			if (listUnassignedTarget.get(i).getPos()[0] == x && listUnassignedTarget.get(i).getPos()[1] == y)
@@ -130,7 +123,7 @@ public class Map {
 		}
 		return false;
 	}
-
+	
 	public synchronized boolean isHazard(int x, int y) {
 		for (int i = 0; i < listHazard.size(); i++) {
 			if (listHazard.get(i)[0] == x && listHazard.get(i)[1] == y)
@@ -138,7 +131,7 @@ public class Map {
 		}
 		return false;
 	}
-
+	
 	private boolean boundaryCheck(int x, int y, int[] target_pos) {
 		int w = Math.round(MySize.SIZE_TARGET_PXL / MySize.SIZE_CELL / 2);
 
@@ -148,7 +141,7 @@ public class Map {
 					return true;
 		return false;
 	}
-
+	
 	public void setHazardArea(Random rnd) {
 		int nHazard = (Reschu.tutorial()) ? MyGame.nHAZARD_AREA_TUTORIAL : MyGame.nHAZARD_AREA;
 		int nHazardNeed = nHazard - getListHazard().size();
@@ -160,7 +153,7 @@ public class Map {
 			addHazard(x, y, rnd.nextInt(5));
 		}
 	}
-
+	
 	private boolean chkOkayToAdd(int x, int y) {
 		final int LIMIT_DISTANCE = 40;
 		final boolean DEBUG = false;

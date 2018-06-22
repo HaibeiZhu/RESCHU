@@ -287,20 +287,20 @@ public class Vehicle {
 	*/
 	
 	public synchronized void setGroundTruthX(int x)	{ s64XposGdTruth = x; }
-	public synchronized int  getGroundTruthX()		{ return (int)(s64XposGdTruth); } 
-	public synchronized void setGroundTruthY(int y)	{ s64YposGdTruth = y; }   
+	public synchronized int  getGroundTruthX()		{ return (int)(s64XposGdTruth); }
+	public synchronized void setGroundTruthY(int y)	{ s64YposGdTruth = y; }
 	public synchronized int  getGroundTruthY()		{ return (int)(s64YposGdTruth); }
 	public synchronized void setObservedX(int x)	{ s64XposObs = x; }
 	public synchronized int  getX()					{ return (int)(isHijacked? s64XposObs : s64XposGdTruth); }
-	public synchronized void setObservedY(int y)	{ s64YposObs = y; }   
+	public synchronized void setObservedY(int y)	{ s64YposObs = y; }
 	public synchronized int  getY()					{ return (int)(isHijacked? s64YposObs : s64YposGdTruth); }
 	public synchronized void 	setGroundTruthX64(double x)	{ s64XposGdTruth = x; }
 	public synchronized double  getGroundTruthX64()			{ return s64XposGdTruth; } 
-	public synchronized void 	setGroundTruthY64(double y)	{ s64YposGdTruth = y; }   
+	public synchronized void 	setGroundTruthY64(double y)	{ s64YposGdTruth = y; }
 	public synchronized double  getGroundTruthY64()			{ return s64YposGdTruth; }
 	public synchronized void 	setObservedX64(double x)	{ s64XposObs = x; }
 	public synchronized double  getX64()					{ return (isHijacked? s64XposObs : s64XposGdTruth); }
-	public synchronized void 	setObservedY64(double y)	{ s64YposObs = y; }   
+	public synchronized void 	setObservedY64(double y)	{ s64YposObs = y; }
 	public synchronized double  getY64()					{ return (isHijacked? s64YposObs : s64YposGdTruth); }
 	public synchronized void  	setGtAngle64(double a)		{ s64GtAngle  = a; }
 	public synchronized void  	setObsAngle64(double a)		{ s64ObsAngle = a; }
@@ -1145,8 +1145,5 @@ public class Vehicle {
 			double distance = Math.hypot((getTarget().getPos()[0]-getX64()), (getTarget().getPos()[1]-getY64()));
 			return distance;
 		}
-	}
-	
-	public void HMM_Guidance() {
 	}
 }

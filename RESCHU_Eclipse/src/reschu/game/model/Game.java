@@ -74,10 +74,12 @@ public class Game implements Runnable, ActionListener {
     private Random rnd = new Random();
     private int _section;
     private int _group;
+    private int _strategy;
+    private SuggestionSystem suggestionSystem;
 
     public synchronized int getElapsedTime() {return elapsedTime;}
 
-    public Game(GUI_Listener l, int group, int section) throws NumberFormatException, IOException {
+    public Game(GUI_Listener l, int group, int section, int strategy) throws NumberFormatException, IOException {
         if( Reschu.train() || Reschu.tutorial()) Game.TIME_TOTAL_GAME *= 10;
 
         if( Reschu._database ) {
@@ -142,15 +144,19 @@ public class Game implements Runnable, ActionListener {
         setGroupSection(group, section);
         _group = group;
         _section = section;
+        _strategy = strategy;
+        suggestionSystem = new SuggestionSystem(this);
     }
     
     public int getGroup() {return _group;}
     public int getSection() {return _section;}
+    public int getStrategy() {return _strategy;}
     public int getTotalTargetNumber() {return nTargetAreaTotal;}
     public boolean getGuidance() {return Guidance;}
     public boolean getTraining() {return Training;}
     public boolean getCollection() {return Collection;}
     
+    public SuggestionSystem getSuggestion() {return suggestionSystem;}
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
 

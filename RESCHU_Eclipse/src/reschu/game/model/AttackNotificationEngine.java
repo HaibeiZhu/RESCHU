@@ -157,9 +157,6 @@ public class AttackNotificationEngine {
 			*/
 			PanelMap.investigatedVehicle = VehicleList.getVehicle(VehicleID);
 			VehicleList.getVehicle(VehicleID).setInvestigateStatus(true);
-			//change param later
-			game.map.setSuggestedArea(100, 40);
-            game.map.setSuggestedDest(500, 500);
 		}
 		
 		if(selectedValue == null) {

@@ -146,8 +146,29 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			// check whether the decision suggestion should be provided for a specific UAV
 			if(game.getGuidance() && v==selectedVehicle && v.getNotifiedStatus()) {
 				if(v.getSuggestedStatus()) {
-					paintSuggestion(g, v);
-					if(suggestionBox == null) paintSuggestionBox(v);
+					// the decision suggestion system is triggered here
+					// switch different paint functions based on different pre-defined strategies
+					switch(game.getStrategy()) {
+					case 0:
+						// waypoint strong strategy
+						int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
+						paintSuggestionWaypoint(g, v, point);
+						map.setSuggestedPoint(point);
+						break;
+					case 1:
+						// waypoint weak strategy
+						break;
+					case 2:
+						// target strong strategy
+						break;
+					case 3:
+						// target weak strategy
+						break;
+					default:
+						break;
+					}
+					
+					if(suggestionBox == null) paintSuggestionBox(game.getStrategy(), v);
 		            else updateSuggestionBox(v);
 				}
 				else {
@@ -241,18 +262,17 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(255, 255, 128, 150));
 		}
 	}
-	private void paintSuggestionArea(Graphics2D g, Vehicle v) {
-		int[] pos = map.getSuggestedArea();
+	private void paintSuggestionPoint(Graphics2D g, int[] pos) {
+		// int[] pos = map.getSuggestedArea();
 		if(!(pos[0] == 0 && pos[1] == 0)) {
-		    //still uses Hazard area sizes -- @TODO create new constant in MySize later
+		    // still uses Hazard area sizes -- @TODO create new constant in MySize later
             p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
             p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
             p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
         }
 	}
 
-	private void paintSuggestionArrow(Graphics2D g, Vehicle v){
-	    int[] pos = map.getSuggestedDest();
+	private void paintSuggestionTarget(Graphics2D g, Vehicle v, int[] pos){
 	    if(!(pos[0] == 0 && pos[1] == 0)){
             p.paintArrow(g, pos[0],pos[1], 2, 2, new Color(100, 255, 255, 150));
         }
@@ -264,21 +284,19 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         */
     }
 
-    private void paintSuggestionLine(Graphics2D g, Vehicle v){
-        int[] pos = map.getSuggestedArea();
+    private void paintSuggestionLine(Graphics2D g, Vehicle v, int[] pos){
         if(!(pos[0] == 0 && pos[1] == 0)) {
             p.paintLine(g, v.getX(), v.getY(), pos[0], pos[1], new Color(100, 255, 255, 150));
         }
     }
     
     // TODO: need further implementation of different strategies
-    private void paintSuggestion(Graphics2D g, Vehicle v) {
-		paintSuggestionArea(g, v);
-		paintSuggestionArrow(g, v);
-		paintSuggestionLine(g, v);
+    private void paintSuggestionWaypoint(Graphics2D g, Vehicle v, int[] pos) {
+    	paintSuggestionPoint(g, pos);
+		paintSuggestionLine(g, v, pos);
     }
 
-    private void paintSuggestionBox(Vehicle v) {
+    private void paintSuggestionBox(int strategy, Vehicle v) {
     	int boxHeight = 40;
     	int boxWidth = 150;
         suggestionBox = new JDialog();
@@ -288,7 +306,23 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         pane.setLayout(null);
         acceptSuggestion = new JButton("Accept");
         rejectSuggestion = new JButton("Reject");
-        suggestionTitle = new JLabel("Set Waypoint");
+        switch(strategy) {
+        case 0:
+            suggestionTitle = new JLabel("Add Waypoint");
+            break;
+        case 1:
+            suggestionTitle = new JLabel("Add Waypoint");
+            break;
+        case 2:
+            suggestionTitle = new JLabel("Change Target");
+            break;
+        case 3:
+        	suggestionTitle = new JLabel("Change Target");
+            break;
+        default:
+        	suggestionTitle = new JLabel("Add Waypoint");
+            break;
+        }
         pane.add(acceptSuggestion);
         pane.add(rejectSuggestion);
         pane.add(suggestionTitle);
@@ -305,8 +339,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 hideSuggestionBox(v);
                 suggestionBox = null;
 
-                v.addWaypoint(map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
-                lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
+                v.addWaypoint(map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
             }
         });
 
@@ -318,8 +352,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggestedStatus(false);
                 hideSuggestionBox(v);
                 suggestionBox = null;
-
-                lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedArea()[0], map.getSuggestedArea()[1]);
+                
+                lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
             }
         });
         suggestionBox.setAlwaysOnTop(true);
@@ -384,12 +418,12 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			if(v.isNotified) clrVehicle = MyColor.COLOR_VEHICLE_NOTIFIED;
 
 			if(selectedVehicle == v) {
-				p.paintHighlight(g, (int)v.getX64(), (int)v.getY64(), cellsize, halfcell, MySize.SIZE_HIGHLIGHT_PXL, rulersize/3,
+				p.paintHighlight(g, v.getX(), v.getY(), cellsize, halfcell, MySize.SIZE_HIGHLIGHT_PXL, rulersize/3,
 						MyColor.COLOR_HIGHLIGHT, MyStroke.STROKE_BASIC, MyStroke.STROKE_WIDE);        		
 			}
 			
 			if(investigatedVehicle==v && v.getInvestigateStatus()) {
-				p.paintHighlight(g, (int)v.getX64(), (int)v.getY64(), cellsize, halfcell, MySize.SIZE_HIGHLIGHT_PXL, rulersize/3,
+				p.paintHighlight(g, v.getX(), v.getY(), cellsize, halfcell, MySize.SIZE_HIGHLIGHT_PXL, rulersize/3,
 						MyColor.COLOR_INVESTIGATE, MyStroke.STROKE_BASIC, MyStroke.STROKE_WIDE);
 				if(selectedVehicle != investigatedVehicle) {
 					investigatedVehicle = null;

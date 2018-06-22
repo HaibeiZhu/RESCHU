@@ -45,7 +45,6 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public UAVMonitor uavMonitor;
 	public AttackNotificationEngine attackNotificationEngine;
 	public AttackEngine attackEngine;
-	public SuggestionSystem suggestionSystem;
 	public TextOverlay payloadTextOverlay;
 
 	public Game game;
@@ -117,7 +116,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new TableLayout(sizeMain));
 
-		game = new Game(this, _group, _section);
+		game = new Game(this, _group, _section, _strategy);
 		origin_time = System.currentTimeMillis();
 
 		payload_canvas = new MyCanvas();
@@ -241,7 +240,6 @@ public class Reschu extends JFrame implements GUI_Listener {
 			try {
 				attackNotificationEngine = new AttackNotificationEngine(this, game);
 				attackEngine = new AttackEngine(game.getVehicleList());
-				if(game.getGuidance()) suggestionSystem = new SuggestionSystem(this, game);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
