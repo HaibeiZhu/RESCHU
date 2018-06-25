@@ -297,8 +297,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
     }
 
     private void paintSuggestionBox(int strategy, Vehicle v) {
-    	int boxHeight = 40;
-    	int boxWidth = 150;
+    	int boxHeight = 60;
+    	int boxWidth = 80;
         suggestionBox = new JDialog();
         suggestionBox.setUndecorated(true);
         suggestionBox.setSize(boxWidth, boxHeight);
@@ -314,10 +314,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             suggestionTitle = new JLabel("Add Waypoint");
             break;
         case 2:
-            suggestionTitle = new JLabel("Change Target");
+            suggestionTitle = new JLabel("Change Goal");
             break;
         case 3:
-        	suggestionTitle = new JLabel("Change Target");
+        	suggestionTitle = new JLabel("Change Goal");
             break;
         default:
         	suggestionTitle = new JLabel("Add Waypoint");
@@ -327,11 +327,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         pane.add(rejectSuggestion);
         pane.add(suggestionTitle);
 
-        suggestionTitle.setSize(boxWidth, boxHeight/2);
+        suggestionTitle.setSize(boxWidth, boxHeight/3);
         suggestionTitle.setLocation(0,0);
 
-        acceptSuggestion.setSize(boxWidth/2, boxHeight/2);
-        acceptSuggestion.setLocation(0 /*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/2);
+        acceptSuggestion.setSize(boxWidth, boxHeight/3);
+        acceptSuggestion.setLocation(0 /*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/3);
         acceptSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -344,8 +344,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             }
         });
 
-        rejectSuggestion.setSize(boxWidth/2,boxHeight/2);
-        rejectSuggestion.setLocation(boxWidth/2 /*acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/2);
+        rejectSuggestion.setSize(boxWidth, boxHeight/3);
+        rejectSuggestion.setLocation(0 /*acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, 2*boxHeight/3);
         rejectSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -359,14 +359,32 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         suggestionBox.setAlwaysOnTop(true);
     }
 
-    private void updateSuggestionBox(Vehicle v){
-        suggestionBox.setLocation(v.getX()+600, v.getY()+50);
+    private void updateSuggestionBox(Vehicle v) {
+    	// the suggestion box should be placed on the opposite side of UAV moving direction
+    	int x_off = 50;
+    	int y_off = 50;
+    	if(v.getPathSize() == 0) {
+    		suggestionBox.setLocation(v.getX()+x_off, v.getY()+y_off);
+    	}
+    	else {
+    		int[] pos = v.getFirstPathObserved();
+    		int x = v.getX();
+    		int y = v.getY();
+    		if(pos[0] >= x) {
+    			if(pos[1] >= y) suggestionBox.setLocation(x-x_off, y-y_off);
+    			else suggestionBox.setLocation(x-x_off, y+y_off);
+    		}
+    		else {
+    			if(pos[1] >= y) suggestionBox.setLocation(x+x_off, y-y_off);
+    			else suggestionBox.setLocation(x+x_off, y+y_off);
+    		}
+    	}
         if(!suggestionBox.isVisible()) {
             suggestionBox.setVisible(true);
         }
     }
 
-    private void hideSuggestionBox(Vehicle v){
+    private void hideSuggestionBox(Vehicle v) {
 	    suggestionBox.setVisible(false);
     }
 
