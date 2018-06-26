@@ -264,16 +264,15 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	}
 	private void paintSuggestionPoint(Graphics2D g, int[] pos) {
 		// int[] pos = map.getSuggestedArea();
-		if(!(pos[0] == 0 && pos[1] == 0)) {
-		    // still uses Hazard area sizes -- @TODO create new constant in MySize later
-            p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
-            p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
-            p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
+		if(!(pos[0]==0 && pos[1]==0)) {
+			// p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
+			// p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
+			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
         }
 	}
 
 	private void paintSuggestionTarget(Graphics2D g, Vehicle v, int[] pos){
-	    if(!(pos[0] == 0 && pos[1] == 0)){
+	    if(!(pos[0] == 0 && pos[1] == 0)) {
             p.paintArrow(g, pos[0],pos[1], 2, 2, new Color(100, 255, 255, 150));
         }
         /*
@@ -362,21 +361,26 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
     private void updateSuggestionBox(Vehicle v) {
     	// the suggestion box should be placed on the opposite side of UAV moving direction
     	int x_off = 50;
+    	int x_bias = 654;
     	int y_off = 50;
+    	int y_bias = 12;
     	if(v.getPathSize() == 0) {
-    		suggestionBox.setLocation(v.getX()+x_off, v.getY()+y_off);
+    		suggestionBox.setLocation(v.getX()+x_bias+x_off, v.getY()+y_bias+y_off);
     	}
     	else {
-    		int[] pos = v.getFirstPathObserved();
+    		int[] pos;
+    		if(map.getSuggestedPoint() != null) pos = map.getSuggestedPoint();
+    		else pos = v.getFirstPathObserved();
+    		
     		int x = v.getX();
     		int y = v.getY();
     		if(pos[0] >= x) {
-    			if(pos[1] >= y) suggestionBox.setLocation(x-x_off, y-y_off);
-    			else suggestionBox.setLocation(x-x_off, y+y_off);
+    			if(pos[1] >= y) suggestionBox.setLocation(x+x_bias-x_off, y+y_bias-y_off);
+    			else suggestionBox.setLocation(x+x_bias-x_off, y+y_bias+y_off);
     		}
     		else {
-    			if(pos[1] >= y) suggestionBox.setLocation(x+x_off, y-y_off);
-    			else suggestionBox.setLocation(x+x_off, y+y_off);
+    			if(pos[1] >= y) suggestionBox.setLocation(x+x_bias+x_off, y+y_bias-y_off);
+    			else suggestionBox.setLocation(x+x_bias+x_off, y+y_bias+y_off);
     		}
     	}
         if(!suggestionBox.isVisible()) {
