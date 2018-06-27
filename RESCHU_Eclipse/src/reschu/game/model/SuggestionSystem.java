@@ -114,11 +114,12 @@ public class SuggestionSystem {
 			for(int j=0; j<_arealist.get(i).size(); j++) {
 				// decision support system evaluation equation
 				temp_score = -_arealist.get(i).get(j).getDistance(v.getX(), v.getY())
-						+ 500*_arealist.get(i).get(j).getRate();
+						+ 400*_arealist.get(i).get(j).getRate();
 				if(temp_score > score) {
 					score = temp_score;
 					suggestedPoint[0] = _arealist.get(i).get(j).getX();
 					suggestedPoint[1] = _arealist.get(i).get(j).getY();
+					// need to provide another suggested point right after a suggestion
 				}
 			}
 		}

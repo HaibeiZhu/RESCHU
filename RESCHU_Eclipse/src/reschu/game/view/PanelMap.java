@@ -151,9 +151,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					switch(game.getStrategy()) {
 					case 0:
 						// waypoint strong strategy
-						int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
-						paintSuggestionWaypoint(g, v, point);
-						map.setSuggestedPoint(point);
+						if(v.getPathSize() != 0) {
+							int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
+							paintSuggestionWaypoint(g, v, point);
+							map.setSuggestedPoint(point);
+						}
 						break;
 					case 1:
 						// waypoint weak strategy
@@ -337,9 +339,28 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggestedStatus(false);
                 hideSuggestionBox(v);
                 suggestionBox = null;
-
-                v.addWaypoint(map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
-                lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                
+                // switch different actions based on different strategies
+                switch(strategy) {
+                case 0:
+                	if(v.getPathSize() != 0) {
+	                	v.addWaypoint(map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+	                    lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                	}
+                	else {                        
+                		game.AutoTargetAssign(v);
+                		v.setSuggestedStatus(true);
+                	}
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+                }
             }
         });
 
@@ -352,7 +373,20 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 hideSuggestionBox(v);
                 suggestionBox = null;
                 
-                lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                // switch different actions based on different strategies
+                switch(strategy) {
+                case 0:
+                	lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+                }
             }
         });
         suggestionBox.setAlwaysOnTop(true);
@@ -456,10 +490,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			// the decision support system functions could be implemented here, however,
 			// those functions are summarized to another function
 			// in the future, all UAV status checking related functions should be summarized together
-	        if(v.getInvestigateStatus() && v.isSuggested && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
+	        if(v.getInvestigateStatus() && v.getSuggestedStatus() && v != selectedVehicle && suggestionBox != null && game.getGuidance()){
 	            hideSuggestionBox(v);
 	        }
-			else if(v.getInvestigateStatus() && v.isSuggested && v == selectedVehicle && game.getGuidance()) {
+			else if(v.getInvestigateStatus() && v.getSuggestedStatus() && v == selectedVehicle && game.getGuidance()) {
 				paintSuggestionArea(g, v);
 				paintSuggestionArrow(g, v);
 				paintSuggestionLine(g, v);
@@ -716,7 +750,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		vehicleGoalMode = true;
 		// TODO: pass (v.getX(), v.getY(), goal_x, goal_y)
 		// repaint();
-	}    
+	}
 	public synchronized void addWP(Vehicle v) {
 		selectedVehicle = v;
 		mapSettingMode = true; setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));

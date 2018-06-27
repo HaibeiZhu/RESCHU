@@ -454,52 +454,17 @@ public class PanelPayload extends MyCanvas implements GLEventListener {
 	 * @throws IOException 
 	 */
 	public void setPayload(Vehicle v) throws IOException {
-		this.v = v;        
-		final String type = v.getType(); 
+		this.v = v;
+		final String type = v.getType();
 		final String mission = v.getTarget().getMission();
 
-		// if the previous image is not flushed yet,
+		// if the previous image is not flushed yet
 		if (img != null) img.flush();
 
 		// get the current payload of this vehicle
 		curPayload = payload_list.getPayload(type, mission); // this line
 		Image_Loading = true;
 		uavMonitor.enableUAVFeed(v);
-
-
-		/*
-        new Thread(new Runnable() {
-            public void run() {
-                try { 
-                	System.out.println("payload reached");
-                	img = ImageIO.read(new File(curPayload.getFilename())); // HERE
-                } catch (IOException ex) {									
-                    ex.printStackTrace();									
-                    System.exit(0);
-                }
-                pxl_width = (type == Vehicle.TYPE_UUV) ? 2000 : img.getWidth();
-                pxl_height = img.getHeight();
-
-                if (animRenderer == null) initAnimRenderer();
-
-                // updates animation renderer with this image's size                
-                animRenderer.setSize(pxl_width, pxl_height);                
-                updateAnimRenderer();
-
-                // set camera
-                camera_height = (type == Vehicle.TYPE_UUV) ? 1300 : 2000;
-                CAMERA_ANGLE = 30.0;
-                zoom_angle_off = 10;
-                camera_y = (type == Vehicle.TYPE_UUV) ? 0 : -400;
-
-                // resets all the variables that should be cleaned and display it
-                reset_variables();
-                glCanvas.display();
-
-                Image_Loading = false;
-            }
-        }).start();
-		 */
 
 		glEnabled(true);
 		correct = false;

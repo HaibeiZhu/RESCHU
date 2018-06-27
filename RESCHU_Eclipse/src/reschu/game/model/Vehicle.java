@@ -251,6 +251,9 @@ public class Vehicle {
 	public synchronized void removeFirstPath() {
 		if(isHijacked) observedPath.removeFirst();
 		else groundTruthPath.removeFirst();
+		
+		// enable suggestion system once a notified UAV reach a waypoint or target
+		if(isNotified) setSuggestedStatus(true);
 	}
 	
 	public synchronized void removeObservedFirstPath() {observedPath.removeFirst();}
