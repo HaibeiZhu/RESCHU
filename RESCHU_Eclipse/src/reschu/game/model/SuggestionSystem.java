@@ -16,8 +16,13 @@ import reschu.game.controller.Reschu;
 public class SuggestionSystem {
 	private Game _game;
 	private static List<Point> _pointlist = new ArrayList<Point>();
-	private static List<ArrayList<Point>> _arealist = new ArrayList<ArrayList<Point>>();
+	private static List<ArrayList<Point>> _tilelist = new ArrayList<ArrayList<Point>>();
 	private static int[] suggestedPoint = new int[2];
+	private static Target suggestedTarget = new Target();
+	private static int MapInterval = 49;
+	private static int MapMax = 980;
+	private static int MapIndexMax = MapMax/MapInterval;
+	private static int MapIndexMin = 0;
 	
 	// the suggestion / decision support system will be enabled
 	// only in those scenarios with Guidance
@@ -43,6 +48,12 @@ public class SuggestionSystem {
 		public int getY() {return _y;}
 		public int getZ() {return _z;}
 		public double getRate() {return _rate;}
+		public int[] getPos() {
+			int[] pos = new int[2];
+			pos[0] = _x;
+			pos[1] = _y;
+			return pos;
+		}
 		
 		public void addZ(int z) {_z += z;}
 		public void addRate(int z, double rate) {
@@ -80,49 +91,117 @@ public class SuggestionSystem {
 	}
 	
 	public void SplitHeatMapData() {
-		// initialize _areaList
-		int interval = 49;
-		int MapMax = 980;
-		for(int i=0; i*interval<MapMax; i++) {
-			_arealist.add(new ArrayList<Point>());
-			for(int j=0; j*interval<MapMax; j++) {
-				_arealist.get(i).add(new Point(i*interval+interval/2, j*interval+interval/2, 0, 0.0));
+		// initialize _tilelist
+		for(int i=0; i<MapIndexMax; i++) {
+			_tilelist.add(new ArrayList<Point>());
+			for(int j=0; j<MapIndexMax; j++) {
+				_tilelist.get(i).add(new Point(i*MapInterval+MapInterval/2, j*MapInterval+MapInterval/2, 0, 0.0));
 			}
 		}
-		// add heat map data into _areaList
+		// add heat map data into _tilelist
 		for(int i=0; i<_pointlist.size(); i++) {
-			int x_index = _pointlist.get(i).getX()/interval;
-			int y_index = _pointlist.get(i).getY()/interval;
-			_arealist.get(x_index).get(y_index).addZ(_pointlist.get(i).getZ());
-			_arealist.get(x_index).get(y_index).addRate(_pointlist.get(i).getZ(), _pointlist.get(i).getRate());
+			int[] pos = getTileIndex(_pointlist.get(i).getPos());
+			_tilelist.get(pos[0]).get(pos[1]).addZ(_pointlist.get(i).getZ());
+			_tilelist.get(pos[0]).get(pos[1]).addRate(_pointlist.get(i).getZ(), _pointlist.get(i).getRate());
 		}
-		// check _arealist initialization
+		// check _tilelist initialization
 		/*
-		for(int i=0; i<_arealist.size(); i++) {
-			for(int j=0; j<_arealist.get(i).size(); j++) {
-				System.out.println("_arealist["+i+"]["+j+"] "+_arealist.get(i).get(j).getX()+" "+_arealist.get(i).get(j).getY()
-						+" "+_arealist.get(i).get(j).getZ()+" "+_arealist.get(i).get(j).getRate());
+		for(int i=0; i<_tilelist.size(); i++) {
+			for(int j=0; j<_tilelist.get(i).size(); j++) {
+				System.out.println("_tilelist["+i+"]["+j+"] "+_tilelist.get(i).get(j).getX()+" "+_tilelist.get(i).get(j).getY()
+						+" "+_tilelist.get(i).get(j).getZ()+" "+_tilelist.get(i).get(j).getRate());
 			}
 		}
 		*/
 	}
 	
+	public static double getPointEvaluation(Point point, Vehicle v) {
+		// decision support system evaluation criterion for suggested point
+		return -point.getDistance(v.getX(), v.getY()) + 400*point.getRate() + 10*point.getZ();
+	}
+	
+	public static int[] getTileIndex(int[] pos) {
+		int[] tile = new int[2];
+		tile[0] = pos[0]/MapInterval;
+		tile[1] = pos[1]/MapInterval;
+		return tile;
+	}
+
+	public static List<Point> getEightTiles(int[] index) {
+		List<Point> list = new ArrayList<Point>();
+		if(index[0] > MapIndexMin) {
+			list.add(_tilelist.get(index[0]-1).get(index[1]));
+			if(index[1] > MapIndexMin) list.add(_tilelist.get(index[0]-1).get(index[1]-1));
+			if(index[1] < MapIndexMax) list.add(_tilelist.get(index[0]-1).get(index[1]+1));
+		}
+		if(index[0] < MapIndexMax) {
+			list.add(_tilelist.get(index[0]+1).get(index[1]));
+			if(index[1] > MapIndexMin) list.add(_tilelist.get(index[0]+1).get(index[1]-1));
+			if(index[1] < MapIndexMax) list.add(_tilelist.get(index[0]+1).get(index[1]+1));
+		}
+		if(index[1] > MapIndexMin) list.add(_tilelist.get(index[0]).get(index[1]-1));
+		if(index[1] < MapIndexMax) list.add(_tilelist.get(index[0]).get(index[1]+1));
+		return list;
+	}
+	
+	public static double getAreaEvaluation(Target target, Vehicle v) {
+		double score = 0.0;
+		int[] tPos = target.getPos();
+		int[] vPos = v.getPosInt();
+		List<Point> tilelist_v = getEightTiles(getTileIndex(v.getPosInt()));
+		List<Point> tilelist_t = null;
+		double distance = 9999.9;
+		double temp_dis;
+		Point point = null;
+
+		// check the direction of UAV movement
+		for(int i=0; i<tilelist_v.size(); i++) {
+			temp_dis = tilelist_v.get(i).getDistance(tPos[0], tPos[1])+tilelist_v.get(i).getDistance(vPos[0], vPos[1]);
+			if(temp_dis < distance) {
+				distance = temp_dis;
+				point = tilelist_v.get(i);
+			}
+		}
+		
+		// calculate the evaluation score for a specific direction
+		if(point != null) {
+			tilelist_t = getEightTiles(getTileIndex(point.getPos()));
+			score += getPointEvaluation(point, v);
+		}
+		if(tilelist_t != null) {
+			for(int i=0; i<tilelist_t.size(); i++) {
+				score += getPointEvaluation(tilelist_t.get(i), v);
+			}
+		}
+		return score;
+	}
+	
 	public static int[] getWaypointSuggestion(Game game, Vehicle v) {
 		double score = -9999.9;
 		double temp_score;
-		for(int i=0; i<_arealist.size(); i++) {
-			for(int j=0; j<_arealist.get(i).size(); j++) {
-				// decision support system evaluation equation
-				temp_score = -_arealist.get(i).get(j).getDistance(v.getX(), v.getY())
-						+ 400*_arealist.get(i).get(j).getRate();
+		for(int i=0; i<_tilelist.size(); i++) {
+			for(int j=0; j<_tilelist.get(i).size(); j++) {
+				temp_score = getPointEvaluation(_tilelist.get(i).get(j), v);
 				if(temp_score > score) {
 					score = temp_score;
-					suggestedPoint[0] = _arealist.get(i).get(j).getX();
-					suggestedPoint[1] = _arealist.get(i).get(j).getY();
-					// need to provide another suggested point right after a suggestion
+					suggestedPoint[0] = _tilelist.get(i).get(j).getX();
+					suggestedPoint[1] = _tilelist.get(i).get(j).getY();
 				}
 			}
 		}
 		return suggestedPoint;
+	}
+	
+	public static Target getTargetSuggestion(Game game, Vehicle v) {
+		double score = -9999.9;
+		double temp_score;
+		for(int i=0; i<game.getMap().getListUnassignedTarget().size(); i++) {
+			temp_score = getAreaEvaluation(game.getMap().getListUnassignedTarget().get(i), v);
+			if(temp_score > score) {
+				score = temp_score;
+				suggestedTarget = game.getMap().getListUnassignedTarget().get(i);
+			}
+		}
+		return suggestedTarget;
 	}
 }

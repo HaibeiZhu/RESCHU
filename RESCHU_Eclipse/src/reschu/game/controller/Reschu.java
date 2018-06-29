@@ -603,20 +603,26 @@ public class Reschu extends JFrame implements GUI_Listener {
 		return sdf.format(cal.getTime());
 	}
 
-	public void EVT_Accept_Suggestion(int vIdx, double x, double y){
-		Write(MyDB.INVOKER_USER, MyDB.ACCEPT_SUGGESTION, vIdx, "Suggestion accepted. Waypoint added at: ",
+	public void EVT_Accept_Suggestion_Waypoint(int vIdx, int x, int y) {
+		Write(MyDB.INVOKER_USER, MyDB.ACCEPT_SUGGESTION_WAYPOINT, vIdx, "Suggestion accepted. Waypoint added at: ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
-
-	public void EVT_Reject_Suggestion(int vIdx, double x, double y){
-		Write(MyDB.INVOKER_USER, MyDB.REJECT_SUGGESTION, vIdx, "Suggestion rejected.",
+	public void EVT_Reject_Suggestion_Waypoint(int vIdx, int x, int y) {
+		Write(MyDB.INVOKER_USER, MyDB.REJECT_SUGGESTION_WAYPOINT, vIdx, "Suggestion rejected. Suggested point at: ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
-
-	public void EVT_WP_AddWP_Start(int vIdx){
+	public void EVT_Accept_Suggestion_Target(int vIdx, int x, int y) {
+		Write(MyDB.INVOKER_USER, MyDB.ACCEPT_SUGGESTION_TARGET, vIdx, "Suggestion accepted. Target switched at: ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+	public void EVT_Reject_Suggestion_Target(int vIdx, int x, int y) {
+		Write(MyDB.INVOKER_USER, MyDB.REJECT_SUGGESTION_TARGET, vIdx, "Suggestion rejected. Suggested target at: ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+	public void EVT_WP_AddWP_Start(int vIdx) {
 		Write(MyDB.INVOKER_USER, MyDB.WP_ADD_START, vIdx, "Waypoint adding start");
 	}
-	public void EVT_WP_AddWP_End(int vIdx, int mouseCoordX, int mouseCoordY){
+	public void EVT_WP_AddWP_End(int vIdx, int mouseCoordX, int mouseCoordY) {
 		checkIntersect(vIdx);
 		Write(MyDB.INVOKER_USER, MyDB.WP_ADD_END, vIdx, "Waypoint adding end", mouseCoordX, mouseCoordY); 
 	}

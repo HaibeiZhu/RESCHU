@@ -18,7 +18,7 @@ public class Map {
 	private LinkedList<Target> listUnassignedTarget = new LinkedList<Target>();
 	private LinkedList<int[]> listHazard = new LinkedList<int[]>();
 	private int[] suggestedPoint = new int[2];
-	private int[] suggestedTarget = new int[2];
+	private Target suggestedTarget = new Target();
 
 	Map() {}
 	Map(int width, int height, Game g, GUI_Listener l) {
@@ -39,7 +39,7 @@ public class Map {
 	public int[] getSuggestedPoint(){
 		return suggestedPoint;
 	}
-	public int[] getSuggestedTarget() {
+	public Target getSuggestedTarget() {
 		return suggestedTarget;
 	}
 	public int getTargetSize(String target_type) {
@@ -52,9 +52,8 @@ public class Map {
 				cnt++;
 		return cnt;
 	}
-	public void setSuggestedTarget(int[] pos) {
-	    suggestedTarget[0] = pos[0];
-		suggestedTarget[1] = pos[1];
+	public void setSuggestedTarget(Target target) {
+	    suggestedTarget = target;
 	}
 	public void setSuggestedPoint(int[] pos){
         suggestedPoint[0] = pos[0];
@@ -329,16 +328,6 @@ public class Map {
 			}
 		}
 	}
-
-	// @TEMPORARY SOLUTION JUST FOR TUTORIAL BY CARL
-	//
-	// MANUAL SETTARGETAREA CODE I WAS ADDING
-	// public void manual_setTargetArea(int x, int y, String Mission_Type,
-	// String Vehicle_Type) {
-	// Target t = new Target(g.getEmptyTargetName(), chkTargetOffset(x, y),
-	// Mission_Type, Vehicle_Type, g.getTargetVisibility());
-	// addTarget(t);
-	// }
 
 	// THIS IS TEMPORARY
 	private boolean chkOkayToAdd_TEMPORARY_FOR_TUTORIAL_BY_CARL(int x, int y) {

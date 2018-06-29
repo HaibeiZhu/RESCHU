@@ -309,6 +309,18 @@ public class Vehicle {
 	public synchronized void  	setObsAngle64(double a)		{ s64ObsAngle = a; }
 	public synchronized double  getGtAngle64()				{ return s64GtAngle;  }
 	public synchronized double  getObsAngle64()				{ return s64ObsAngle; }
+	public synchronized int[] getPosInt() {
+		int[] pos = new int[2];
+		pos[0] = getX();
+		pos[1] = getY();
+		return pos;
+	}
+	public synchronized double[] getPosDouble() {
+		double[] pos = new double[2];
+		pos[0] = getX64();
+		pos[1] = getY64();
+		return pos;
+	}
 
 	public void setName(String strName) { name = strName; }
 	public String getName() {return name;}

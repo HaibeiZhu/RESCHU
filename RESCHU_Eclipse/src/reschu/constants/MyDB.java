@@ -97,6 +97,8 @@ public class MyDB {
 	final public static int CORRECT_TASK_ANSWER			= 130;
 	final public static int INCORRECT_TASK_ANSWER		= 131;
 
-    final public static int ACCEPT_SUGGESTION           = 140;
-    final public static int REJECT_SUGGESTION           = 141;
+    final public static int ACCEPT_SUGGESTION_WAYPOINT  = 150;
+    final public static int REJECT_SUGGESTION_WAYPOINT  = 151;
+    final public static int ACCEPT_SUGGESTION_TARGET    = 152;
+    final public static int REJECT_SUGGESTION_TARGET    = 153;
 }

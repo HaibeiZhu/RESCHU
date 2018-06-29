@@ -159,6 +159,7 @@ public class Game implements Runnable, ActionListener {
     public SuggestionSystem getSuggestion() {return suggestionSystem;}
     public void setListener(GUI_Listener l){ lsnr = l; }
     public DBWriter getDBWriter() {return dbWriter; }
+    public Map getMap() {return map;}
 
     private int getSeedNum(int section) {
         if( Reschu.tutorial() || Reschu.train() ) {

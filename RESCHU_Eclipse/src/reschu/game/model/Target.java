@@ -44,6 +44,8 @@ public class Target {
 	public void setName(String i) { name = i; }	
 	
 	public int[] getPos() {return pos;}
+	public int getX() {return pos[0];}
+	public int getY() {return pos[1];}
 	public String getMission() {return mission;}
 	public String getType() {return type;}
 	public String getName() {return name;}

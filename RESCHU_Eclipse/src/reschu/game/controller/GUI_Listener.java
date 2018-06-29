@@ -69,8 +69,10 @@ public interface GUI_Listener {
 
     // Database
 
-    public void EVT_Accept_Suggestion(int vIdx, double x, double y);
-    public void EVT_Reject_Suggestion(int vIdx, double x, double y);
+    public void EVT_Accept_Suggestion_Waypoint(int vIdx, int x, int y);
+    public void EVT_Reject_Suggestion_Waypoint(int vIdx, int x, int y);
+    public void EVT_Accept_Suggestion_Target(int vIdx, int x, int y);
+    public void EVT_Reject_Suggestion_Target(int vIdx, int x, int y);
     public void EVT_WP_AddWP_Start(int vIdx);
     public void EVT_WP_AddWP_End(int vIdx, int mouseCoordX, int mouseCoordY);  
     public void EVT_WP_MoveWP_Start(int vIdx, int mouseCoordX, int mouseCoordY);  

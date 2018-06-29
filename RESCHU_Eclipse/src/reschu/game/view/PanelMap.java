@@ -162,6 +162,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						break;
 					case 2:
 						// target strong strategy
+						if(v.getPathSize() != 0) {
+							Target target = SuggestionSystem.getTargetSuggestion(game, v);
+							paintSuggestionTarget(g, v, target.getPos());
+							map.setSuggestedTarget(target);
+						}
 						break;
 					case 3:
 						// target weak strategy
@@ -265,17 +270,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		}
 	}
 	private void paintSuggestionPoint(Graphics2D g, int[] pos) {
-		// int[] pos = map.getSuggestedArea();
 		if(!(pos[0]==0 && pos[1]==0)) {
-			// p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_3_PXL, new Color(100, 255, 255, 80));
-			// p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_2_PXL, new Color(100, 255, 255, 100));
 			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, new Color(100, 255, 255, 150));
         }
 	}
 
-	private void paintSuggestionTarget(Graphics2D g, Vehicle v, int[] pos){
-	    if(!(pos[0] == 0 && pos[1] == 0)) {
-            p.paintArrow(g, pos[0],pos[1], 2, 2, new Color(100, 255, 255, 150));
+	private void paintSuggestionTarget(Graphics2D g, Vehicle v, int[] pos) {
+	    if(!(pos[0]==0 && pos[1]==0)) {
+            p.paintArrow(g, pos[0], pos[1], 2, 2, new Color(100, 255, 255, 150));
         }
         /*
 	    p.paintArrow(g, 500, 500, 0, 1,new Color(100, 255, 255, 100));// points up
@@ -345,9 +347,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 case 0:
                 	if(v.getPathSize() != 0) {
 	                	v.addWaypoint(map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
-	                    lsnr.EVT_Accept_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+	                    lsnr.EVT_Accept_Suggestion_Waypoint(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
                 	}
-                	else {                        
+                	else {
                 		game.AutoTargetAssign(v);
                 		v.setSuggestedStatus(true);
                 	}
@@ -355,6 +357,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 case 1:
                     break;
                 case 2:
+                	if(v.getPathSize() != 0) {
+                		// need to implement here to automatically switch target
+                		// need to check whether the target is unassigned first
+                	}
+                	else {
+                		// game.AutoTargetAssign(v);
+                		v.setSuggestedStatus(true);
+                	}
                     break;
                 case 3:
                     break;
@@ -376,7 +386,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 // switch different actions based on different strategies
                 switch(strategy) {
                 case 0:
-                	lsnr.EVT_Reject_Suggestion(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                	lsnr.EVT_Reject_Suggestion_Waypoint(v.getIndex()-1, map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
                     break;
                 case 1:
                     break;
