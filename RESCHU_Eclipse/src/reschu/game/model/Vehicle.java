@@ -805,7 +805,10 @@ public class Vehicle {
 					return;
 				}
 				// if a UAV is still in notified status, then it should not be engaged
-				if(isNotified) return;
+				if(isNotified) {
+					if(g.getGuidance()) setSuggestedStatus(true);
+					return;
+				}
 				// VEHICLE ARRIVED TO ITS GOAL WHERE THE PLACE IS THE ONE OF UNASSIGNED_TARGETS
 				setStatus(MyGame.STATUS_VEHICLE_PENDING);				
 				String msg = "UAV [" + index + "] has reached its target.";
