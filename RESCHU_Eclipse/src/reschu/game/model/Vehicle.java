@@ -42,9 +42,11 @@ public class Vehicle {
 	public boolean isEngaged;
 	public boolean isNotified;
 	public boolean isSuggested;
+	public boolean isFrozen;
 	private LinkedList<int[]> observedPath;
 	private int[] HackLocation;
 	private double HackAngle;
+	private int suggestionTime;
 	
 	// collecting data for decision support system
 	private int waypoint_count = 0;
@@ -99,6 +101,24 @@ public class Vehicle {
 	}
 	public int getTargetCount() {
 		return target_count;
+	}
+	public int getSuggestionTime() {
+		return suggestionTime;
+	}
+	public void setSuggestionTime(int t) {
+		suggestionTime = t;
+	}
+	public void resetSuggestionTime() {
+		suggestionTime = 0;
+	}
+	public void addSuggestionTime(int t) {
+		suggestionTime += t;
+	}
+	public boolean getFrozenStatus() {
+		return isFrozen;
+	}
+	public void setFrozenStatus(boolean b) {
+		isFrozen = b;
 	}
 	
 	/**
@@ -373,7 +393,10 @@ public class Vehicle {
 		isInvestigated = false;
 		isEngaged = false;
 		isNotified = false;
+		// for decision support system
 		isSuggested = true;
+		suggestionTime = 0;
+		isFrozen = false;
 	}
 
 	// check if reach a target
@@ -817,6 +840,8 @@ public class Vehicle {
 			}
 			lsnr.Hide_Popup(this);
 			removeFirstPath();
+			resetSuggestionTime();
+			setFrozenStatus(false);
 		}
 	}
 	

@@ -154,8 +154,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						// waypoint strong strategy
 						if(v.getPathSize() != 0) {
 							int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
-							paintSuggestionWaypoint(g, v, point);
-							map.setSuggestedPoint(point);
+							if(!v.getFrozenStatus()) {
+								map.setSuggestedPoint(point);
+								v.setFrozenStatus(true);
+							}
+							paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
 						}
 						break;
 					case 1:
@@ -165,8 +168,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						// target strong strategy
 						if(v.getPathSize() != 0) {
 							Target target = SuggestionSystem.getTargetSuggestion(game, v);
-							paintSuggestionTarget(g, v, target.getPos());
-							map.setSuggestedTarget(target);
+							if(!v.getFrozenStatus()) {
+								map.setSuggestedTarget(target);
+								v.setFrozenStatus(true);
+							}
+							paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
 						}
 						break;
 					case 3:
@@ -181,11 +187,19 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				}
 				else {
 					if(suggestionBox != null) hideSuggestionBox(v);
+					v.resetSuggestionTime();
+					v.setFrozenStatus(false);
 				}
 			}
 			else {
+				// hide the suggestion box if notified UAVs are not selected
 				if(selectedVehicle != null) {
 					if(!selectedVehicle.getNotifiedStatus() && suggestionBox!=null) hideSuggestionBox(v);
+				}
+				// reset the suggestion frozen time if the notified UAV is not selected
+				if(selectedVehicle != v) {
+					v.resetSuggestionTime();
+					v.setFrozenStatus(false);
 				}
 			}
 		}
@@ -403,13 +417,17 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         });
         suggestionBox.setAlwaysOnTop(true);
         
-		// count down window
+		// create count down window
+        v.resetSuggestionTime();
         progressBar = new JProgressBar(0, 100);
-        progressBar.setValue(0);
+        progressBar.setValue(v.getSuggestionTime());
         progressBar.setStringPainted(true);
         pane.add(progressBar);
         progressBar.setSize(boxWidth, boxHeight/4);
         progressBar.setLocation(0, 3*boxHeight/4);
+        
+        // enable suggestion frozen status
+        v.setFrozenStatus(true);
     }
 
     private void updateSuggestionBox(Vehicle v) {
@@ -442,6 +460,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         }
         
         // need to update the progress bar here
+        if(v.getFrozenStatus()) {
+	        v.addSuggestionTime(1);
+	        progressBar.setValue(v.getSuggestionTime()/5);
+	        if((v.getSuggestionTime()/5) > 100) {
+	        	v.resetSuggestionTime();
+	        	v.setFrozenStatus(false);
+	        }
+        }
     }
 
     private void hideSuggestionBox(Vehicle v) {
