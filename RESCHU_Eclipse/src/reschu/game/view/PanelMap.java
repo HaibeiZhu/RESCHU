@@ -45,6 +45,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	private JButton acceptSuggestion, rejectSuggestion;
 	private JDialog suggestionBox;
 	private JLabel suggestionTitle;
+	private JProgressBar progressBar;
 	//  private Image backbuffer;
 	//  private Graphics2D backg;
 	private Image img;
@@ -300,7 +301,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
     }
 
     private void paintSuggestionBox(int strategy, Vehicle v) {
-    	int boxHeight = 60;
+    	int boxHeight = 80;
     	int boxWidth = 80;
         suggestionBox = new JDialog();
         suggestionBox.setUndecorated(true);
@@ -330,11 +331,11 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         pane.add(rejectSuggestion);
         pane.add(suggestionTitle);
 
-        suggestionTitle.setSize(boxWidth, boxHeight/3);
+        suggestionTitle.setSize(boxWidth, boxHeight/4);
         suggestionTitle.setLocation(0,0);
 
-        acceptSuggestion.setSize(boxWidth, boxHeight/3);
-        acceptSuggestion.setLocation(0 /*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/3);
+        acceptSuggestion.setSize(boxWidth, boxHeight/4);
+        acceptSuggestion.setLocation(0 /*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, boxHeight/4);
         acceptSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -374,8 +375,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             }
         });
 
-        rejectSuggestion.setSize(boxWidth, boxHeight/3);
-        rejectSuggestion.setLocation(0 /*acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, 2*boxHeight/3);
+        rejectSuggestion.setSize(boxWidth, boxHeight/4);
+        rejectSuggestion.setLocation(0 /*acceptSuggestion.getWidth() + 2*(suggestionBox.getWidth() - (2*acceptSuggestion.getWidth()))/3*/, 2*boxHeight/4);
         rejectSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -401,6 +402,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             }
         });
         suggestionBox.setAlwaysOnTop(true);
+        
+		// count down window
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+        pane.add(progressBar);
+        progressBar.setSize(boxWidth, boxHeight/4);
+        progressBar.setLocation(0, 3*boxHeight/4);
     }
 
     private void updateSuggestionBox(Vehicle v) {
@@ -431,6 +440,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         if(!suggestionBox.isVisible()) {
             suggestionBox.setVisible(true);
         }
+        
+        // need to update the progress bar here
     }
 
     private void hideSuggestionBox(Vehicle v) {

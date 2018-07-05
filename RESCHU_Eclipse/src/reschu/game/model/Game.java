@@ -363,7 +363,7 @@ public class Game implements Runnable, ActionListener {
         tmr_clock.stop();       
     }
 
-    public VehicleList getVehicleList(){ return vehicleList; }    
+    public VehicleList getVehicleList(){ return vehicleList; }
     public PayloadList getPayloadList(){ return payloadList; }
 
     public void vehicle_location_change(){ lsnr.vehicleLocationChanged(); }

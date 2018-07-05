@@ -344,7 +344,7 @@ class VehiclePanel extends JPanel implements ActionListener {
         pnlVehicle.add(btnHome);
 
 		// TOP-RIGHT
-		bdrTitle = BorderFactory.createTitledBorder("Vehicle Health And Status");		
+		bdrTitle = BorderFactory.createTitledBorder("Vehicle Health And Status");
 		pnlStatus = new JPanel();
 		pnlStatus.setLayout(grid_bag_layout); // pnlStatus.setLayout(new GridLayout(5,1));
 		pnlStatus.setBorder(bdrTitle);
