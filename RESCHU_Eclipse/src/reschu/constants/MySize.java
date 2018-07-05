@@ -25,6 +25,7 @@ public class MySize {
     final static public int SIZE_HAZARD_1_PXL 			= 25; // original 20
     final static public int SIZE_HAZARD_2_PXL 			= 50; // original 40
     final static public int SIZE_HAZARD_3_PXL 			= 75; // original 60
+    final static public int SIZE_SUGGESTION_PXL 		= 15;
     final static public int SIZE_HIGHLIGHT_PXL 			= 50;
     final static public int SIZE_UAV_COMM_PXL			= 60;
 }

@@ -19,6 +19,8 @@ public class Map {
 	private LinkedList<int[]> listHazard = new LinkedList<int[]>();
 	private int[] suggestedPoint = new int[2];
 	private Target suggestedTarget = new Target();
+	private int[] preSuggestedPoint = new int[2];
+	private Target preSuggestedTarget = new Target();
 
 	Map() {}
 	Map(int width, int height, Game g, GUI_Listener l) {
@@ -42,6 +44,12 @@ public class Map {
 	public Target getSuggestedTarget() {
 		return suggestedTarget;
 	}
+	public int[] getPreSuggestedPoint() {
+		return preSuggestedPoint;
+	}
+	public Target getPreSuggestedTarget() {
+		return preSuggestedTarget;
+	}
 	public int getTargetSize(String target_type) {
 		int cnt = 0;
 		for (int i = 0; i < listAssignedTarget.size(); i++)
@@ -52,12 +60,19 @@ public class Map {
 				cnt++;
 		return cnt;
 	}
-	public void setSuggestedTarget(Target target) {
-	    suggestedTarget = target;
-	}
 	public void setSuggestedPoint(int[] pos){
         suggestedPoint[0] = pos[0];
         suggestedPoint[1] = pos[1];
+	}
+	public void setSuggestedTarget(Target target) {
+	    suggestedTarget = target;
+	}
+	public void setPreSuggestedPoint(int[] pos) {
+		preSuggestedPoint[0] = pos[0];
+		preSuggestedPoint[1] = pos[1];
+	}
+	public void setPreSuggestedTarget(Target target) {
+		preSuggestedTarget = target;
 	}
 	public synchronized void setCellType(int x, int y, int type) {
 		mapArray[x][y] = type;

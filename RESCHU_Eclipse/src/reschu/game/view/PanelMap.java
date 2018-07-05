@@ -153,8 +153,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					case 0:
 						// waypoint strong strategy
 						if(v.getPathSize() != 0) {
-							int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
 							if(!v.getFrozenStatus()) {
+								map.setPreSuggestedPoint(map.getSuggestedPoint());
+								int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
 								map.setSuggestedPoint(point);
 								v.setFrozenStatus(true);
 							}
@@ -167,8 +168,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 					case 2:
 						// target strong strategy
 						if(v.getPathSize() != 0) {
-							Target target = SuggestionSystem.getTargetSuggestion(game, v);
 							if(!v.getFrozenStatus()) {
+								map.setPreSuggestedTarget(map.getSuggestedTarget());
+								Target target = SuggestionSystem.getTargetSuggestion(game, v);
 								map.setSuggestedTarget(target);
 								v.setFrozenStatus(true);
 							}
@@ -286,7 +288,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	}
 	private void paintSuggestionPoint(Graphics2D g, int[] pos) {
 		if(!(pos[0]==0 && pos[1]==0)) {
-			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_HAZARD_1_PXL, MyColor.COLOR_INVESTIGATE);
+			p.paintOval(g, pos[0], pos[1], cellsize, MySize.SIZE_SUGGESTION_PXL, MyColor.COLOR_INVESTIGATE);
         }
 	}
 
@@ -464,6 +466,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	        v.addSuggestionTime(1);
 	        progressBar.setValue(v.getSuggestionTime()/5);
 	        if((v.getSuggestionTime()/5) > 100) {
+	        	// need to check the previous suggested point or target
+	        	
 	        	v.resetSuggestionTime();
 	        	v.setFrozenStatus(false);
 	        }

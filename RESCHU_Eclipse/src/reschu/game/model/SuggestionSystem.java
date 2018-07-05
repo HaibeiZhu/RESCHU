@@ -15,6 +15,7 @@ import reschu.game.controller.Reschu;
 
 public class SuggestionSystem {
 	private Game _game;
+	private static Map _map;
 	private static VehicleList _vlist;
 	private static List<Point> _pointlist = new ArrayList<Point>();
 	private static List<ArrayList<Point>> _tilelist = new ArrayList<ArrayList<Point>>();
@@ -29,6 +30,7 @@ public class SuggestionSystem {
 	// only in those scenarios with Guidance
 	public SuggestionSystem(Game game) throws FileNotFoundException {
 		_game = game;
+		_map = game.getMap();
 		_vlist = _game.getVehicleList();
 		LoadHeatMapData();
 		SplitHeatMapData();
@@ -182,11 +184,19 @@ public class SuggestionSystem {
 		return score;
 	}
 	
+	public static boolean comparePrePoint(int[] pre, int[] pos) {
+		if((pre[0]==pos[0]) && (pre[1]==pos[1])) {
+			return true;
+		}
+		else return false;
+	}
+	
 	public static int[] getWaypointSuggestion(Game game, Vehicle v) {
 		double score = -9999.9;
 		double temp_score;
 		for(int i=0; i<_tilelist.size(); i++) {
 			for(int j=0; j<_tilelist.get(i).size(); j++) {
+				if(comparePrePoint(_tilelist.get(i).get(j).getPos(), _map.getPreSuggestedPoint())) continue;
 				temp_score = getPointEvaluation(_tilelist.get(i).get(j), v);
 				if(temp_score > score) {
 					score = temp_score;
