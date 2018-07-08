@@ -123,7 +123,7 @@ public class AttackNotificationEngine {
 		if (selected == 0) {
 			lsnr.EVT_Hack_Notification_Investigate(VehicleID + 1);
 			lsnr.activateUAVFeed(VehicleID);
-			lsnr.Vechicle_Selected_From_Investigate(VehicleID); 
+			lsnr.Vechicle_Selected_From_Investigate(VehicleID);
 		}
 		else {
 			lsnr.EVT_Hack_Notification_Ignore(VehicleID + 1);

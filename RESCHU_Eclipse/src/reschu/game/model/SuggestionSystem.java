@@ -185,10 +185,21 @@ public class SuggestionSystem {
 	}
 	
 	public static boolean comparePrePoint(int[] pre, int[] pos) {
-		if((pre[0]==pos[0]) && (pre[1]==pos[1])) {
-			return true;
+		// check whether pre and pos are initialized
+		if((pre==null) || (pos==null)) {
+			return false;
 		}
-		else return false;
+		else {
+			if(((pre[0]==0)&&(pre[1]==0)) || ((pos[0]==0)&&(pos[1]==0))) {
+				return false;
+			}
+			else {
+				if((pre[0]==pos[0]) && (pre[1]==pos[1])) {
+					return true;
+				}
+				else return false;
+			}
+		}
 	}
 	
 	public static int[] getWaypointSuggestion(Game game, Vehicle v) {
@@ -212,6 +223,8 @@ public class SuggestionSystem {
 		double score = -9999.9;
 		double temp_score;
 		for(int i=0; i<game.getMap().getListUnassignedTarget().size(); i++) {
+			if(comparePrePoint(game.getMap().getListUnassignedTarget().get(i).getPos(),
+					_map.getPreSuggestedTarget().getPos())) continue;
 			temp_score = getAreaEvaluation(game.getMap().getListUnassignedTarget().get(i), v);
 			if(temp_score > score) {
 				score = temp_score;

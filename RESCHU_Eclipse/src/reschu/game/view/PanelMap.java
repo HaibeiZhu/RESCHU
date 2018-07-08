@@ -145,61 +145,57 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			}
 			
 			// check whether the decision suggestion should be provided for a specific UAV
-			if(game.getGuidance() && v==selectedVehicle && v.getNotifiedStatus()) {
-				if(v.getSuggestedStatus()) {
-					// the decision suggestion system is triggered here
-					// switch different paint functions based on different pre-defined strategies
-					switch(game.getStrategy()) {
-					case 0:
-						// waypoint strong strategy
-						if(v.getPathSize() != 0) {
-							if(!v.getFrozenStatus()) {
-								map.setPreSuggestedPoint(map.getSuggestedPoint());
-								int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
-								map.setSuggestedPoint(point);
-								v.setFrozenStatus(true);
+			if(game.getGuidance()) {
+				if(v == selectedVehicle) {
+					if((v.getNotifiedStatus()) && (v.getSuggestedStatus())) {
+						// the decision suggestion system is triggered here
+						// switch different paint functions based on different pre-defined strategies
+						switch(game.getStrategy()) {
+						case 0:
+							// waypoint strong strategy
+							if(v.getPathSize() != 0) {
+								if(!v.getFrozenStatus()) {
+									map.setPreSuggestedPoint(map.getSuggestedPoint());
+									int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
+									map.setSuggestedPoint(point);
+									v.setFrozenStatus(true);
+								}
+								paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
 							}
-							paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
-						}
-						break;
-					case 1:
-						// waypoint weak strategy
-						break;
-					case 2:
-						// target strong strategy
-						if(v.getPathSize() != 0) {
-							if(!v.getFrozenStatus()) {
-								map.setPreSuggestedTarget(map.getSuggestedTarget());
-								Target target = SuggestionSystem.getTargetSuggestion(game, v);
-								map.setSuggestedTarget(target);
-								v.setFrozenStatus(true);
+							break;
+						case 1:
+							// waypoint weak strategy
+							break;
+						case 2:
+							// target strong strategy
+							if(v.getPathSize() != 0) {
+								if(!v.getFrozenStatus()) {
+									map.setPreSuggestedTarget(map.getSuggestedTarget());
+									Target target = SuggestionSystem.getTargetSuggestion(game, v);
+									map.setSuggestedTarget(target);
+									v.setFrozenStatus(true);
+								}
+								paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
 							}
-							paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
+							break;
+						case 3:
+							// target weak strategy
+							break;
+						default:
+							break;
 						}
-						break;
-					case 3:
-						// target weak strategy
-						break;
-					default:
-						break;
+						
+						if(suggestionBox == null) paintSuggestionBox(game.getStrategy());
+			            else updateSuggestionBox();
 					}
-					
-					if(suggestionBox == null) paintSuggestionBox(game.getStrategy(), v);
-		            else updateSuggestionBox(v);
+					else {
+						if(suggestionBox != null) hideSuggestionBox();
+						v.resetSuggestionTime();
+						v.setFrozenStatus(false);
+					}
 				}
 				else {
-					if(suggestionBox != null) hideSuggestionBox(v);
-					v.resetSuggestionTime();
-					v.setFrozenStatus(false);
-				}
-			}
-			else {
-				// hide the suggestion box if notified UAVs are not selected
-				if(selectedVehicle != null) {
-					if(!selectedVehicle.getNotifiedStatus() && suggestionBox!=null) hideSuggestionBox(v);
-				}
-				// reset the suggestion frozen time if the notified UAV is not selected
-				if(selectedVehicle != v) {
+					if((suggestionBox!=null) && (!selectedVehicle.getNotifiedStatus())) hideSuggestionBox();
 					v.resetSuggestionTime();
 					v.setFrozenStatus(false);
 				}
@@ -316,12 +312,12 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		paintSuggestionLine(g, v, pos);
     }
 
-    private void paintSuggestionBox(int strategy, Vehicle v) {
+    private void paintSuggestionBox(int strategy) {
     	int boxHeight = 80;
     	int boxWidth = 80;
         suggestionBox = new JDialog();
         suggestionBox.setUndecorated(true);
-        suggestionBox.setSize(boxWidth, boxHeight);
+        suggestionBox.setSize(boxWidth, boxHeight-8);
         Container pane = suggestionBox.getContentPane();
         pane.setLayout(null);
         acceptSuggestion = new JButton("Accept");
@@ -355,8 +351,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         acceptSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	Vehicle v = getSelectedVehicle();
                 v.setSuggestedStatus(false);
-                hideSuggestionBox(v);
+                hideSuggestionBox();
                 suggestionBox = null;
                 
                 // switch different actions based on different strategies
@@ -396,8 +393,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         rejectSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	Vehicle v = getSelectedVehicle();
                 v.setSuggestedStatus(false);
-                hideSuggestionBox(v);
+                hideSuggestionBox();
                 suggestionBox = null;
                 
                 // switch different actions based on different strategies
@@ -408,9 +406,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 case 1:
                     break;
                 case 2:
+                	lsnr.EVT_Reject_Suggestion_Target(v.getIndex(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
                     break;
                 case 3:
-                	lsnr.EVT_Reject_Suggestion_Target(v.getIndex(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
                     break;
                 default:
                     break;
@@ -420,19 +418,22 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
         suggestionBox.setAlwaysOnTop(true);
         
 		// create count down window
+        Vehicle v = getSelectedVehicle();
         v.resetSuggestionTime();
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(v.getSuggestionTime());
-        progressBar.setStringPainted(true);
+        // progressBar.setStringPainted(true);
+        progressBar.setStringPainted(false);
         pane.add(progressBar);
-        progressBar.setSize(boxWidth, boxHeight/4);
+        progressBar.setSize(boxWidth, boxHeight/4-8);
         progressBar.setLocation(0, 3*boxHeight/4);
         
         // enable suggestion frozen status
         v.setFrozenStatus(true);
     }
 
-    private void updateSuggestionBox(Vehicle v) {
+    private void updateSuggestionBox() {
+    	Vehicle v = getSelectedVehicle();
     	// the suggestion box should be placed on the opposite side of UAV moving direction
     	int x_off = 50;
     	int x_bias = 654;
@@ -457,25 +458,21 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
     			else suggestionBox.setLocation(x+x_bias+x_off, y+y_bias+y_off);
     		}
     	}
-        if(!suggestionBox.isVisible()) {
-            suggestionBox.setVisible(true);
-        }
+        if(!suggestionBox.isVisible()) suggestionBox.setVisible(true);
         
         // need to update the progress bar here
         if(v.getFrozenStatus()) {
 	        v.addSuggestionTime(1);
 	        progressBar.setValue(v.getSuggestionTime()/5);
 	        if((v.getSuggestionTime()/5) > 100) {
-	        	// need to check the previous suggested point or target
-	        	
 	        	v.resetSuggestionTime();
 	        	v.setFrozenStatus(false);
 	        }
         }
     }
 
-    private void hideSuggestionBox(Vehicle v) {
-	    suggestionBox.setVisible(false);
+    private void hideSuggestionBox() {
+    	suggestionBox.setVisible(false);
     }
 
 	private void paintTarget(Graphics2D g) {

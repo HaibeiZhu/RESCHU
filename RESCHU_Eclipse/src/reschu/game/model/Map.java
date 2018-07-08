@@ -417,4 +417,18 @@ public class Map {
 			addTarget(t);
 		}
 	}
+	
+	public boolean isAssignedTarget(Target target) {
+		for(int i=0; i<listAssignedTarget.size(); i++) {
+			if(listAssignedTarget.get(i) == target) return true;
+		}
+		return false;
+	}
+	
+	public boolean isUnassignedTarget(Target target) {
+		for(int i=0; i<listUnassignedTarget.size(); i++) {
+			if(listUnassignedTarget.get(i) == target) return true;
+		}
+		return false;
+	}
 }
