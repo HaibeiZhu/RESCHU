@@ -549,7 +549,8 @@ public class Game implements Runnable, ActionListener {
 
         for( int i = 0; i < vehicleList.size(); i++) {
             v = vehicleList.getVehicle(i); 
-            if( v.getPath().size() != 0 && (elapsedTime % v.getVelocity() == 0) ) {
+            // if(v.getPath().size()!=0 && (elapsedTime % v.getVelocity()==0)) {
+            if(v.getGroundPathSize()!=0 && (elapsedTime % v.getVelocity()==0)) {
                 // check if the UAV is already disappeared
                 if(v.isDisappeared) continue;
                 v.movePrecise();

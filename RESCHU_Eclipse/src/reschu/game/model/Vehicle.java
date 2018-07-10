@@ -137,12 +137,8 @@ public class Vehicle {
 	 * Get a path of this vehicle  (synchronized) 
 	 */
 	public synchronized LinkedList<int[]> getPath() {
-		if (isHijacked){
-			return observedPath;
-		}
-		else{
-			return groundTruthPath;
-		}
+		if (isHijacked) return observedPath;
+		else return groundTruthPath;
 	}
 	
 	public synchronized LinkedList<int[]> getGroundTruthPath() {

@@ -133,7 +133,8 @@ public class UAVMonitor {
 			panelpayload.setDisplayY(0);
 		}
 		
-		if (activeUAV.getPathSize() > 0) {
+		// if (activeUAV.getPathSize() > 0) {
+		if (activeUAV.getGroundPathSize() > 0) {
 			// System.out.println("Incrementing display Y to -1 for northward movement");
 			panelpayload.setDisplayY((int)Math.max(-PAN_SPEED, panelpayload.getDisplayY() -1)); // Limit max upward speed to PAN_SPEED
 	
@@ -169,12 +170,12 @@ public class UAVMonitor {
 
 	// pass direction to prototype based on vector to next way coordinate in UAV's path
 	public void setVelocity() {
-		if (!displayEnabled || activeUAV == null) return;
-		if (activeUAV.getPathSize() == 0){
+		if(!displayEnabled || activeUAV == null) return;
+		// if (activeUAV.getPathSize() == 0) {
+		if(activeUAV.getGroundPathSize() == 0) {
 			panelpayload.setXDirection(0);
 			panelpayload.setYDirection(0);
 			panelpayload.unsetDisplayY();
-			// System.out.println("Setting y velocity to 0");
 			return;
 		}
 		int[] nextPoint = activeUAV.getFirstPathGround();
