@@ -603,6 +603,16 @@ public class Reschu extends JFrame implements GUI_Listener {
 		return sdf.format(cal.getTime());
 	}
 
+	public void EVT_Change_Suggestion_Waypoint(int vIdx, int x, int y){
+		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint changed, or maybe initialized. new Suggestion at: ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+
+	public void EVT_Change_Suggestion_Target(int vIdx, int x, int y){
+		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_TARGET, vIdx, "Suggested Target changed, or maybe initialized. new Suggestion at: ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+
 	public void EVT_Accept_Suggestion_Waypoint(int vIdx, int x, int y) {
 		Write(MyDB.INVOKER_USER, MyDB.ACCEPT_SUGGESTION_WAYPOINT, vIdx, "Suggestion accepted. Waypoint added at: ",
 				(int)Math.round(x), (int)Math.round(y));

@@ -158,6 +158,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 									map.setPreSuggestedPoint(map.getSuggestedPoint());
 									int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
 									map.setSuggestedPoint(point);
+									lsnr.EVT_Change_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
 									v.setFrozenStatus(true);
 								}
 								paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
@@ -173,6 +174,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 									map.setPreSuggestedTarget(map.getSuggestedTarget());
 									Target target = SuggestionSystem.getTargetSuggestion(game, v);
 									map.setSuggestedTarget(target);
+                                    lsnr.EVT_Change_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
 									v.setFrozenStatus(true);
 								}
 								paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
@@ -184,9 +186,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						default:
 							break;
 						}
-						
-						if(suggestionBox == null) paintSuggestionBox(game.getStrategy());
-			            else updateSuggestionBox();
+
+                        if (suggestionBox == null) paintSuggestionBox(game.getStrategy());
+                        else updateSuggestionBox();
 					}
 					else {
 						if(suggestionBox != null) hideSuggestionBox();
