@@ -78,7 +78,7 @@ public class AppMain implements ActionListener
 		String[] group = {"Group 1", "Group 2", "Group 3"};
 		String[] section = {"Section 1", "Section 2"};
 		String[] mode = {"Practice", "Experiment"};
-		String[] strategy = {"waypoint s", "waypoint w", "target s", "target w"};
+		String[] strategy = {"Waypoint", "Target"};
 		
 		border = BorderFactory.createTitledBorder("");
 		

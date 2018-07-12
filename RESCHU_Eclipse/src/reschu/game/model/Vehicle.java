@@ -43,6 +43,7 @@ public class Vehicle {
 	public boolean isNotified;
 	public boolean isSuggested;
 	public boolean isFrozen;
+	public boolean isRejected;
 	private LinkedList<int[]> observedPath;
 	private int[] HackLocation;
 	private double HackAngle;
@@ -119,6 +120,12 @@ public class Vehicle {
 	}
 	public void setFrozenStatus(boolean b) {
 		isFrozen = b;
+	}
+	public boolean getRejectedStatus() {
+		return isRejected;
+	}
+	public void setRejectedStatus(boolean b) {
+		isRejected = b;
 	}
 	
 	/**
@@ -393,6 +400,7 @@ public class Vehicle {
 		isSuggested = true;
 		suggestionTime = 0;
 		isFrozen = false;
+		isRejected = false;
 	}
 
 	// check if reach a target
@@ -526,7 +534,7 @@ public class Vehicle {
 				}
 			}	
 		}    	
-		setPath(getPathSize()-1, new int[]{x, y}); 
+		setPath(getPathSize()-1, new int[]{x, y});
 		if( g.getElapsedTime() != 0 ) {
 			if( assigned ) lsnr.EVT_GP_ChangeGP_End_Assigned(index, x, y, getTarget().getName());
 			else lsnr.EVT_GP_ChangeGP_End_Unassigned(index, x, y);
@@ -825,7 +833,7 @@ public class Vehicle {
 				}
 				// if a UAV is still in notified status, then it should not be engaged
 				if(isNotified) {
-					if(g.getGuidance()) setSuggestedStatus(true);
+					if(g.getGuidance() && !getRejectedStatus()) setSuggestedStatus(true);
 					return;
 				}
 				// VEHICLE ARRIVED TO ITS GOAL WHERE THE PLACE IS THE ONE OF UNASSIGNED_TARGETS
@@ -1161,12 +1169,12 @@ public class Vehicle {
 	public int[] GenerateNewEndPoint(double x0, double y0) {
 		int[] new_point;
 		if(x0 < y0) {
-			if(x0+y0 < 490) new_point = new int[]{-100, (int)y0};
-			else new_point = new int[]{(int)x0, 600};
+			if(x0+y0 < 980) new_point = new int[]{-100, (int)y0};
+			else new_point = new int[]{(int)x0, 1000};
 		}
 		else {
-			if(x0+y0 < 490) new_point = new int[]{(int)x0, -100};
-			else new_point = new int[]{600, (int)y0};
+			if(x0+y0 < 980) new_point = new int[]{(int)x0, -100};
+			else new_point = new int[]{1000, (int)y0};
 		}
 		return new_point;
 	}

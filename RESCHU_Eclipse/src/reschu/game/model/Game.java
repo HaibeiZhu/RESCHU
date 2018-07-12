@@ -484,6 +484,7 @@ public class Game implements Runnable, ActionListener {
         v.setHijackStatus(false);
         v.setInvestigateStatus(false);
         v.setNotifiedStatus(false);
+		v.setRejectedStatus(false);
         if(v.getTarget() != null) v.getTarget().setDone();
         
         int x = rnd.nextInt(MySize.width);

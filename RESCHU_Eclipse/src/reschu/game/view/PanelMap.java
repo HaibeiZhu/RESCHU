@@ -152,7 +152,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						// switch different paint functions based on different pre-defined strategies
 						switch(game.getStrategy()) {
 						case 0:
-							// waypoint strong strategy
+							// waypoint strategy
 							// This function should work when v.getPathSize() == 0
 							if(!v.getFrozenStatus()) {
 								map.setPreSuggestedPoint(map.getSuggestedPoint());
@@ -161,13 +161,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 								lsnr.EVT_Change_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
 								v.setFrozenStatus(true);
 							}
-							paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
+							if(!v.getRejectedStatus()) paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
 							break;
 						case 1:
-							// waypoint weak strategy
-							break;
-						case 2:
-							// target strong strategy
+							// target strategy
 							// This function should work when v.getPathSize() == 0
 							if(!v.getFrozenStatus()) {
 								map.setPreSuggestedTarget(map.getSuggestedTarget());
@@ -176,17 +173,16 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                                 lsnr.EVT_Change_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
 								v.setFrozenStatus(true);
 							}
-							paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
-							break;
-						case 3:
-							// target weak strategy
+							if(!v.getRejectedStatus()) paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
 							break;
 						default:
 							break;
 						}
 
-                        if (suggestionBox == null) paintSuggestionBox(game.getStrategy());
-                        else updateSuggestionBox();
+						if(!v.getRejectedStatus()) {
+	                        if (suggestionBox == null) paintSuggestionBox(game.getStrategy());
+	                        else updateSuggestionBox();
+						}
 					}
 					else {
 						if(suggestionBox != null) hideSuggestionBox();
@@ -327,13 +323,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
             suggestionTitle = new JLabel("Add Waypoint");
             break;
         case 1:
-            suggestionTitle = new JLabel("Add Waypoint");
-            break;
-        case 2:
             suggestionTitle = new JLabel("Change Goal");
-            break;
-        case 3:
-        	suggestionTitle = new JLabel("Change Goal");
             break;
         default:
         	suggestionTitle = new JLabel("Add Waypoint");
@@ -371,8 +361,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 	}
                     break;
                 case 1:
-                    break;
-                case 2:
                 	if(v.getPathSize() != 0) {
                 		v.changeGoal(v.getPath().getLast(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
                 		lsnr.EVT_Accept_Suggestion_Target(v.getIndex(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
@@ -383,8 +371,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 		lsnr.EVT_Accept_Suggestion_Target(v.getIndex(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
                 		// v.setSuggestedStatus(true);
                 	}
-                    break;
-                case 3:
                     break;
                 default:
                     break;
@@ -408,15 +394,12 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 	lsnr.EVT_Reject_Suggestion_Waypoint(v.getIndex(), map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
                     break;
                 case 1:
-                    break;
-                case 2:
                 	lsnr.EVT_Reject_Suggestion_Target(v.getIndex(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
-                    break;
-                case 3:
                     break;
                 default:
                     break;
                 }
+                v.setRejectedStatus(true);
             }
         });
         suggestionBox.setAlwaysOnTop(true);
@@ -923,6 +906,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 			selectedVehicle.isInvestigated = false;
 			lsnr.EVT_UAV_DECIDED_NOT_HACKED(selectedVehicle);
             selectedVehicle.setInvestigateStatus(false);
+            selectedVehicle.setRejectedStatus(false);
 		}
 		repaint();
 	}

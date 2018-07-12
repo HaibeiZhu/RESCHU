@@ -159,17 +159,11 @@ public class FrameEnd extends JFrame {
 			}
 			if(total_target != 0) {
 				total_strategy = (double)total_waypoint/(double)total_target;
-				if(total_strategy >= 2.0) strategy_s = "waypoint strong";
-				else {
-					if(total_strategy >= 1.0) strategy_s = "waypoint weak";
-					else {
-						if(total_strategy >= 0.5) strategy_s = "target weak";
-						else strategy_s = "target strong";
-					}
-				}
+				if(total_strategy >= 1.0) strategy_s = "waypoint";
+				else strategy_s = "target";
 			}
 			else {
-				if(total_waypoint != 0) strategy_s = "waypoint strong";
+				if(total_waypoint != 0) strategy_s = "waypoint";
 				else strategy_s = "none";
 			}
 			
