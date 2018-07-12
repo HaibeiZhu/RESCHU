@@ -153,32 +153,30 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						switch(game.getStrategy()) {
 						case 0:
 							// waypoint strong strategy
-							if(v.getPathSize() != 0) {
-								if(!v.getFrozenStatus()) {
-									map.setPreSuggestedPoint(map.getSuggestedPoint());
-									int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
-									map.setSuggestedPoint(point);
-									lsnr.EVT_Change_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
-									v.setFrozenStatus(true);
-								}
-								paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
+							// This function should work when v.getPathSize() == 0
+							if(!v.getFrozenStatus()) {
+								map.setPreSuggestedPoint(map.getSuggestedPoint());
+								int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
+								map.setSuggestedPoint(point);
+								lsnr.EVT_Change_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
+								v.setFrozenStatus(true);
 							}
+							paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
 							break;
 						case 1:
 							// waypoint weak strategy
 							break;
 						case 2:
 							// target strong strategy
-							if(v.getPathSize() != 0) {
-								if(!v.getFrozenStatus()) {
-									map.setPreSuggestedTarget(map.getSuggestedTarget());
-									Target target = SuggestionSystem.getTargetSuggestion(game, v);
-									map.setSuggestedTarget(target);
-                                    lsnr.EVT_Change_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
-									v.setFrozenStatus(true);
-								}
-								paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
+							// This function should work when v.getPathSize() == 0
+							if(!v.getFrozenStatus()) {
+								map.setPreSuggestedTarget(map.getSuggestedTarget());
+								Target target = SuggestionSystem.getTargetSuggestion(game, v);
+								map.setSuggestedTarget(target);
+                                lsnr.EVT_Change_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
+								v.setFrozenStatus(true);
 							}
+							paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());
 							break;
 						case 3:
 							// target weak strategy
@@ -367,7 +365,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 	}
                 	else {
                 		game.AutoTargetAssign(v);
-                		v.setSuggestedStatus(true);
+                		v.addWaypoint(map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                		lsnr.EVT_Accept_Suggestion_Waypoint(v.getIndex(), map.getSuggestedPoint()[0], map.getSuggestedPoint()[1]);
+                		// v.setSuggestedStatus(true);
                 	}
                     break;
                 case 1:
@@ -379,7 +379,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 	}
                 	else {
                 		game.AutoTargetAssign(v);
-                		v.setSuggestedStatus(true);
+                		v.changeGoal(v.getPath().getLast(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
+                		lsnr.EVT_Accept_Suggestion_Target(v.getIndex(), map.getSuggestedTarget().getX(), map.getSuggestedTarget().getY());
+                		// v.setSuggestedStatus(true);
                 	}
                     break;
                 case 3:
@@ -471,6 +473,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	        	v.setFrozenStatus(false);
 	        }
         }
+        
+        if(v.getPathSize() == 0) suggestionTitle = new JLabel("Set Goal");
     }
 
     private void hideSuggestionBox() {
