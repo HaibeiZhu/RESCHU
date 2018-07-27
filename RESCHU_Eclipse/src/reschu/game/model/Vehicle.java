@@ -182,13 +182,14 @@ public class Vehicle {
 	/**
 	 * Add a waypoint to the last path of this vehicle (synchronized)
 	 */
-	public synchronized void addPathLast(int[] e) { 
+	public synchronized void addPathLast(int[] e) {
 		if (isHijacked){
 			observedPath.addLast(e);
-			// add waypoint for smarter attacker
+			// add endpoint for smarter attacker
 			int[] temp = CreateMatchedPoint(HackLocation[0], HackLocation[1], e[0], e[1], HackAngle);
-			// groundTruthPath.add(groundTruthPath.size()-1, temp);
-			groundTruthPath.set(groundTruthPath.size()-1, temp);
+			// check the number of ground truth paths
+			if(groundTruthPath.size() == 1) groundTruthPath.addFirst(temp);
+			else groundTruthPath.set(groundTruthPath.size()-1, temp);
 		} else {
 			groundTruthPath.addLast(e);
 		}

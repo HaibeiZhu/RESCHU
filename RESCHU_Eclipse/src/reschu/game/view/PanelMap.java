@@ -139,7 +139,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						lsnr.EVT_ATTACKED_UAV_DISAPPEAR(v);
 						v.isDisappeared = true;
 						PanelMsgBoard.Msg("UAV ["+v.getIndex()+"] is lost due to cyber attack.");
-						v.getTarget().setDone();
+						if(v.getTarget() != null) v.getTarget().setDone();
 					}
 				}
 			}
@@ -180,7 +180,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						}
 
 						if(!v.getRejectedStatus()) {
-	                        if (suggestionBox == null) paintSuggestionBox(game.getStrategy());
+	                        if(suggestionBox == null) paintSuggestionBox(game.getStrategy());
 	                        else updateSuggestionBox();
 						}
 					}
@@ -188,6 +188,14 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 						if(suggestionBox != null) hideSuggestionBox();
 						v.resetSuggestionTime();
 						v.setFrozenStatus(false);
+					}
+					// check whether the hacked UAV disappeared
+					if(v.isDisappeared) {
+						if(suggestionBox != null) {
+							v.setSuggestedStatus(false);
+							hideSuggestionBox();
+							suggestionBox = null;
+						}
 					}
 				}
 				else {
