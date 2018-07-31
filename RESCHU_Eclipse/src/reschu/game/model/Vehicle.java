@@ -1125,9 +1125,11 @@ public class Vehicle {
 		for(int i=0; i<observedPath.size(); i++) {
 			int[] point = CreateMatchedPoint(HackLocation[0], HackLocation[1], observedPath.get(i)[0], observedPath.get(i)[1], HackAngle);
 			groundTruthPath.add(point);
-			// System.out.println("INIT POINT = "+HackLocation[0]+" "+HackLocation[1]);
-			// System.out.println("OBS  POINT = "+observedPath.get(i)[0]+" "+observedPath.get(i)[1]);
-			// System.out.println("NEW  POINT = "+point[0]+" "+point[1]);
+			/*
+			System.out.println("INIT POINT = "+HackLocation[0]+" "+HackLocation[1]);
+			System.out.println("OBS  POINT = "+observedPath.get(i)[0]+" "+observedPath.get(i)[1]);
+			System.out.println("NEW  POINT = "+point[0]+" "+point[1]);
+			*/
 		}
 
 		if(observedPath.size() == 0) end_point = GenerateNewEndPoint(HackLocation[0], HackLocation[1]);
@@ -1136,9 +1138,11 @@ public class Vehicle {
 			// end_point = GenerateNewEndPoint(HackLocation[0], HackLocation[1]);
 		}
 		groundTruthPath.add(end_point);
-		// System.out.println("OBS SIZE = "+getPathSize());
-		// System.out.println("GND SIZE = "+groundTruthPath.size());
-		// System.out.println("END  POINT = "+end_point[0]+" "+end_point[1]);
+		/*
+		System.out.println("OBS SIZE = "+getPathSize());
+		System.out.println("GND SIZE = "+groundTruthPath.size());
+		System.out.println("END POINT = "+end_point[0]+" "+end_point[1]);
+		*/
 	}
 	
 	public int[] CreateMatchedPoint(double x0, double y0, double x1, double y1, double angle) {
@@ -1150,9 +1154,12 @@ public class Vehicle {
 		if(new_theta < -2*Math.PI) new_theta += 2*Math.PI;
 		double x2 = x0 + Math.sin(new_theta)*length;
 		double y2 = y0 + Math.cos(new_theta)*length;
-		// System.out.println("ANGLE = "+theta+" NEW ANGLE = "+new_theta);
-		
 		int[] new_point = new int[]{(int)x2, (int)y2};
+		/*
+		System.out.println("OBS SIZE = "+observedPath.size());
+		System.out.println("GND SIZE = "+groundTruthPath.size());
+		System.out.println("END POINT = "+new_point[0]+" "+new_point[1]);
+		*/
 		return new_point;
 	}
 	
