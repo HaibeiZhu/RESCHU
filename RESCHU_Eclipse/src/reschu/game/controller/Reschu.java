@@ -603,8 +603,20 @@ public class Reschu extends JFrame implements GUI_Listener {
 		return sdf.format(cal.getTime());
 	}
 
+	public void EVT_Init_Suggestion_Waypoint(int vIdx, int x, int y){
+		Write(MyDB.INVOKER_USER, MyDB.INIT_SUGGESTION_WAYPOINT, vIdx, "New Suggestion initalized. Also possibly operator did not make a decision on previous suggestion. new Suggestion at: ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+
+	//when hacked UAV is reselected
 	public void EVT_Change_Suggestion_Waypoint(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint changed, or maybe initialized. new Suggestion at: ",
+		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint changed.(should have a \"UAV selected\" directly above. new Suggestion at: ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+
+	//when timer runs out
+	public void EVT_Update_Suggestion_Waypoint(int vIdx, int x, int y){
+		Write(MyDB.INVOKER_USER, MyDB.UPDATE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint updated. new Suggestion at: ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
 

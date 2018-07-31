@@ -59,6 +59,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 	private String _msgTextOnTop = "";
 	private boolean _isTextOnTop = false;
 
+	private int[] suggInit;
+
 	public PanelMap(GUI_Listener l, Game g, String strTitle) {
 		lsnr = l;
 		game = g;
@@ -89,6 +91,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		this.add(btnEmpty);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+
+
+		suggInit = new int[game.getVehicleList().size()];
 	}
 
 	public synchronized Vehicle getSelectedVehicle() {return selectedVehicle;}
@@ -158,7 +163,20 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 								map.setPreSuggestedPoint(map.getSuggestedPoint());
 								int[] point = SuggestionSystem.getWaypointSuggestion(game, v);
 								map.setSuggestedPoint(point);
-								lsnr.EVT_Change_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
+								if(suggInit[i] == 0){
+									suggInit[i] = 1;
+									lsnr.EVT_Init_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
+									//System.out.println("----------------TESTING: INIT SUGGESTION");
+								}
+								else if(suggInit[i] == 2){
+									suggInit[i] = 1;
+									lsnr.EVT_Change_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
+									//System.out.println("----------------TESTING: change SUGGESTION");
+								}
+								else{
+									lsnr.EVT_Update_Suggestion_Waypoint(v.getIndex(), point[0], point[1]);
+									//System.out.println("----------------TESTING: update SUGGESTION");
+								}
 								v.setFrozenStatus(true);
 							}
 							if(!v.getRejectedStatus()) paintSuggestionWaypoint(g, v, map.getSuggestedPoint());
@@ -200,6 +218,10 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				}
 				else {
 					if((suggestionBox!=null) && (!selectedVehicle.getNotifiedStatus())) hideSuggestionBox();
+
+					if(suggInit[i] == 1){
+						suggInit[i] = 2;
+					}
 					v.resetSuggestionTime();
 					v.setFrozenStatus(false);
 				}
@@ -353,6 +375,8 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggestedStatus(false);
                 hideSuggestionBox();
                 suggestionBox = null;
+
+                suggInit[v.getIndex()] = 0;
                 
                 // switch different actions based on different strategies
                 switch(strategy) {
@@ -395,7 +419,9 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggestedStatus(false);
                 hideSuggestionBox();
                 suggestionBox = null;
-                
+
+				suggInit[v.getIndex()] = 0;
+
                 // switch different actions based on different strategies
                 switch(strategy) {
                 case 0:

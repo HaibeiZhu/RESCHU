@@ -69,7 +69,9 @@ public interface GUI_Listener {
 
     // Database
 
+    public void EVT_Init_Suggestion_Waypoint(int vIdx, int x, int y);
     public void EVT_Change_Suggestion_Waypoint(int vIdx, int x, int y);
+    public void EVT_Update_Suggestion_Waypoint(int vIdx, int x, int y);
     public void EVT_Change_Suggestion_Target(int vIdx, int x, int y);
     public void EVT_Accept_Suggestion_Waypoint(int vIdx, int x, int y);
     public void EVT_Reject_Suggestion_Waypoint(int vIdx, int x, int y);

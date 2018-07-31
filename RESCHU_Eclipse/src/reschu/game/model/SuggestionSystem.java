@@ -1,17 +1,10 @@
 package reschu.game.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import reschu.constants.MyGame;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.Vector;
-
-import reschu.constants.MyGame;
-import reschu.game.controller.Reschu;
 
 public class SuggestionSystem {
 	private Game _game;
@@ -25,7 +18,7 @@ public class SuggestionSystem {
 	private static int MapMax = 980;
 	private static int MapIndexMax = MapMax/MapInterval;
 	private static int MapIndexMin = 0;
-	
+
 	// the suggestion / decision support system will be enabled
 	// only in those scenarios with Guidance
 	public SuggestionSystem(Game game) throws FileNotFoundException {

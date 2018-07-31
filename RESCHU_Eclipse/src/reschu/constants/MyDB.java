@@ -101,6 +101,9 @@ public class MyDB {
     final public static int REJECT_SUGGESTION_WAYPOINT  = 151;
     final public static int ACCEPT_SUGGESTION_TARGET    = 152;
     final public static int REJECT_SUGGESTION_TARGET    = 153;
-    final public static int CHANGE_SUGGESTION_WAYPOINT  = 154;
-    final public static int CHANGE_SUGGESTION_TARGET    = 155;
+
+    final public static int INIT_SUGGESTION_WAYPOINT	= 154;
+	final public static int CHANGE_SUGGESTION_WAYPOINT  = 155;
+	final public static int UPDATE_SUGGESTION_WAYPOINT  = 156;
+    final public static int CHANGE_SUGGESTION_TARGET    = 157;
 }
