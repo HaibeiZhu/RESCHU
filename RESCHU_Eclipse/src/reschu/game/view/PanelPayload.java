@@ -875,7 +875,7 @@ public class PanelPayload extends MyCanvas implements GLEventListener {
 
 	public void applyZoom() {
 		if (zoomLevel != nextZoomLevel) {
-			System.out.println("Applying zoom; Old zoom level: " + zoomLevel + "; new zoom level: " + nextZoomLevel + "; old centre x: " + centreX);
+			// System.out.println("Applying zoom; Old zoom level: " + zoomLevel + "; new zoom level: " + nextZoomLevel + "; old centre x: " + centreX);
 			zoomLevel = nextZoomLevel;
 		}
 	}
@@ -1164,12 +1164,11 @@ public class PanelPayload extends MyCanvas implements GLEventListener {
 
 	@Override
 	public void init(GLAutoDrawable arg0) {
-		System.out.println("init() called");
-
+		// System.out.println("init() called");
 		GL2 gl = arg0.getGL().getGL2();
 		tiler = new MapTileCreator(TILE_LENGTH, VIEWPORT_LENGTH, OVERLAP_LENGTH); // Precomputing of tiles is complete
 		subTextures = tiler.makeGridFiles(arg0);
-		System.out.println("Constructing new textures");
+		// System.out.println("Constructing new textures");
 		t = new Transition(OVERLAP_LENGTH, VIEWPORT_LENGTH, TILE_LENGTH);
 		String startTileKey = tiler.coordinateConverter(new int[]{0,0, TILE_LENGTH, TILE_LENGTH});
 		CurrentTexture = subTextures.get(startTileKey);
@@ -1293,7 +1292,7 @@ public class PanelPayload extends MyCanvas implements GLEventListener {
 
 			for (int[] coords : allCoords) {
 				key = coordinateConverter(coords);
-				System.out.println(key);
+				// System.out.println(key);
 				subImageFile = new File(tileFileDir + "/" + key + ".jpg");
 				try {
 					subImage = ImageIO.read(subImageFile);

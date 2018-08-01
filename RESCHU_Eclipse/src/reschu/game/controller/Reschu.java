@@ -116,7 +116,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new TableLayout(sizeMain));
 
-		game = new Game(this, _group, _section, _strategy);
+		game = new Game(this, _mode, _group, _section, _strategy);
 		origin_time = System.currentTimeMillis();
 
 		payload_canvas = new MyCanvas();
@@ -379,7 +379,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	
 	@Override
 	public void Vehicle_Selected_From_pnlMap(int idx) {
-		System.out.println("Vehicle Selected From pnlMap " + idx);
+		// System.out.println("Vehicle Selected From pnlMap " + idx);
 		pnlControl.Show_Vehicle_Status(idx);
 		pnlMap.setSelectedVehicle(game.getVehicleList().getVehicle(idx-1));
 	}
@@ -604,24 +604,26 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 
 	public void EVT_Init_Suggestion_Waypoint(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.INIT_SUGGESTION_WAYPOINT, vIdx, "New Suggestion initalized. Also possibly operator did not make a decision on previous suggestion. new Suggestion at: ",
+		Write(MyDB.INVOKER_USER, MyDB.INIT_SUGGESTION_WAYPOINT, vIdx, "New Suggestion initalized. "
+				+ "Also possibly operator did not make a decision on previous suggestion. New Suggestion at ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
 
 	//when hacked UAV is reselected
 	public void EVT_Change_Suggestion_Waypoint(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint changed.(should have a \"UAV selected\" directly above. new Suggestion at: ",
+		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint changed. "
+				+ "(should have a \"UAV selected\" directly above. New Suggestion at ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
 
 	//when timer runs out
 	public void EVT_Update_Suggestion_Waypoint(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.UPDATE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint updated. new Suggestion at: ",
+		Write(MyDB.INVOKER_USER, MyDB.UPDATE_SUGGESTION_WAYPOINT, vIdx, "Suggested Waypoint updated. New Suggestion at ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
 
 	public void EVT_Change_Suggestion_Target(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_TARGET, vIdx, "Suggested Target changed, or maybe initialized. new Suggestion at: ",
+		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_TARGET, vIdx, "Suggested Target changed, or maybe initialized. New Suggestion at ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
 
@@ -900,7 +902,7 @@ public class Reschu extends JFrame implements GUI_Listener {
     // For Ghost Mission
     public void EVT_Generate_Ghost_Mission(Vehicle v) {
     	Write(MyDB.INVOKER_SYSTEM, MyDB.GENERATE_GHOST_MISSION, v.getIndex(),
-    			"UAV["+v.getIndex()+"] is under attck", v.getX(), v.getY());
+    			"UAV["+v.getIndex()+"] is under attack", v.getX(), v.getY());
     	// game.AddGhostUAV(v);
     }
     public void EVT_ATTACKED_UAV_DISAPPEAR(Vehicle v) {

@@ -34,7 +34,7 @@ public class UAVMonitor {
 		displayEnabled = true;
 		// System.out.println("uav feed enabled.");
 		if (uav != activeUAV){
-			System.out.println("Active UAV changed to UAV [" + uav.getIndex() + "]");
+			// System.out.println("Active UAV changed to UAV [" + uav.getIndex() + "]");
 			zoomLevel = 1; // zoom should be per-vehicle state
 			panning = false;
 			xDistToPan = 0;

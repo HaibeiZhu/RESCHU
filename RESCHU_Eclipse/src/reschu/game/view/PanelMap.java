@@ -92,7 +92,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 
-
 		suggInit = new int[game.getVehicleList().size()];
 	}
 
@@ -218,7 +217,6 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 				}
 				else {
 					if((suggestionBox!=null) && (!selectedVehicle.getNotifiedStatus())) hideSuggestionBox();
-
 					if(suggInit[i] == 1){
 						suggInit[i] = 2;
 					}
@@ -375,8 +373,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggestedStatus(false);
                 hideSuggestionBox();
                 suggestionBox = null;
-
-                suggInit[v.getIndex()] = 0;
+                suggInit[v.getIndex()-1] = 0;
                 
                 // switch different actions based on different strategies
                 switch(strategy) {
@@ -419,8 +416,7 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
                 v.setSuggestedStatus(false);
                 hideSuggestionBox();
                 suggestionBox = null;
-
-				suggInit[v.getIndex()] = 0;
+				suggInit[v.getIndex()-1] = 0;
 
                 // switch different actions based on different strategies
                 switch(strategy) {

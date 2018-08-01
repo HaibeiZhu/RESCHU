@@ -129,30 +129,6 @@ public class DBWriter {
     			}
          }}).start();
     }
-        
-//    private void Check_TutorialFinish(String username) {
-//    	final String sql = 
-//    		"SELECT TutorialFinish FROM USER WHERE username='" + username + "'";
-//    	
-//    	new Thread( new Runnable() {
-//    		public void run() {
-//    			try {						
-//					// Check if the last query was succeeded
-//					Connection c = conn.getConnection();
-//		    		Statement stmt = c.createStatement();
-//		    		stmt.execute(sql);
-//					ResultSet rs = stmt.getResultSet();
-//					System.out.println("RS = " + rs.getInt(0));
-//		    		conn.freeConnection(c);
-//		    		rs = null;
-//		    		
-//		    		if( PRINT_QUREY_RESULT ) System.err.println("DB: " + sql + " finished");
-//			    		
-//		    	} catch( Exception e ) {			    		
-//		    		System.err.println("Error: failed to execute sql. " + sql);
-//		    	}
-//         }}).start();
-//    }
     
     public void UserTable_SetTime(String username) {
     	final String sql = 

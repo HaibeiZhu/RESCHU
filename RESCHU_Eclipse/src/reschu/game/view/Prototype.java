@@ -255,9 +255,7 @@ public class Prototype extends MyCanvas implements GLEventListener {
 
   @Override
   public void init(GLAutoDrawable arg0) {
-	System.out.println("init() called");
-	
-	
+	// System.out.println("init() called");
     GL2 gl = arg0.getGL().getGL2();
     try {
     	//File f = new File("lib/LargeImage.jpg");
@@ -268,12 +266,12 @@ public class Prototype extends MyCanvas implements GLEventListener {
       backingImgHeight = backingImage.getHeight();
       tiler = new GridCreateTest(backingImage, TILE_LENGTH, VIEWPORT_LENGTH, OVERLAP_LENGTH); // Precomputing of tiles is complete
       subTextures = tiler.makeGridFiles(arg0);
-      System.out.println("Constructing new textures");
+      // System.out.println("Constructing new textures");
       t = new Transition(OVERLAP_LENGTH, VIEWPORT_LENGTH, TILE_LENGTH);
       String startTileKey = tiler.coordinateConverter(new int[]{0, 0, TILE_LENGTH, TILE_LENGTH});
       CurrentTexture = subTextures.get(startTileKey);
       CurrentTexture.enable(gl);
-      System.out.println("Initialized and enabled current texture");
+      // System.out.println("Initialized and enabled current texture");
       final FPSAnimator animator = new FPSAnimator(arg0, 180);
       animator.start();
     }

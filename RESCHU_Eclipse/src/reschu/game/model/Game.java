@@ -72,6 +72,7 @@ public class Game implements Runnable, ActionListener {
     private static int wrong_detect = 0;
     private static int wrong_task = 0;
     private Random rnd = new Random();
+    private int _mode;
     private int _section;
     private int _group;
     private int _strategy;
@@ -79,7 +80,7 @@ public class Game implements Runnable, ActionListener {
 
     public synchronized int getElapsedTime() {return elapsedTime;}
 
-    public Game(GUI_Listener l, int group, int section, int strategy) throws NumberFormatException, IOException {
+    public Game(GUI_Listener l, int mode, int group, int section, int strategy) throws NumberFormatException, IOException {
         if( Reschu.train() || Reschu.tutorial()) Game.TIME_TOTAL_GAME *= 10;
 
         if( Reschu._database ) {
@@ -141,7 +142,8 @@ public class Game implements Runnable, ActionListener {
 
         setVehicle(section);
         setPayload();
-        setGroupSection(group, section);
+        setGroupSection(mode, group, section);
+        _mode = mode;
         _group = group;
         _section = section;
         _strategy = strategy;
@@ -195,7 +197,7 @@ public class Game implements Runnable, ActionListener {
         }
     }
     
-    private void setGroupSection(int group, int section) {
+    private void setGroupSection(int mode, int group, int section) {
     	switch(section) {
     	case 0:
     		Guidance = false;
@@ -238,6 +240,13 @@ public class Game implements Runnable, ActionListener {
 	    	break;
 	    default:
 	    	Guidance = false;
+	    	Training = false;
+	    	Collection = false;
+    	}
+    	
+    	// reset flags for the practice mode
+    	if(mode == 0) {
+    		Guidance = false;
 	    	Training = false;
 	    	Collection = false;
     	}

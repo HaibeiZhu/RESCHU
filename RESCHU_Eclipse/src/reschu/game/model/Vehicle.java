@@ -287,31 +287,6 @@ public class Vehicle {
 	 * Returns a map that this vehicle is assigned to 
 	 */
 	public synchronized Map getMap() { return map; }
-
-	/*
-	public synchronized void setGroundTruthX(int x){ xPosGroundTruth = x; }
-	public synchronized int getGroundTruthX(){ return xPosGroundTruth; } 
-	public synchronized void setGroundTruthY(int y){ yPosGroundTruth = y; }   
-	public synchronized int getGroundTruthY(){ return yPosGroundTruth; }
-	public synchronized void setObservedX(int x){ xPosObserved = x; }
-	public synchronized int getX(){ 
-		if (isHijacked){
-			return xPosObserved;
-		}
-		else{
-			return xPosGroundTruth;
-		}
-	} 
-	public synchronized void setObservedY(int y){ yPosObserved = y; }   
-	public synchronized int getY(){
-		if (isHijacked){
-			return yPosObserved;
-		}
-		else{
-			return yPosGroundTruth;
-		}
-	}
-	*/
 	
 	public synchronized void setGroundTruthX(int x)	{ s64XposGdTruth = x; }
 	public synchronized int  getGroundTruthX()		{ return (int)(s64XposGdTruth); }
@@ -629,7 +604,6 @@ public class Vehicle {
 	}
 	
 	public void moveHillClimbing() {
-		// System.out.println("far moveHillClimbing called");
 		if( isStuck ) {
 			moveTo(6);
 			if(--stuckCount <= 0) isStuck = false;
@@ -697,8 +671,6 @@ public class Vehicle {
 	}
 	
 	public void moveBestFirst() {
-		
-		// System.out.println("moveBestFirst called");
 		int direction=0;
 		double d = 999999999, bestDistance = 999999999;
 
@@ -741,7 +713,7 @@ public class Vehicle {
 			}
 			if(chkValidMove(direction)) moveObservedTo(direction);
 			
-			// /*
+			/*
 			System.out.println("UAV index = "+index);
 			System.out.println("OBSERVED   x = "+getX()+"  y = "+getY());
 			System.out.println("GROUND     x = "+getGroundTruthX()+"  y = "+getGroundTruthY());
@@ -755,7 +727,7 @@ public class Vehicle {
 			else
 				System.out.println("G Path Frist NONE");
 			System.out.println("\n");
-			// */
+			*/
 		}
 		
 		// print position information for debugging
@@ -1105,8 +1077,6 @@ public class Vehicle {
 		observedPath = new LinkedList<int[]>(groundTruthPath);
 		
 		CreateSmarterGoundPath();
-		
-		// decision support system should be implemented here
 	}
 
 	public void endHijack() {
