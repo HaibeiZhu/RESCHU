@@ -187,7 +187,21 @@ public class PanelMap extends JPanel implements ActionListener, MouseListener, M
 								map.setPreSuggestedTarget(map.getSuggestedTarget());
 								Target target = SuggestionSystem.getTargetSuggestion(game, v);
 								map.setSuggestedTarget(target);
-                                lsnr.EVT_Change_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
+								if(suggInit[i] == 0){
+									suggInit[i] = 1;
+									lsnr.EVT_Init_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
+									//System.out.println("----------------TESTING: INIT SUGGESTION");
+								}
+								else if(suggInit[i] == 2){
+									suggInit[i] = 1;
+									lsnr.EVT_Change_Suggestion_Target(v.getIndex(),target.getX(), target.getY());
+									//System.out.println("----------------TESTING: change SUGGESTION");
+								}
+								else{
+									lsnr.EVT_Update_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
+									//System.out.println("----------------TESTING: update SUGGESTION");
+								}
+                                //lsnr.EVT_Change_Suggestion_Target(v.getIndex(), target.getX(), target.getY());
 								v.setFrozenStatus(true);
 							}
 							if(!v.getRejectedStatus()) paintSuggestionTarget(g, v, map.getSuggestedTarget().getPos());

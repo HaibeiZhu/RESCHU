@@ -604,7 +604,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 	}
 
 	public void EVT_Init_Suggestion_Waypoint(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.INIT_SUGGESTION_WAYPOINT, vIdx, "New Suggestion initalized. "
+		Write(MyDB.INVOKER_USER, MyDB.INIT_SUGGESTION_WAYPOINT, vIdx, "New waypoint Suggestion initalized. "
 				+ "Also possibly operator did not make a decision on previous suggestion. New Suggestion at ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
@@ -622,8 +622,22 @@ public class Reschu extends JFrame implements GUI_Listener {
 				(int)Math.round(x), (int)Math.round(y));
 	}
 
+	public void EVT_Init_Suggestion_Target(int vIdx, int x, int y){
+		Write(MyDB.INVOKER_USER, MyDB.INIT_SUGGESTION_TARGET, vIdx, "New target Suggestion initalized. "
+						+ "Also possibly operator did not make a decision on previous suggestion. New Suggestion at ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+
+	//when hacked UAV is reselected
 	public void EVT_Change_Suggestion_Target(int vIdx, int x, int y){
-		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_TARGET, vIdx, "Suggested Target changed, or maybe initialized. New Suggestion at ",
+		Write(MyDB.INVOKER_USER, MyDB.CHANGE_SUGGESTION_TARGET, vIdx, "Suggested Target changed. "
+						+ "(should have a \"UAV selected\" directly above. New Suggestion at ",
+				(int)Math.round(x), (int)Math.round(y));
+	}
+
+	//when timer runs out
+	public void EVT_Update_Suggestion_Target(int vIdx, int x, int y){
+		Write(MyDB.INVOKER_USER, MyDB.UPDATE_SUGGESTION_TARGET, vIdx, "Suggested Target updated. New Suggestion at ",
 				(int)Math.round(x), (int)Math.round(y));
 	}
 
