@@ -150,6 +150,7 @@ public class Game implements Runnable, ActionListener {
         suggestionSystem = new SuggestionSystem(this);
     }
     
+    public int getMode() {return _mode;}
     public int getGroup() {return _group;}
     public int getSection() {return _section;}
     public int getStrategy() {return _strategy;}
@@ -198,57 +199,57 @@ public class Game implements Runnable, ActionListener {
     }
     
     private void setGroupSection(int mode, int group, int section) {
-    	switch(section) {
+    	// reset all flags
+		Guidance = false;
+    	Training = false;
+    	Collection = false;
+    	
+    	switch(mode) {
     	case 0:
-    		Guidance = false;
-    		Training = false;
-    		switch(group) {
-    		case 0:
-    			Collection = true;
-    			break;
-    		case 1:
-    			Collection = false;
-    			break;
-    		case 2:
-    			Collection = true;
-    			break;
-    		default:
-    			Collection = false;
-    			break;
-    		}
     		break;
     	case 1:
-	    	switch(group) {
+    		Training = true;
+    		break;
+    	case 2:
+    		Guidance = true;
+    		break;
+    	case 3:
+	    	switch(section) {
 	    	case 0:
-	    		Guidance = true;
-	    		Training = false;
+	    		switch(group) {
+	    		case 0:
+	    			Collection = true;
+	    			break;
+	    		case 1:
+	    			break;
+	    		case 2:
+	    			Collection = true;
+	    			break;
+	    		default:
+	    			break;
+	    		}
 	    		break;
 	    	case 1:
-	    		Guidance = false;
-	    		Training = true;
-	    		break;
-	    	case 2:
-	    		Guidance = true;
-	    		Training = true;
-	    		break;
-	    	default:
-	    		Guidance = false;
-	    		Training = false;
-	    		break;
+		    	switch(group) {
+		    	case 0:
+		    		Guidance = true;
+		    		break;
+		    	case 1:
+		    		Training = true;
+		    		break;
+		    	case 2:
+		    		Guidance = true;
+		    		Training = true;
+		    		break;
+		    	default:
+		    		break;
+		    	}
+		    	break;
+		    default:
+		    	break;
 	    	}
-	    	Collection = false;
-	    	break;
 	    default:
-	    	Guidance = false;
-	    	Training = false;
-	    	Collection = false;
-    	}
-    	
-    	// reset flags for the practice mode
-    	if(mode == 0) {
-    		Guidance = false;
-	    	Training = false;
-	    	Collection = false;
+	    	break;
     	}
     }
     

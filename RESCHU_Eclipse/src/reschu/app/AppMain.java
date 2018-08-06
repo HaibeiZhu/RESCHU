@@ -77,7 +77,7 @@ public class AppMain implements ActionListener
 
 		String[] group = {"Group 1", "Group 2", "Group 3"};
 		String[] section = {"Section 1", "Section 2"};
-		String[] mode = {"Practice", "Experiment"};
+		String[] mode = {"Practice General", "Practice Strategy", "Practice Suggestion", "Experiment"};
 		String[] strategy = {"Waypoint", "Target"};
 		
 		border = BorderFactory.createTitledBorder("");
@@ -166,15 +166,15 @@ public class AppMain implements ActionListener
 		}
 		if( ev.getSource() == _cmbBoxMode ) {  
 			_mode = _cmbBoxMode.getSelectedIndex();
-			if(_mode == 0) {
-				_cmbBoxGroup.setEnabled(false);
-				_cmbBoxSection.setEnabled(false);
-				_cmbBoxStrategy.setEnabled(false);
-			}
-			else {
+			if(_mode == 3) {
 				_cmbBoxGroup.setEnabled(true);
 				_cmbBoxSection.setEnabled(true);
 				_cmbBoxStrategy.setEnabled(true);
+			}
+			else {
+				_cmbBoxGroup.setEnabled(false);
+				_cmbBoxSection.setEnabled(false);
+				_cmbBoxStrategy.setEnabled(false);
 			}
 		}
 		if( ev.getSource() == _btnStart ) {

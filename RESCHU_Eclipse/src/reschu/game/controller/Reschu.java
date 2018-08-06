@@ -57,10 +57,18 @@ public class Reschu extends JFrame implements GUI_Listener {
 
 	/** Interactive Tutorial Mode? */
 	public static boolean tutorial() { return _gamemode == MyGameMode.TUTORIAL_MODE; }
-	// return true if section is low taskload
+	// return true if is in the first section
 	public static boolean if_section_1() {return _section == MyGameMode.SECTION_1;}
-	// return true if is in practice mode
-	public static boolean practice_mode() {return _mode == MyGameMode.PRACTICE_MODE;}
+	// return true if is in the experiment mode
+	public static boolean experiment_mode() {return _mode == MyGameMode.EXPERIMENT_MODE;}
+	// return true if is in the general practice mode
+	public static boolean practice_general_mode() {return _mode == MyGameMode.PRACTICE_GENERAL_MODE;}
+	// return true if is in the extra strategy practice mode
+	public static boolean practice_strategy_mode() {return _mode == MyGameMode.PRACTICE_STRATEGY_MODE;}
+	// return true if is in the extra suggestion practice mode
+	public static boolean practice_suggestion_mode() {return _mode == MyGameMode.PRACTICE_SUGGESTION_MODE;}
+	// return true if is in the extra practice mode
+	public static boolean practice_extra_mode() {return (practice_strategy_mode() || practice_suggestion_mode());}
 	/** Training Mode? */
 	public static boolean train() { return _gamemode == MyGameMode.TRAIN_MODE; }
 	/** Replay Mode? */
@@ -789,8 +797,22 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public void EVT_System_GameStart(){
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Simulation Starts, User ID = "+_username);
 		
-		if(_mode == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice");
-		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Experiment");
+		switch(_mode) {
+		case 0:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice General");
+			break;
+		case 1:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice Strategy");
+			break;
+		case 2:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice Suggestion");
+			break;
+		case 3:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Experiment");
+			break;
+		default:
+			break;
+		}
 		
 		if(_group == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Group = 1");
 		else {
@@ -804,8 +826,22 @@ public class Reschu extends JFrame implements GUI_Listener {
 	public void EVT_System_GameEnd(){
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation Ends, User ID = "+_username);
 		
-		if(_mode == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Practice");
-		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Mode = Experiment");
+		switch(_mode) {
+		case 0:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice General");
+			break;
+		case 1:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice Strategy");
+			break;
+		case 2:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Practice Suggestion");
+			break;
+		case 3:
+			Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Mode = Experiment");
+			break;
+		default:
+			break;
+		}
 		
 		if(_group == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Group = 1");
 		else {

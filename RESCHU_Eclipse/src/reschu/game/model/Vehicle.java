@@ -184,6 +184,14 @@ public class Vehicle {
 	 */
 	public synchronized void addPathLast(int[] e) {
 		if (isHijacked){
+			
+			/*
+			System.out.println("OBS SIZE = "+observedPath.size());
+			System.out.println("GND SIZE = "+groundTruthPath.size());
+			for(int i=0; i<getGroundPathSize(); i++)
+				System.out.println("GROUND POINT = "+getGroundTruthPath().get(i)[0]+" "+getGroundTruthPath().get(i)[1]);
+			*/
+			
 			observedPath.addLast(e);
 			// add endpoint for smarter attacker
 			int[] temp = CreateMatchedPoint(HackLocation[0], HackLocation[1], e[0], e[1], HackAngle);
