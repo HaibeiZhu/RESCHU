@@ -155,16 +155,16 @@ public class AppMain implements ActionListener
 		if( !_cmbTextUserID.getText().equals("") ) {  
 			_username = _cmbTextUserID.getText();
 		}
-		if( ev.getSource() == _cmbBoxGroup ) {  
+		if( ev.getSource() == _cmbBoxGroup ) {
 			_group = _cmbBoxGroup.getSelectedIndex();
 		}
-		if( ev.getSource() == _cmbBoxSection ) {  
+		if( ev.getSource() == _cmbBoxSection ) {
 			_section = _cmbBoxSection.getSelectedIndex();
 		}
-		if( ev.getSource() == _cmbBoxStrategy ) {  
+		if( ev.getSource() == _cmbBoxStrategy ) {
 			_strategy = _cmbBoxStrategy.getSelectedIndex();
 		}
-		if( ev.getSource() == _cmbBoxMode ) {  
+		if( ev.getSource() == _cmbBoxMode ) {
 			_mode = _cmbBoxMode.getSelectedIndex();
 			if(_mode == 3) {
 				_cmbBoxGroup.setEnabled(true);
@@ -172,9 +172,16 @@ public class AppMain implements ActionListener
 				_cmbBoxStrategy.setEnabled(true);
 			}
 			else {
-				_cmbBoxGroup.setEnabled(false);
-				_cmbBoxSection.setEnabled(false);
-				_cmbBoxStrategy.setEnabled(false);
+				if(_mode == 2) {
+					_cmbBoxGroup.setEnabled(false);
+					_cmbBoxSection.setEnabled(false);
+					_cmbBoxStrategy.setEnabled(true);
+				}
+				else {
+					_cmbBoxGroup.setEnabled(false);
+					_cmbBoxSection.setEnabled(false);
+					_cmbBoxStrategy.setEnabled(false);
+				}
 			}
 		}
 		if( ev.getSource() == _btnStart ) {
