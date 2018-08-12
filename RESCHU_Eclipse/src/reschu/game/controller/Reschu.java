@@ -822,6 +822,9 @@ public class Reschu extends JFrame implements GUI_Listener {
 		
 		if(_section == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Section = First");
 		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Section = Second");
+		
+		if(_strategy == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Strategy = Waypoint");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_START, -1, "Strategy = Target");
 	}
 	public void EVT_System_GameEnd(){
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Simulation Ends, User ID = "+_username);
@@ -851,6 +854,9 @@ public class Reschu extends JFrame implements GUI_Listener {
 		
 		if(_section == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Section = First");
 		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Section = Second");
+		
+		if(_strategy == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Strategy = Waypoint");
+		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Strategy = Target");
 	}
 	public void EVT_RECORD_FINAL_SCORE(int damage, int task, int wrong_task, int attack, int wrong_attack, int lost, int total) {
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, 
