@@ -99,7 +99,7 @@ public class Game implements Runnable, ActionListener {
         frmStart.setAlwaysOnTop(true);
         frmStart.setVisible(true);
 
-        rnd.setSeed( getSeedNum(section) ); 
+        rnd.setSeed(getSeedNum(mode, group, section)); 
         setProbability_Target_Visibility(section);
 
         PanelMsgBoard.Msg("Experiment Started");
@@ -164,28 +164,45 @@ public class Game implements Runnable, ActionListener {
     public DBWriter getDBWriter() {return dbWriter; }
     public Map getMap() {return map;}
 
-    private int getSeedNum(int section) {
-        if( Reschu.tutorial() || Reschu.train() ) {
-            switch( section ) {
-            case 1:  
-            case 2: 
-            case 3: 
-            case 4: 
-                return 50; 
-            default: return 0;
-            }
-        }
-        else {
-            switch( section ) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-                return 10;
-            default:
-                return 0;
-            }
-        }
+    private int getSeedNum(int mode, int group, int section) {
+    	// determine target location for each section
+    	switch(mode) {
+    	case 0:
+    		return 0;
+    	case 1:
+    		return 10;
+    	case 2:
+    		return 15;
+    	case 3:
+	    	switch(section) {
+	    	case 0:
+	    		switch(group) {
+	    		case 0:
+	    			return 20;
+	    		case 1:
+	    			return 60;
+	    		case 2:
+	    			return 65;
+	    		default:
+	    			return 35;
+	    		}
+	    	case 1:
+		    	switch(group) {
+		    	case 0:
+		    		return 40;
+		    	case 1:
+		    		return 45;
+		    	case 2:
+		    		return 50;
+		    	default:
+		    		return 55;
+		    	}
+		    default:
+		    	return 0;
+	    	}
+	    default:
+	    	return 0;
+    	}
     }
     
     private void setProbability_Target_Visibility(int section) {
@@ -221,6 +238,7 @@ public class Game implements Runnable, ActionListener {
 	    			Collection = true;
 	    			break;
 	    		case 1:
+	    			Collection = true;
 	    			break;
 	    		case 2:
 	    			Collection = true;
@@ -555,7 +573,7 @@ public class Game implements Runnable, ActionListener {
             frmEnd.setLocation(300,300);
             frmEnd.setVisible(true);
             lsnr.EVT_RECORD_FINAL_SCORE(frmEnd.GetTotalDamage(), frmEnd.GetTotalTask(), frmEnd.GetWrongTask(),
-            		frmEnd.GetTotalAttack(), frmEnd.GetWrongAttack(), frmEnd.GetTotalLost(), frmEnd.GetFinalScore());
+            		frmEnd.GetTotalAttack(), frmEnd.GetWrongAttack(), frmEnd.GetTotalLost(), frmEnd.GetFinalScore(), frmEnd.GetStrategyString());
         }
 
         for( int i = 0; i < vehicleList.size(); i++) {

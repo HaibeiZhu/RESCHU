@@ -336,8 +336,10 @@ public class Reschu extends JFrame implements GUI_Listener {
 		}
 		else {
 			// collecting data for decision support system
-			if(pnlMap.getSelectedVehicle().isNotified && game.getCollection()) {
-				pnlMap.getSelectedVehicle().addWaypointCount();
+			if(pnlMap.getSelectedVehicle() != null) {
+				if(pnlMap.getSelectedVehicle().isNotified && game.getCollection()) {
+					pnlMap.getSelectedVehicle().addWaypointCount();
+				}
 			}
 		}
 	}
@@ -352,8 +354,10 @@ public class Reschu extends JFrame implements GUI_Listener {
 		}
 		else {
 			// collecting data for decision support system
-			if(pnlMap.getSelectedVehicle().isNotified && game.getCollection()) {
-				pnlMap.getSelectedVehicle().addWaypointCount();
+			if(pnlMap.getSelectedVehicle() != null) {
+				if(pnlMap.getSelectedVehicle().isNotified && game.getCollection()) {
+					pnlMap.getSelectedVehicle().addWaypointCount();
+				}
 			}
 		}
 	}
@@ -858,7 +862,7 @@ public class Reschu extends JFrame implements GUI_Listener {
 		if(_strategy == 0) Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Strategy = Waypoint");
 		else Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Strategy = Target");
 	}
-	public void EVT_RECORD_FINAL_SCORE(int damage, int task, int wrong_task, int attack, int wrong_attack, int lost, int total) {
+	public void EVT_RECORD_FINAL_SCORE(int damage, int task, int wrong_task, int attack, int wrong_attack, int lost, int total, String strategy) {
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, 
 				"Total UAV damage is "+damage);
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, 
@@ -874,6 +878,8 @@ public class Reschu extends JFrame implements GUI_Listener {
 		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, "Your Total score is 100 - "
 				+damage+"(damage) + 5*"+task+"(correct task) - 5*"+wrong_task+"(incorrect task) + 10*"
 				+attack+"(correct detect) - 10*"+wrong_attack+"(incorrect detect) - 20*"+lost+"(lost) = "+total);
+		Write(MyDB.INVOKER_SYSTEM, MyDB.SYSTEM_GAME_END, -1, 
+				"General hacking detection strategy is "+strategy);
 	}
 	
 	// For mouse buttons and tab selections

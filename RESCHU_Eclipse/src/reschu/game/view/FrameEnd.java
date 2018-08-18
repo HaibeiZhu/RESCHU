@@ -49,6 +49,7 @@ public class FrameEnd extends JFrame {
 	private int total_waypoint = 0;
 	private int total_target = 0;
 	private double total_strategy = 0.0;
+	private String strategy_s = "";
 	
 	public int GetTotalDamage() {
 		return total_damage;
@@ -76,6 +77,9 @@ public class FrameEnd extends JFrame {
 	}
 	public int GetTotalTarget() {
 		return total_target;
+	}
+	public String GetStrategyString() {
+		return strategy_s;
 	}
 	
 	public FrameEnd(GUI_Listener l, Game g) {
@@ -151,7 +155,6 @@ public class FrameEnd extends JFrame {
 		
 		// collecting data for decision support system
 		if(game.getCollection()) {
-			String strategy_s;
 			VehicleList vlist = game.getVehicleList();
 			for(int i=0; i<vlist.size(); i++) {
 				total_waypoint += vlist.getVehicle(i).getWaypointCount();
